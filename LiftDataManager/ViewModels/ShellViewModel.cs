@@ -112,6 +112,17 @@ public partial class ShellViewModel : ObservableRecipient, IRecipient<SpeziPrope
         }
         else
         {
+            breadcrumbnavigator.Visibility = Visibility.Collapsed;
+            headerTextBlock.Visibility = Visibility.Visible;
+            DataItem? dataItem = null;
+            if (e.Parameter is DataItem)
+            {
+                dataItem = e.Parameter as DataItem;
+            }
+            HeaderText = dataItem?.Description;
+            ShowGlobalSearch = dataItem is null || !dataItem.HideItem;
+            view.AlwaysShowHeader = !string.IsNullOrWhiteSpace(dataItem?.Description);
+
             BreadcrumbnavigatorVisibility = Visibility.Collapsed;
             HeaderTextVisibility = Visibility.Visible;
             var dataItem = NavigationDataItemsDictionary.GetValueOrDefault(e.SourcePageType);

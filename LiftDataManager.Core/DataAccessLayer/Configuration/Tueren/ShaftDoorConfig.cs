@@ -28,6 +28,10 @@ public class ShaftDoorConfig : BaseModelBuilder<ShaftDoor>
         builder.Property(x => x.DefaultFrameDepth);
         builder.Property(x => x.LiftDoorOpeningDirectionId);
         builder.Property(x => x.TypeExaminationCertificateId);
+        builder.Property(x => x.SAISDescription)
+                               .HasMaxLength(50);
+        builder.Property(x => x.SAISIdentificationNumber)
+                               .HasMaxLength(50);
         builder.HasMany(t => t.LiftDoorGroups)
                .WithOne(g => g.ShaftDoor)
                .HasForeignKey(t => t.ShaftDoorId);

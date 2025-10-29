@@ -277,9 +277,35 @@
           "HideItem": false
         },
         {
+          "UniqueId": "LiftDataManager.Views.CurrentSafetyComponentsPage",
+          "Title": "Sicherheitskomponeten Datenbank",
+          "Description": "Sicherheitskomponeten aktueller Auftrag",
+          "Subtitle": "Sicherheitskomponeten aktueller Auftrag",
+          "ImagePath": "ms-appx:///Assets/Fluent/SafetyComponents.png",
+          "HideItem": false
+        },
+        {
+          "UniqueId": "LiftDataManager.Views.SafetyComponentsEquipmentsPage",
+          "Title": "Sicherheitskomponeten Equipments",
+          "Description": "Sicherheitskomponeten Equipments",
+          "Subtitle": "Sicherheitskomponeten Equipments",
+          "ImagePath": "ms-appx:///Assets/Fluent/SafetyComponents.png",
+          "HideItem": false,
+          "HideNavigationViewItem": true
+        },
+        {
+          "UniqueId": "LiftDataManager.Views.SafetyComponentsRecordingPage",
+          "Title": "Sicherheitskomponeten Datenbank",
+          "Description": "Sicherheitskomponeten Datenbank",
+          "Subtitle": "Sicherheitskomponeten Datenbank",
+          "ImagePath": "ms-appx:///Assets/Fluent/SafetyComponents.png",
+          "HideItem": false,
+          "HideNavigationViewItem": true
+        },
+        {
           "UniqueId": "LiftDataManager.Views.DataBaseEditPage",
-          "Title": "Databank bearbeiten",
-          "Subtitle": "Databank bearbeiten",
+          "Title": "LDM-Databank bearbeiten",
+          "Subtitle": "LDM-Databank bearbeiten",
           "ImagePath": "ms-appx:///Assets/Fluent/dataBaseEdit.png",
           "HideItem": true
         }

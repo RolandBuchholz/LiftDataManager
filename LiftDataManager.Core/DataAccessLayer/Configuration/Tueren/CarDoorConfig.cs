@@ -39,6 +39,10 @@ public class CarDoorConfig : BaseModelBuilder<CarDoor>
         builder.Property(x => x.DoorPanelCount);
         builder.Property(x => x.LiftDoorOpeningDirectionId);
         builder.Property(x => x.TypeExaminationCertificateId);
+        builder.Property(x => x.SAISDescription)
+                               .HasMaxLength(50);
+        builder.Property(x => x.SAISIdentificationNumber)
+                               .HasMaxLength(50);
         builder.HasMany(t => t.LiftDoorGroups)
                .WithOne(g => g.CarDoor)
                .HasForeignKey(t => t.CarDoorId);
@@ -48,5 +52,3 @@ public class CarDoorConfig : BaseModelBuilder<CarDoor>
                .HasConversion(intArrayConverter, intArrayComparer);
     }
 }
-
-

@@ -15,7 +15,7 @@ namespace LiftDataManager.Core.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "9.0.9");
+            modelBuilder.HasAnnotation("ProductVersion", "9.0.10");
 
             modelBuilder.Entity("LiftDataManager.Core.DataAccessLayer.Models.Abbreviation", b =>
                 {
@@ -630,6 +630,14 @@ namespace LiftDataManager.Core.Migrations
                     b.Property<int>("OrderSelection")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("SAISDescription")
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("SAISIdentificationNumber")
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
                     b.Property<bool>("SchindlerCertified")
                         .HasColumnType("INTEGER");
 
@@ -974,6 +982,14 @@ namespace LiftDataManager.Core.Migrations
                     b.Property<int>("OrderSelection")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("SAISDescription")
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("SAISIdentificationNumber")
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
                     b.Property<bool>("SchindlerCertified")
                         .HasColumnType("INTEGER");
 
@@ -1032,6 +1048,14 @@ namespace LiftDataManager.Core.Migrations
                     b.Property<int>("OrderSelection")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("SAISDescription")
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("SAISIdentificationNumber")
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
                     b.Property<bool>("SchindlerCertified")
                         .HasColumnType("INTEGER");
 
@@ -1078,6 +1102,14 @@ namespace LiftDataManager.Core.Migrations
 
                     b.Property<int>("OrderSelection")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("SAISDescription")
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("SAISIdentificationNumber")
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
 
                     b.Property<bool>("SchindlerCertified")
                         .HasColumnType("INTEGER");
@@ -1848,6 +1880,14 @@ namespace LiftDataManager.Core.Migrations
                     b.Property<int>("OrderSelection")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("SAISDescription")
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("SAISIdentificationNumber")
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
                     b.Property<bool>("SchindlerCertified")
                         .HasColumnType("INTEGER");
 
@@ -1885,6 +1925,14 @@ namespace LiftDataManager.Core.Migrations
 
                     b.Property<int>("OrderSelection")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("SAISDescription")
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("SAISIdentificationNumber")
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
 
                     b.Property<bool>("SchindlerCertified")
                         .HasColumnType("INTEGER");
@@ -1959,6 +2007,14 @@ namespace LiftDataManager.Core.Migrations
 
                     b.Property<int>("OrderSelection")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("SAISDescription")
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("SAISIdentificationNumber")
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
 
                     b.Property<bool>("SchindlerCertified")
                         .HasColumnType("INTEGER");
@@ -2094,6 +2150,12 @@ namespace LiftDataManager.Core.Migrations
 
                     b.Property<int>("OrderSelection")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("SAISDescription")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("SAISIdentificationNumber")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("SafetyGearTypeId")
                         .HasColumnType("INTEGER");
@@ -4033,6 +4095,14 @@ namespace LiftDataManager.Core.Migrations
                     b.Property<double>("ReducedMinimalMountingSpace")
                         .HasColumnType("REAL");
 
+                    b.Property<string>("SAISDescription")
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("SAISIdentificationNumber")
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
                     b.Property<bool>("SchindlerCertified")
                         .HasColumnType("INTEGER");
 
@@ -4335,6 +4405,14 @@ namespace LiftDataManager.Core.Migrations
                     b.Property<int>("OrderSelection")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("SAISDescription")
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("SAISIdentificationNumber")
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
                     b.Property<bool>("SchindlerCertified")
                         .HasColumnType("INTEGER");
 
@@ -4429,6 +4507,14 @@ namespace LiftDataManager.Core.Migrations
                     b.Property<int>("OrderSelection")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("SAISDescription")
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("SAISIdentificationNumber")
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
                     b.Property<bool>("SchindlerCertified")
                         .HasColumnType("INTEGER");
 
@@ -4500,6 +4586,9 @@ namespace LiftDataManager.Core.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("SAISManufacturerld")
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("SafetyComponentTypId")
                         .HasColumnType("INTEGER");
