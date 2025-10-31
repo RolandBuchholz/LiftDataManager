@@ -1,5 +1,4 @@
 ﻿using LiftDataManager.Core.Contracts.Services;
-using Microsoft.Extensions.Logging;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
@@ -385,7 +384,7 @@ public class EinreichunterlagenDocument : PdfBaseDocument
             table.Cell().Row(1).Column(3).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text(_calculationsModuleService.IsRopeLift(ParameterDictionary["var_Bausatz"].DropDownListValue) ? ParameterDictionary["var_Antrieb"].Value
                                                                                                                                                                                              : $"{ParameterDictionary["var_Antrieb"]?.Value} - {ParameterDictionary["var_Hydraulikventil"]?.Value} - {ParameterDictionary["var_Pumpenbezeichnung"]?.Value}");
             table.Cell().Row(2).Column(1).Background(secondRowColor).PaddingVertical(defaultRowSpacing).Text("Hydraulikzylinder:").Bold();
-            table.Cell().Row(2).Column(2).ColumnSpan(2).Background(secondRowColor).PaddingVertical(defaultRowSpacing).PaddingLeft(5).AlignMiddle().Text(_calculationsModuleService.IsRopeLift(ParameterDictionary["var_Bausatz"].DropDownListValue) ? "---" 
+            table.Cell().Row(2).Column(2).ColumnSpan(2).Background(secondRowColor).PaddingVertical(defaultRowSpacing).PaddingLeft(5).AlignMiddle().Text(_calculationsModuleService.IsRopeLift(ParameterDictionary["var_Bausatz"].DropDownListValue) ? "---"
                                                                                                                                                                                                                                                     : ParameterDictionary["var_Hydraulikzylinder"]?.Value);
 
             table.Cell().Row(3).Column(1).PaddingVertical(defaultRowSpacing).Text("Antriebsregelung:").Bold();
@@ -423,7 +422,7 @@ public class EinreichunterlagenDocument : PdfBaseDocument
             table.Cell().Row(6).Column(1).Background(secondRowColor).PaddingVertical(defaultRowSpacing).Text("Gewicht des Fahrkorbes:").Bold();
             table.Cell().Row(6).Column(2).ColumnSpan(2).Background(secondRowColor).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text($"{ParameterDictionary["var_F"].Value} kg");
             table.Cell().Row(7).Column(1).PaddingVertical(defaultRowSpacing).Text("Gewicht des Gegengewichtes:").Bold();
-            var cWTBalancePercent = string.IsNullOrWhiteSpace(ParameterDictionary["var_Gegengewichtsmasse"].Value) || string.Equals(ParameterDictionary["var_Gegengewichtsmasse"].Value,"0") ? 
+            var cWTBalancePercent = string.IsNullOrWhiteSpace(ParameterDictionary["var_Gegengewichtsmasse"].Value) || string.Equals(ParameterDictionary["var_Gegengewichtsmasse"].Value, "0") ?
                                     string.Empty :
                                     LiftParameterHelper.GetLiftParameterValue<double>(ParameterDictionary, "var_GGWNutzlastausgleich") * 100;
             table.Cell().Row(7).Column(2).ColumnSpan(2).PaddingVertical(defaultRowSpacing).PaddingLeft(5).Text($"{ParameterDictionary["var_Gegengewichtsmasse"].Value} kg  (Ausgleich {cWTBalancePercent}%)");
@@ -451,10 +450,11 @@ public class EinreichunterlagenDocument : PdfBaseDocument
             table.Cell().Row(3).Column(3).PaddingVertical(defaultRowSpacing).PaddingLeft(5).AlignMiddle().Text(_calculationsModuleService.GetSoftStartTyp(ParameterDictionary["var_Steuerungstyp"].Value, _calculationsModuleService.IsRopeLift(ParameterDictionary["var_Bausatz"].DropDownListValue)));
         });
     }
+
     void SafetyComponents(IContainer container)
     {
         var liftSafetyComponents = _calculationsModuleService.GetLiftSafetyComponents(ParameterDictionary);
-        container.Column(column => 
+        container.Column(column =>
         {
             foreach (var item in liftSafetyComponents)
             {

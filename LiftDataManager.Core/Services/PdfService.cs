@@ -1,9 +1,9 @@
 ﻿using LiftDataManager.Core.Contracts.Services;
+using LiftDataManager.Core.DataAccessLayer.SafetyComponentRecordModels;
 using LiftDataManager.Core.Models.PdfDocuments;
 using Microsoft.Extensions.Logging;
 using QuestPDF.Fluent;
 using QuestPDF.Infrastructure;
-using System;
 using System.Diagnostics;
 
 namespace LiftDataManager.Core.Services;
@@ -144,15 +144,43 @@ public class PdfService : IPdfService
     }
 
     /// <inheritdoc/>
+    public bool GenerateSafetyComponentsReport(ObservableDictionary<string, Parameter> parameterDictionary, LiftCommission? liftCommission) 
+    {
+        if (liftCommission == null)
+        { 
+            return false; 
+        }
+        IDocument? document = new SafetyComponentsDocument(parameterDictionary, liftCommission);
+
+        if (document is not null)
+        {
+            var filePath = Path.Combine(Path.GetTempPath(), $@"{Guid.NewGuid()}.pdf");
+            if (!GeneratePdfDocument(document, filePath, "SafetyComponentsReport"))
+            {
+                return false;
+            }
+            var process = new Process
+            {
+                StartInfo = new ProcessStartInfo(filePath)
+                {
+                    UseShellExecute = true
+                }
+            };
+            process.Start();
+        }
+        return true;
+    }
+
+    /// <inheritdoc/>
     public bool MakeDefaultSetofPdfDocuments(ObservableDictionary<string, Parameter> ParameterDictionary, string? path)
     {
-        string[] setOfPdfs = new string[]
-        {
+        string[] setOfPdfs =
+        [
             "KabinenLüftungViewModel",
             "NutzlastberechnungViewModel",
             "KabinengewichtViewModel",
             "Spezifikation"
-        };
+        ];
 
         foreach (var pdf in setOfPdfs)
         {

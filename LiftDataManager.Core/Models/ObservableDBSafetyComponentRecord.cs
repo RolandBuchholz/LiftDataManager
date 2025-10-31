@@ -34,8 +34,20 @@ public partial class ObservableDBSafetyComponentRecord : ObservableObject
         CheckRecordisCompleted();
     }
 
+    public SafetyComponentRecord GetSafetyComponentDB() 
+    {
+        return CurrentSafetyComponentRecord;
+    }
+
+    public int GetSafetyComponentDBId()
+    {
+        return Id;
+    }
+
     public SafetyComponentRecord CurrentSafetyComponentRecord { get; set; }
+    
     public int Id { get; set; }
+    
     [ObservableProperty]
     public partial string? Name { get; set; }
     partial void OnNameChanged(string? value)

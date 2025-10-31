@@ -7,13 +7,17 @@ namespace LiftDataManager.ViewModels;
 public partial class CurrentSafetyComponentsViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>, IRecipient<RefreshModelStateMessage>
 {
     private readonly SafetyComponentRecordContext _safetyComponentRecordContext;
+    private readonly IPdfService _pdfService;
+    private readonly ILogger<CurrentSafetyComponentsViewModel> _logger;
     public ObservableCollection<ObservableDBSafetyComponentRecord> ListOfSafetyComponents { get; set; } = [];
 
-    public CurrentSafetyComponentsViewModel(IParameterDataService parameterDataService, SafetyComponentRecordContext safetyComponentRecordContext, IDialogService dialogService, IInfoCenterService infoCenterService,
+    public CurrentSafetyComponentsViewModel(IParameterDataService parameterDataService, SafetyComponentRecordContext safetyComponentRecordContext, IDialogService dialogService, IInfoCenterService infoCenterService, IPdfService pdfService, ILogger<CurrentSafetyComponentsViewModel> logger,
                               ISettingService settingService, ILogger<DataViewModelBase> baseLogger) :
          base(parameterDataService, dialogService, infoCenterService, settingService, baseLogger)
     {
         _safetyComponentRecordContext = safetyComponentRecordContext;
+        _pdfService = pdfService;
+        _logger = logger;
     }
 
     [ObservableProperty]
@@ -36,7 +40,7 @@ public partial class CurrentSafetyComponentsViewModel : DataViewModelBase, INavi
     public partial string? LiftName { get; set; }
     partial void OnLiftNameChanged(string? value)
     {
-        if(!string.Equals(CurrentLiftCommission?.Name, value))
+        if (!string.Equals(CurrentLiftCommission?.Name, value))
         {
             CurrentLiftCommission?.Name = value is null ? string.Empty : value;
             _safetyComponentRecordContext.SaveChanges();
@@ -108,7 +112,7 @@ public partial class CurrentSafetyComponentsViewModel : DataViewModelBase, INavi
     {
         if (!string.Equals(CurrentLiftCommission?.Country, value))
         {
-            CurrentLiftCommission?.Country= value;
+            CurrentLiftCommission?.Country = value;
             _safetyComponentRecordContext.SaveChanges();
         }
     }
@@ -139,7 +143,7 @@ public partial class CurrentSafetyComponentsViewModel : DataViewModelBase, INavi
             await _safetyComponentRecordContext.LiftCommissions!.AddAsync(CurrentLiftCommission);
             await _safetyComponentRecordContext.SaveChangesAsync();
         }
-   
+
         if (string.IsNullOrWhiteSpace(saisNumber) &&
             !string.IsNullOrWhiteSpace(CurrentLiftCommission.SAISEquipment))
         {
@@ -149,7 +153,7 @@ public partial class CurrentSafetyComponentsViewModel : DataViewModelBase, INavi
         LiftName = CurrentLiftCommission.Name;
         LiftInstallerID = CurrentLiftCommission.LiftInstallerID;
         SAISEquipment = CurrentLiftCommission.SAISEquipment;
-        Street = CurrentLiftCommission.Street; 
+        Street = CurrentLiftCommission.Street;
         HouseNumber = CurrentLiftCommission.HouseNumber;
         ZIPCode = CurrentLiftCommission.ZIPCode;
         City = CurrentLiftCommission.City;
@@ -218,12 +222,12 @@ public partial class CurrentSafetyComponentsViewModel : DataViewModelBase, INavi
             return;
         }
 
-        if (sender is SafetyComponentRecord safetyComponentRecord)
+        if (sender is ObservableDBSafetyComponentRecord safetyComponentRecord)
         {
-            //_safetyComponentRecordContext.Remove(safetyComponentRecord);
-            //await _safetyComponentRecordContext.SaveChangesAsync();
-            //ListOfSafetyComponents.Remove(safetyComponentRecord);
-            //await CheckCanExecuteCommandsAsync();
+            _safetyComponentRecordContext.Remove(safetyComponentRecord.GetSafetyComponentDB());
+            await _safetyComponentRecordContext.SaveChangesAsync();
+            ListOfSafetyComponents.Remove(safetyComponentRecord);
+            await CheckCanExecuteCommandsAsync();
         }
         await Task.CompletedTask;
     }
@@ -244,7 +248,12 @@ public partial class CurrentSafetyComponentsViewModel : DataViewModelBase, INavi
         {
             return;
         }
-        _safetyComponentRecordContext.RemoveRange(ListOfSafetyComponents);
+        var elemetsToDelete = new List<SafetyComponentRecord>();
+        foreach (var safetyComponent in ListOfSafetyComponents)
+        {
+            elemetsToDelete.Add(safetyComponent.GetSafetyComponentDB());
+        }
+        _safetyComponentRecordContext.RemoveRange(elemetsToDelete);
         await _safetyComponentRecordContext.SaveChangesAsync();
         ListOfSafetyComponents.Clear();
         await CheckCanExecuteCommandsAsync();
@@ -254,10 +263,11 @@ public partial class CurrentSafetyComponentsViewModel : DataViewModelBase, INavi
     [RelayCommand]
     private async Task CreateSafetyComponentRecordPDFAsync()
     {
+        _pdfService.GenerateSafetyComponentsReport(ParameterDictionary, CurrentLiftCommission);
         await Task.CompletedTask;
     }
 
-    private async Task CheckCanExecuteCommandsAsync() 
+    private async Task CheckCanExecuteCommandsAsync()
     {
         CanImportSafetyComponentRecords = ListOfSafetyComponents.Count == 0;
         CanDeleteAllSafetyComponentRecords = ListOfSafetyComponents.Count > 0;
