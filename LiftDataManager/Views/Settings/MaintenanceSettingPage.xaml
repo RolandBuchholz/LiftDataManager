@@ -96,11 +96,11 @@
                     </controls:SettingsExpander.Items>
                 </controls:SettingsExpander>
                 <controls:SettingsExpander
-                    Description="Einstellungen der Datenbank"
+                    Description="Einstellungen der Datenbanken"
                     Header="Database"
                     HeaderIcon="{wuc:BitmapIcon Source=Assets/Fluent/dataBase.png}">
                     <controls:SettingsExpander.Items>
-                        <controls:SettingsCard Header="Database Path" HeaderIcon="{wuc:BitmapIcon Source=Assets/Fluent/sqlite.png}">
+                        <controls:SettingsCard Header="Parameter Database Path" HeaderIcon="{wuc:BitmapIcon Source=Assets/Fluent/sqlite.png}">
                             <StackPanel Orientation="Horizontal">
                                 <TextBox HorizontalAlignment="Stretch" Text="{x:Bind ViewModel.PathDataBase, Mode=TwoWay}" />
                                 <Button
@@ -108,6 +108,18 @@
                                     VerticalAlignment="Bottom"
                                     Command="{x:Bind ViewModel.UpdateFilePathCommand}"
                                     CommandParameter="PathDataBase">
+                                    <SymbolIcon Symbol="Share" />
+                                </Button>
+                            </StackPanel>
+                        </controls:SettingsCard>
+                        <controls:SettingsCard Header="Safety Components Database Path" HeaderIcon="{wuc:BitmapIcon Source=Assets/Fluent/sqlite.png}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBox HorizontalAlignment="Stretch" Text="{x:Bind ViewModel.PathDataBaseSafetyComponents, Mode=TwoWay}" />
+                                <Button
+                                    Margin="5,0,0,0"
+                                    VerticalAlignment="Bottom"
+                                    Command="{x:Bind ViewModel.UpdateFilePathCommand}"
+                                    CommandParameter="PathDataBaseSafetyComponents">
                                     <SymbolIcon Symbol="Share" />
                                 </Button>
                             </StackPanel>

@@ -234,6 +234,7 @@ public partial class App : Application
         var dbConnectionStringLogger = GetService<ILogger<App>>();
         var installationPath = AppDomain.CurrentDomain.BaseDirectory;
         dbConnectionStringLogger.LogInformation(00104, "DbConnectionString InstallationPath: {installationPath} ", installationPath);
+        string workPathDb = @"C:\Work\Administration\DataBase\LiftDataParameter.db";
         string parameterDBPath = @"\\Bauer\aufträge neu\Vorlagen\DataBase\LiftDataParameter.db";
         string safetyComponentsRecordDBPath = @"\\Bauer\aufträge neu\Vorlagen\DataBase\SafetyComponentRecords.db";
         bool vaultDisabled = false;
@@ -246,15 +247,30 @@ public partial class App : Application
                 dbConnectionStringLogger.LogInformation(00101, "DbConnectionString VaultDisabled: {vaultDisabled} ", vaultDisabled);
             }
         }
-
-        if (ApplicationData.Current.LocalSettings.Values.TryGetValue("AppPathDataBaseRequested", out var dbPathSettingValue))
+        if (string.Equals(dbContext, "Parameter"))
         {
-            if (!string.IsNullOrWhiteSpace((string)dbPathSettingValue))
+            if (ApplicationData.Current.LocalSettings.Values.TryGetValue("AppPathDataBaseRequested", out var dbPathSettingValue))
             {
-                var dbPathValue = JsonConvert.DeserializeObject<string>((string)dbPathSettingValue, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Include });
-                dbConnectionStringLogger.LogInformation(00102, "DbConnectionString SettingsDBPath: {dbPathValue} ", dbPathValue);
-                parameterDBPath = string.IsNullOrWhiteSpace(dbPathValue) ? parameterDBPath : dbPathValue;
-                dbConnectionStringLogger.LogInformation(00103, "DbConnectionString selected DBPath: {dbPath} ", parameterDBPath);
+                if (!string.IsNullOrWhiteSpace((string)dbPathSettingValue))
+                {
+                    var dbPathValue = JsonConvert.DeserializeObject<string>((string)dbPathSettingValue, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Include });
+                    dbConnectionStringLogger.LogInformation(00102, "DbConnectionString settingsDBPath: {dbPathValue} ", dbPathValue);
+                    parameterDBPath = string.IsNullOrWhiteSpace(dbPathValue) ? parameterDBPath : dbPathValue;
+                    dbConnectionStringLogger.LogInformation(00103, "DbConnectionString selected DBPath: {dbPath} ", parameterDBPath);
+                }
+            }
+        }
+        if (string.Equals(dbContext, "SafetyComponentsRecord"))
+        {
+            if (ApplicationData.Current.LocalSettings.Values.TryGetValue("AppPathDataBaseSafetyComponentsRequested", out var dbPathDataBaseSafetyComponents))
+            {
+                if (!string.IsNullOrWhiteSpace((string)dbPathDataBaseSafetyComponents))
+                {
+                    var dbPathDataBaseSafetyComponentsValue = JsonConvert.DeserializeObject<string>((string)dbPathDataBaseSafetyComponents, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Include });
+                    dbConnectionStringLogger.LogInformation(00102, "DbSafetyComponentsRecordConnectionString settingsDBPath: {dbPathDataBaseSafetyComponentsValue} ", dbPathDataBaseSafetyComponentsValue);
+                    safetyComponentsRecordDBPath = string.IsNullOrWhiteSpace(dbPathDataBaseSafetyComponentsValue) ? safetyComponentsRecordDBPath : dbPathDataBaseSafetyComponentsValue;
+                    dbConnectionStringLogger.LogInformation(00103, "DbSafetyComponentsRecordConnectionString selected DBPath: {safetyComponentsRecordDBPath} ", safetyComponentsRecordDBPath);
+                }
             }
         }
 
@@ -265,30 +281,30 @@ public partial class App : Application
         }
 
         //TODO UseForLocalModeSpecialFolder
-        
-        string workPathDb = @"C:\Work\Administration\DataBase\LiftDataParameter.db";
-
-        if (!Directory.Exists(Path.GetDirectoryName(workPathDb)))
+        if (string.Equals(dbContext, "Parameter"))
         {
-            Directory.CreateDirectory(Path.GetDirectoryName(workPathDb)!);
-        }
-        dbConnectionStringLogger.LogInformation(00106, "DbConnectionString workPathDb: {workPathDb} ", workPathDb);
-
-        if (!Directory.Exists(Path.GetDirectoryName(workPathDb)))
-        {
-            Directory.CreateDirectory(Path.GetDirectoryName(workPathDb)!);
-        }
-        if (!string.IsNullOrWhiteSpace(parameterDBPath) && dbReadOnly)
-        {
-            if (File.Exists(workPathDb))
+            if (!Directory.Exists(Path.GetDirectoryName(workPathDb)))
             {
-                FileInfo workPathDbFileInfo = new(workPathDb);
-                if (workPathDbFileInfo.IsReadOnly)
-                {
-                    workPathDbFileInfo.IsReadOnly = false;
-                }
+                Directory.CreateDirectory(Path.GetDirectoryName(workPathDb)!);
             }
-            File.Copy(parameterDBPath, workPathDb, true);
+            dbConnectionStringLogger.LogInformation(00106, "DbConnectionString workPathDb: {workPathDb} ", workPathDb);
+
+            if (!Directory.Exists(Path.GetDirectoryName(workPathDb)))
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(workPathDb)!);
+            }
+            if (!string.IsNullOrWhiteSpace(parameterDBPath) && dbReadOnly)
+            {
+                if (File.Exists(workPathDb))
+                {
+                    FileInfo workPathDbFileInfo = new(workPathDb);
+                    if (workPathDbFileInfo.IsReadOnly)
+                    {
+                        workPathDbFileInfo.IsReadOnly = false;
+                    }
+                }
+                File.Copy(parameterDBPath, workPathDb, true);
+            }
         }
 
         var sqliteOpenMode = dbReadOnly ? SqliteOpenMode.ReadOnly : SqliteOpenMode.ReadWrite;

@@ -10,6 +10,7 @@ public interface ISettingService
     public string? PathExcel { get; set; }
     public string? PathDataStorage { get; set; }
     public string? PathDataBase { get; set; }
+    public string? PathDataBaseSafetyComponents { get; set; }
     public string? LogLevel { get; set; }
     public bool AutoSave { get; set; }
     public string? AutoSavePeriod { get; set; }

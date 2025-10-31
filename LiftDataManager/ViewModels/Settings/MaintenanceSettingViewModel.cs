@@ -81,6 +81,14 @@ public partial class MaintenanceSettingViewModel : ObservableRecipient, INavigat
             _settingService.SetSettingsAsync(nameof(PathDataBase), value);
     }
     [ObservableProperty]
+    public partial string? PathDataBaseSafetyComponents { get; set; }
+    partial void OnPathDataBaseSafetyComponentsChanged(string? value)
+    {
+        value ??= string.Empty;
+        if (!string.Equals(value, _settingService.PathDataBaseSafetyComponents))
+            _settingService.SetSettingsAsync(nameof(PathDataBaseSafetyComponents), value);
+    }
+    [ObservableProperty]
     public partial string? InfoBarVersionsUpdateText { get; set; }
     [ObservableProperty]
     public partial bool InfoBarVersionsUpdateIsOpen { get; set; }
@@ -162,6 +170,9 @@ public partial class MaintenanceSettingViewModel : ObservableRecipient, INavigat
             case nameof(PathDataBase):
                 PathDataBase = newFilePath;
                 break;
+            case nameof(PathDataBaseSafetyComponents):
+                PathDataBaseSafetyComponents = newFilePath;
+                break;
             default:
                 break;
         }
@@ -239,6 +250,7 @@ public partial class MaintenanceSettingViewModel : ObservableRecipient, INavigat
     {
         GetProgrammsPath();
         PathDataBase = _settingService.PathDataBase;
+        PathDataBaseSafetyComponents = _settingService.PathDataBaseSafetyComponents;
         SelectedLogLevel = _settingService.LogLevel;
     }
     public void OnNavigatedFrom()
