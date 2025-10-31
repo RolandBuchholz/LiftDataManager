@@ -5,7 +5,8 @@
     xmlns:SpeziControls="using:LiftDataManager.Controls"
     xmlns:collections="using:CommunityToolkit.Mvvm.Collections"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:dbModels="using:LiftDataManager.Core.DataAccessLayer.SafetyComponentRecordModels"
+    xmlns:dbModels="using:LiftDataManager.Core.Models"
+    xmlns:dbModelsDataAccessLayer="using:LiftDataManager.Core.DataAccessLayer.SafetyComponentRecordModels"
     xmlns:helpers="using:LiftDataManager.Helpers"
     xmlns:linq="using:System.Linq"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -332,139 +333,17 @@
                 x:Name="CurrentSafetyComponentRecordsTableView"
                 Grid.Row="5"
                 Margin="0,0,5,0"
+                AlternateRowBackground="{ThemeResource SystemControlPageBackgroundListLowBrush}"
                 AutoGenerateColumns="False"
                 CornerRadius="4"
-                ItemsSource="{x:Bind ViewModel.ListOfSafetyComponents, Mode=OneWay}">
+                ItemsSource="{x:Bind ViewModel.ListOfSafetyComponents, Mode=OneWay}"
+                ShowExportOptions="True">
                 <tableView:TableView.Columns>
                     <tableView:TableViewTemplateColumn
                         Width="50"
                         CanFilter="False"
-                        CanSort="False"
-                        IsReadOnly="True">
-                        <tableView:TableViewTemplateColumn.Header>
-                            <FontIcon Glyph="&#xEC61;" ToolTipService.ToolTip="Unvollständige Eingaben" />
-                        </tableView:TableViewTemplateColumn.Header>
-                        <tableView:TableViewTemplateColumn.CellTemplate>
-                            <DataTemplate x:DataType="dbModels:SafetyComponentRecord">
-                                <Grid>
-                                    <FontIcon
-                                        Foreground="MediumSeaGreen"
-                                        Glyph="&#xEC61;"
-                                        Visibility="{x:Bind helpers:XamlFunctions.TrueToVisible(CompleteRecord), Mode=OneWay}" />
-                                    <FontIcon
-                                        Foreground="Goldenrod"
-                                        Glyph="&#xE7BA;"
-                                        Visibility="{x:Bind helpers:XamlFunctions.FalseToVisible(CompleteRecord), Mode=OneWay}" />
-                                </Grid>
-                            </DataTemplate>
-                        </tableView:TableViewTemplateColumn.CellTemplate>
-                    </tableView:TableViewTemplateColumn>
-                    <tableView:TableViewTemplateColumn
-                        Width="50"
-                        CanFilter="False"
-                        CanSort="False"
-                        IsReadOnly="True">
-                        <tableView:TableViewTemplateColumn.Header>
-                            <FontIcon Glyph="&#xEB95;" ToolTipService.ToolTip="Sicherheitsbauteil von Schindler freigegeben" />
-                        </tableView:TableViewTemplateColumn.Header>
-                        <tableView:TableViewTemplateColumn.CellTemplate>
-                            <DataTemplate x:DataType="dbModels:SafetyComponentRecord">
-                                <FontIcon Foreground="{x:Bind helpers:XamlFunctions.BoolToSolidColorBrushError(SchindlerCertified), Mode=OneWay}" Glyph="&#xEB95;" />
-                            </DataTemplate>
-                        </tableView:TableViewTemplateColumn.CellTemplate>
-                    </tableView:TableViewTemplateColumn>
-                    <tableView:TableViewTextColumn
-                        Width="250"
-                        Binding="{Binding Name}"
-                        CanFilter="False"
-                        CanSort="False"
-                        Header="Produktbeschreibung"
-                        IsReadOnly="False" />
-                    <tableView:TableViewNumberColumn
-                        Width="75"
-                        Binding="{Binding Release}"
-                        CanFilter="False"
-                        CanSort="False"
-                        Header="Release"
-                        IsReadOnly="False" />
-                    <tableView:TableViewNumberColumn
-                        Width="75"
-                        Binding="{Binding Revision}"
-                        CanFilter="False"
-                        CanSort="False"
-                        Header="Revision"
-                        IsReadOnly="False" />
-                    <tableView:TableViewTextColumn
-                        Width="250"
-                        Binding="{Binding IdentificationNumber}"
-                        CanFilter="False"
-                        CanSort="False"
-                        Header="Identificationr."
-                        IsReadOnly="False" />
-                    <tableView:TableViewTextColumn
-                        Width="125"
-                        Binding="{Binding SerialNumber}"
-                        CanFilter="False"
-                        CanSort="False"
-                        Header="Seriennr."
-                        IsReadOnly="False" />
-                    <tableView:TableViewTextColumn
-                        Width="125"
-                        Binding="{Binding BatchNumber}"
-                        CanFilter="False"
-                        CanSort="False"
-                        Header="Chargennr."
-                        IsReadOnly="False" />
-                    <tableView:TableViewTextColumn
-                        Width="175"
-                        Binding="{Binding SafetyComponentManfacturer.Name}"
-                        CanFilter="False"
-                        CanSort="False"
-                        Header="Hersteller"
-                        IsReadOnly="False" />
-                    <tableView:TableViewTextColumn
-                        Width="100"
-                        Binding="{Binding SafetyComponentManfacturer.ZIPCode}"
-                        CanFilter="False"
-                        CanSort="False"
-                        Header="Postleitzahl"
-                        IsReadOnly="False" />
-                    <tableView:TableViewTextColumn
-                        Width="100"
-                        Binding="{Binding SafetyComponentManfacturer.City}"
-                        CanFilter="False"
-                        CanSort="False"
-                        Header="Stadt"
-                        IsReadOnly="False" />
-                    <tableView:TableViewTextColumn
-                        Width="50"
-                        Binding="{Binding SafetyComponentManfacturer.Country}"
-                        CanFilter="False"
-                        CanSort="False"
-                        Header="Land"
-                        IsReadOnly="False" />
-                    <tableView:TableViewTextColumn
-                        Width="75"
-                        Binding="{Binding Imported}"
-                        CanFilter="False"
-                        CanSort="False"
-                        Header="Import"
-                        IsReadOnly="False" />
-                    <tableView:TableViewDateColumn
-                        Width="110"
-                        Binding="{Binding CreationDate}"
-                        CanFilter="False"
-                        CanSort="False"
-                        Header="Erstellungsdatum"
-                        IsReadOnly="False" />
-                    <tableView:TableViewCheckBoxColumn
-                        Width="75"
-                        Binding="{Binding Active}"
-                        CanFilter="False"
-                        CanSort="False"
-                        Header="Aktiv"
-                        IsReadOnly="False" />
-                    <tableView:TableViewTemplateColumn Width="60">
+                        CanResize="False"
+                        CanSort="False">
                         <tableView:TableViewTemplateColumn.Header>
                             <FontIcon Glyph="&#xE74D;" ToolTipService.ToolTip="Sicherheitsbauteil löschen" />
                         </tableView:TableViewTemplateColumn.Header>
@@ -489,6 +368,137 @@
                             </DataTemplate>
                         </tableView:TableViewTemplateColumn.CellTemplate>
                     </tableView:TableViewTemplateColumn>
+                    <tableView:TableViewTemplateColumn
+                        Width="50"
+                        CanFilter="False"
+                        CanResize="False"
+                        CanSort="False"
+                        IsReadOnly="True">
+                        <tableView:TableViewTemplateColumn.Header>
+                            <FontIcon Glyph="&#xEC61;" ToolTipService.ToolTip="Unvollständige Eingaben" />
+                        </tableView:TableViewTemplateColumn.Header>
+                        <tableView:TableViewTemplateColumn.CellTemplate>
+                            <DataTemplate x:DataType="dbModels:ObservableDBSafetyComponentRecord">
+                                <Grid>
+                                    <FontIcon
+                                        Foreground="MediumSeaGreen"
+                                        Glyph="&#xEC61;"
+                                        Visibility="{x:Bind helpers:XamlFunctions.TrueToVisible(CompleteRecord), Mode=OneWay}" />
+                                    <FontIcon
+                                        Foreground="Goldenrod"
+                                        Glyph="&#xE7BA;"
+                                        Visibility="{x:Bind helpers:XamlFunctions.FalseToVisible(CompleteRecord), Mode=OneWay}" />
+                                </Grid>
+                            </DataTemplate>
+                        </tableView:TableViewTemplateColumn.CellTemplate>
+                    </tableView:TableViewTemplateColumn>
+                    <tableView:TableViewTemplateColumn
+                        Width="50"
+                        CanFilter="False"
+                        CanResize="False"
+                        CanSort="False"
+                        IsReadOnly="True">
+                        <tableView:TableViewTemplateColumn.Header>
+                            <FontIcon Glyph="&#xEB95;" ToolTipService.ToolTip="Sicherheitsbauteil von Schindler freigegeben" />
+                        </tableView:TableViewTemplateColumn.Header>
+                        <tableView:TableViewTemplateColumn.CellTemplate>
+                            <DataTemplate x:DataType="dbModels:ObservableDBSafetyComponentRecord">
+                                <FontIcon Foreground="{x:Bind helpers:XamlFunctions.BoolToSolidColorBrushError(SchindlerCertified), Mode=OneWay}" Glyph="&#xEB95;" />
+                            </DataTemplate>
+                        </tableView:TableViewTemplateColumn.CellTemplate>
+                    </tableView:TableViewTemplateColumn>
+                    <tableView:TableViewCheckBoxColumn
+                        Width="60"
+                        Binding="{Binding Active, Mode=TwoWay}"
+                        CanFilter="False"
+                        CanResize="False"
+                        CanSort="False"
+                        Header="Aktiv"
+                        IsReadOnly="False" />
+                    <tableView:TableViewTextColumn
+                        Width="250"
+                        Binding="{Binding Name, Mode=TwoWay}"
+                        CanFilter="False"
+                        CanSort="False"
+                        Header="Produktbeschreibung"
+                        IsReadOnly="False" />
+                    <tableView:TableViewNumberColumn
+                        Width="75"
+                        Binding="{Binding Release, Mode=TwoWay}"
+                        CanFilter="False"
+                        CanSort="False"
+                        Header="Release"
+                        IsReadOnly="False" />
+                    <tableView:TableViewNumberColumn
+                        Width="75"
+                        Binding="{Binding Revision, Mode=TwoWay}"
+                        CanFilter="False"
+                        CanSort="False"
+                        Header="Revision"
+                        IsReadOnly="False" />
+                    <tableView:TableViewTextColumn
+                        Width="250"
+                        Binding="{Binding IdentificationNumber, Mode=TwoWay}"
+                        CanFilter="False"
+                        CanSort="False"
+                        Header="Identificationr."
+                        IsReadOnly="False" />
+                    <tableView:TableViewTextColumn
+                        Width="125"
+                        Binding="{Binding SerialNumber, Mode=TwoWay}"
+                        CanFilter="False"
+                        CanSort="False"
+                        Header="Seriennr."
+                        IsReadOnly="False" />
+                    <tableView:TableViewTextColumn
+                        Width="125"
+                        Binding="{Binding BatchNumber, Mode=TwoWay}"
+                        CanFilter="False"
+                        CanSort="False"
+                        Header="Chargennr."
+                        IsReadOnly="False" />
+                    <tableView:TableViewTextColumn
+                        Width="175"
+                        Binding="{Binding SafetyComponentManfacturer.Name, Mode=TwoWay}"
+                        CanFilter="False"
+                        CanSort="False"
+                        Header="Hersteller"
+                        IsReadOnly="False" />
+                    <tableView:TableViewTextColumn
+                        Width="100"
+                        Binding="{Binding SafetyComponentManfacturer.ZIPCode, Mode=TwoWay}"
+                        CanFilter="False"
+                        CanSort="False"
+                        Header="Postleitzahl"
+                        IsReadOnly="False" />
+                    <tableView:TableViewTextColumn
+                        Width="100"
+                        Binding="{Binding SafetyComponentManfacturer.City, Mode=TwoWay}"
+                        CanFilter="False"
+                        CanSort="False"
+                        Header="Stadt"
+                        IsReadOnly="False" />
+                    <tableView:TableViewTextColumn
+                        Width="50"
+                        Binding="{Binding SafetyComponentManfacturer.Country, Mode=TwoWay}"
+                        CanFilter="False"
+                        CanSort="False"
+                        Header="Land"
+                        IsReadOnly="False" />
+                    <tableView:TableViewTextColumn
+                        Width="75"
+                        Binding="{Binding Imported, Mode=TwoWay}"
+                        CanFilter="False"
+                        CanSort="False"
+                        Header="Import"
+                        IsReadOnly="False" />
+                    <tableView:TableViewDateColumn
+                        Width="110"
+                        Binding="{Binding CreationDate, Mode=TwoWay}"
+                        CanFilter="False"
+                        CanSort="False"
+                        Header="Erstellungsdatum"
+                        IsReadOnly="False" />
                 </tableView:TableView.Columns>
             </tableView:TableView>
         </Grid>

@@ -44,9 +44,11 @@
                 x:Name="RecordingsTableView"
                 Grid.Column="0"
                 Margin="0,0,5,0"
+                AlternateRowBackground="{ThemeResource SystemControlPageBackgroundListLowBrush}"
                 AutoGenerateColumns="False"
                 CornerRadius="4"
-                ItemsSource="{x:Bind ViewModel.SafetyComponentsRecordings, Mode=OneWay}">
+                ItemsSource="{x:Bind ViewModel.SafetyComponentsRecordings, Mode=OneWay}"
+                ShowExportOptions="True">
                 <tableView:TableView.Columns>
                     <tableView:TableViewTextColumn
                         Width="125"

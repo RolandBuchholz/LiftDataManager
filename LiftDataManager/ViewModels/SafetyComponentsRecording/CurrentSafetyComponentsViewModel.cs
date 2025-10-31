@@ -7,7 +7,7 @@ namespace LiftDataManager.ViewModels;
 public partial class CurrentSafetyComponentsViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>, IRecipient<RefreshModelStateMessage>
 {
     private readonly SafetyComponentRecordContext _safetyComponentRecordContext;
-    public ObservableCollection<SafetyComponentRecord> ListOfSafetyComponents { get; set; } = [];
+    public ObservableCollection<ObservableDBSafetyComponentRecord> ListOfSafetyComponents { get; set; } = [];
 
     public CurrentSafetyComponentsViewModel(IParameterDataService parameterDataService, SafetyComponentRecordContext safetyComponentRecordContext, IDialogService dialogService, IInfoCenterService infoCenterService,
                               ISettingService settingService, ILogger<DataViewModelBase> baseLogger) :
@@ -38,7 +38,7 @@ public partial class CurrentSafetyComponentsViewModel : DataViewModelBase, INavi
     {
         if(!string.Equals(CurrentLiftCommission?.Name, value))
         {
-            CurrentLiftCommission?.Name = value;
+            CurrentLiftCommission?.Name = value is null ? string.Empty : value;
             _safetyComponentRecordContext.SaveChanges();
         }
     }
@@ -156,7 +156,10 @@ public partial class CurrentSafetyComponentsViewModel : DataViewModelBase, INavi
         Country = CurrentLiftCommission.Country;
         if (CurrentLiftCommission is not null && CurrentLiftCommission.SafetyComponentRecords is not null)
         {
-            ListOfSafetyComponents.AddRange(CurrentLiftCommission.SafetyComponentRecords);
+            foreach (var record in CurrentLiftCommission.SafetyComponentRecords)
+            {
+                ListOfSafetyComponents.Add(new ObservableDBSafetyComponentRecord(record, _safetyComponentRecordContext));
+            }
         }
 
         await Task.CompletedTask;
@@ -217,10 +220,10 @@ public partial class CurrentSafetyComponentsViewModel : DataViewModelBase, INavi
 
         if (sender is SafetyComponentRecord safetyComponentRecord)
         {
-            _safetyComponentRecordContext.Remove(safetyComponentRecord);
-            await _safetyComponentRecordContext.SaveChangesAsync();
-            ListOfSafetyComponents.Remove(safetyComponentRecord);
-            await CheckCanExecuteCommandsAsync();
+            //_safetyComponentRecordContext.Remove(safetyComponentRecord);
+            //await _safetyComponentRecordContext.SaveChangesAsync();
+            //ListOfSafetyComponents.Remove(safetyComponentRecord);
+            //await CheckCanExecuteCommandsAsync();
         }
         await Task.CompletedTask;
     }
@@ -253,7 +256,6 @@ public partial class CurrentSafetyComponentsViewModel : DataViewModelBase, INavi
     {
         await Task.CompletedTask;
     }
-
 
     private async Task CheckCanExecuteCommandsAsync() 
     {
