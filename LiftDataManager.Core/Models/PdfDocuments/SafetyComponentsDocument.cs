@@ -201,12 +201,16 @@ public class SafetyComponentsDocument : PdfBaseDocument
     void SafetyComponents(IContainer container)
     {
         var liftSafetyComponents = LiftCommission.SafetyComponentRecords;
+        if (liftSafetyComponents is null)
+        { 
+            return;
+        }
         container.Column(column =>
         {
-            //foreach (var item in liftSafetyComponents)
-            //{
-            //    column.Item().PaddingVertical(5).Background(secondRowColor).ShowEntire().SafetyComponentTypDataField(item);
-            //}
+            foreach (var item in liftSafetyComponents)
+            {
+                column.Item().PaddingVertical(5).Background(secondRowColor).ShowEntire().SafetyComponentRecordField(item);
+            }
         });
     }
 
@@ -214,8 +218,8 @@ public class SafetyComponentsDocument : PdfBaseDocument
     {
         container.Column(column =>
         {
-            column.Item().PaddingTop(10, Unit.Millimetre).Text("Der Montagebetrieb").FontSize(fontSizeStandard);
-            column.Item().PaddingTop(15, Unit.Millimetre).Text($"Rieblingen, den {DateTime.Now.ToShortDateString()}").FontSize(fontSizeStandard);
+            column.Item().PaddingTop(5, Unit.Millimetre).Text("Der Montagebetrieb").FontSize(fontSizeStandard);
+            column.Item().PaddingTop(20, Unit.Millimetre).Text($"Rieblingen, den {DateTime.Now.ToShortDateString()}").FontSize(fontSizeStandard);
         });
     }
 }

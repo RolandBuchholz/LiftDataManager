@@ -65,10 +65,18 @@ public partial class ObservableDBSafetyComponentRecord : ObservableObject
     public LiftCommission? LiftCommission { get; set; }
 
     [ObservableProperty]
-    public partial bool CompleteRecord { get; set; }
+    public partial bool SchindlerCertified { get; set; }
 
     [ObservableProperty]
-    public partial bool SchindlerCertified { get; set; }
+    public partial bool CompleteRecord { get; set; }
+    partial void OnCompleteRecordChanged(bool value)
+    {
+        if (_initializeData)
+        {
+            return;
+        }
+        UpdateSafetyComponentRecordDatabase(nameof(CompleteRecord));
+    }
 
     [ObservableProperty]
     public partial int Release { get; set; }
@@ -183,6 +191,9 @@ public partial class ObservableDBSafetyComponentRecord : ObservableObject
         {
             case nameof(Active):
                 CurrentSafetyComponentRecord.Active = Active;
+                break;
+            case nameof(CompleteRecord):
+                CurrentSafetyComponentRecord.CompleteRecord = CompleteRecord;
                 break;
             case nameof(Name):
                 CurrentSafetyComponentRecord.Name = Name is null ? string.Empty : Name;

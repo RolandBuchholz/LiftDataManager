@@ -463,28 +463,28 @@
                         CanFilter="False"
                         CanSort="False"
                         Header="Hersteller"
-                        IsReadOnly="False" />
+                        IsReadOnly="True" />
                     <tableView:TableViewTextColumn
                         Width="100"
                         Binding="{Binding SafetyComponentManfacturer.ZIPCode, Mode=TwoWay}"
                         CanFilter="False"
                         CanSort="False"
                         Header="Postleitzahl"
-                        IsReadOnly="False" />
+                        IsReadOnly="True" />
                     <tableView:TableViewTextColumn
                         Width="100"
                         Binding="{Binding SafetyComponentManfacturer.City, Mode=TwoWay}"
                         CanFilter="False"
                         CanSort="False"
                         Header="Stadt"
-                        IsReadOnly="False" />
+                        IsReadOnly="True" />
                     <tableView:TableViewTextColumn
                         Width="50"
                         Binding="{Binding SafetyComponentManfacturer.Country, Mode=TwoWay}"
                         CanFilter="False"
                         CanSort="False"
                         Header="Land"
-                        IsReadOnly="False" />
+                        IsReadOnly="True" />
                     <tableView:TableViewTextColumn
                         Width="75"
                         Binding="{Binding Imported, Mode=TwoWay}"
