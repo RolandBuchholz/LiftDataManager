@@ -1,4 +1,4 @@
-﻿using Cogs.Collections;
+﻿using LiftDataManager.Core.DataAccessLayer.SafetyComponentRecordModels;
 
 namespace LiftDataManager.Contracts.Services;
 
@@ -162,4 +162,11 @@ public interface IDialogService
     /// <param name="parameterErrorDictionary">ValidationErrorsDictionary</param>
     /// <returns>Task</returns>
     Task ValidationDialogAsync(int paramterCount, ObservableDictionary<string, List<ParameterStateInfo>> parameterErrorDictionary);
+
+    /// <summary>
+    /// Opens a modal GenerateSafetyComponentRecord dialog.
+    /// </summary>
+    /// <param name="liftCommissionId">Id of the current open LiftCommission</param>
+    /// <returns>Task<ObservableDBSafetyComponentRecord?></returns>
+    Task<ObservableDBSafetyComponentRecord?> GenerateSafetyComponentRecordAsync(int liftCommissionId);
 }

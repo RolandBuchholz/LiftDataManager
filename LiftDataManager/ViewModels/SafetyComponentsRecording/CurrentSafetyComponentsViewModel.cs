@@ -186,22 +186,16 @@ public partial class CurrentSafetyComponentsViewModel : DataViewModelBase, INavi
     [RelayCommand]
     private async Task AddSafetyComponentRecordAsync()
     {
-        var safetyComponentRecord = new SafetyComponentRecord()
+        if (CurrentLiftCommission is null)
         {
-            Name = "New",
-            IdentificationNumber = "New",
-            Imported = "- - -",
-            CreationDate = DateTime.Now,
-            Active = true,
-            BatchNumber = string.Empty,
-            CompleteRecord = false,
-            LiftCommissionId = 0,
-            SerialNumber = string.Empty,
-            Release = 0,
-            Revision = 0,
-            SafetyComponentManfacturerId = 0,
-        };
-
+            return;
+        }
+        var newSafetyComponentRecord = await _dialogService.GenerateSafetyComponentRecordAsync(CurrentLiftCommission.Id);
+        if (newSafetyComponentRecord is null)
+        {
+            return;
+        }
+        ListOfSafetyComponents.Add(newSafetyComponentRecord);
         await Task.CompletedTask;
     }
 

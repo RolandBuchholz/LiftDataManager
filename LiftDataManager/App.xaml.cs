@@ -133,6 +133,7 @@ public partial class App : Application
             services.AddTransient<ImportLiftDataDialogViewModel>();
             services.AddTransient<CheckOutDialogViewModel>();
             services.AddTransient<ValidationDialogViewModel>();
+            services.AddTransient<GenerateSafetyComponentRecordDialogViewModel>();
 
             // SafetyComponentsRecordingViewModels
             services.AddTransient<CurrentSafetyComponentsViewModel>();

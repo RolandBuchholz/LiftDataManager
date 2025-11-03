@@ -1,5 +1,8 @@
 ﻿using Humanizer;
+using LiftDataManager.Core.DataAccessLayer.SafetyComponentRecordModels;
+using LiftDataManager.Core.Enums;
 using Microsoft.UI.Text;
+using RtfPipe.Tokens;
 using TextBox = DevWinUI.TextBox;
 
 namespace LiftDataManager.Services;
@@ -398,5 +401,20 @@ public class DialogService : IDialogService
             RequestedTheme = MainRoot.ActualTheme
         };
         await dialog.ShowAsyncQueueDraggable();
+    }
+
+    public async Task<ObservableDBSafetyComponentRecord?> GenerateSafetyComponentRecordAsync(int liftCommissionId)
+    {
+        var dialog = new GenerateSafetyComponentRecordDialog(liftCommissionId)
+        {
+            XamlRoot = MainRoot.XamlRoot,
+            RequestedTheme = MainRoot.ActualTheme,
+        };
+        var result = await dialog.ShowAsyncQueueDraggable();
+        if (result == ContentDialogResult.None || result == ContentDialogResult.Secondary)
+        {
+            return null;
+        }
+        return dialog.SafetyComponentRecord;
     }
 }
