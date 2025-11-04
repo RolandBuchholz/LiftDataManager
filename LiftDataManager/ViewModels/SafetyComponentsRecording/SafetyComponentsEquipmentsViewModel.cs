@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 using LiftDataManager.Core.DataAccessLayer.SafetyComponentRecordModels;
+using Microsoft.Data.Sqlite;
 using System.Collections.ObjectModel;
 
 namespace LiftDataManager.ViewModels;
@@ -48,6 +49,11 @@ public partial class SafetyComponentsEquipmentsViewModel : DataViewModelBase, IN
 
     public void OnNavigatedFrom()
     {
-
+        NavigatedFromBaseActions();
+        if (_safetyComponentRecordContext.Database.GetDbConnection() is SqliteConnection editConn)
+        {
+            SqliteConnection.ClearPool(editConn);
+        }
+        _safetyComponentRecordContext.Database.CloseConnection();
     }
 }

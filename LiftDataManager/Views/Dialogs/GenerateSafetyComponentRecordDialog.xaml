@@ -9,12 +9,12 @@
     xmlns:local="using:LiftDataManager.Views.Dialogs"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     x:Name="GenerateSafetyComponentRecord"
-    Title="Generate SafetyComponentRecord"
+    Title="Sicherheitskomponente erstellen"
     VerticalAlignment="Stretch"
-    CloseButtonText="Datenimport abbrechen"
+    CloseButtonText="Abbrechen"
     IsPrimaryButtonEnabled="True"
     PrimaryButtonStyle="{StaticResource ContentDialogAccentButtonStyle}"
-    PrimaryButtonText="Daten übernehmen"
+    PrimaryButtonText="Erstellen"
     mc:Ignorable="d">
     <Interactivity:Interaction.Behaviors>
         <Interactivity:EventTriggerBehavior EventName="Loaded">
