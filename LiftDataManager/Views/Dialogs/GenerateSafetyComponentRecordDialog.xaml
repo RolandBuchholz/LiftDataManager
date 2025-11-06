@@ -10,6 +10,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     x:Name="GenerateSafetyComponentRecord"
     Title="Sicherheitskomponente erstellen"
+    MinWidth="750"
     VerticalAlignment="Stretch"
     CloseButtonText="Abbrechen"
     IsPrimaryButtonEnabled="True"
@@ -27,22 +28,30 @@
     <ScrollViewer>
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" MinWidth="250" />
+                <ColumnDefinition Width="*" MinWidth="250" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
+            <ComboBox
+                Grid.Row="0"
+                Grid.Column="0"
+                Margin="5,0,5,0"
+                HorizontalAlignment="Stretch"
+                DisplayMemberPath="Name"
+                ItemsSource="{x:Bind ViewModel.SafetyComponentTyps, Mode=OneWay}"
+                SelectedItem="{x:Bind ViewModel.SelectedSafetyComponentTyp, Mode=TwoWay}" />
+            <!--<SpeziControls:ParameterComboBox LiftParameter="" Visibility="{x:Bind ViewModel.SafetyComponentSelectionVisibility, Mode=OneWay}" />-->
+            <ComboBox
+                Grid.Row="0"
+                Grid.Column="1"
+                Margin="5,0,5,0"
+                HorizontalAlignment="Stretch"
+                DisplayMemberPath="Name"
+                ItemsSource="{x:Bind ViewModel.SafetyComponents, Mode=OneWay}"
+                SelectedItem="{x:Bind ViewModel.SelectedSafetyComponent, Mode=TwoWay}"
+                Visibility="{x:Bind ViewModel.SafetyComponentSelectionVisibility, Mode=OneWay}" />
         </Grid>
     </ScrollViewer>
 </ContentDialog>
