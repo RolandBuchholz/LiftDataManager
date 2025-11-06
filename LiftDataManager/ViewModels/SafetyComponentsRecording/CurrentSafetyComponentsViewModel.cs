@@ -280,6 +280,11 @@ public partial class CurrentSafetyComponentsViewModel : DataViewModelBase, INavi
     public void OnNavigatedFrom()
     {
         NavigatedFromBaseActions();
+        if (string.Equals(SelectedPivotItem?.Tag, "SafetyComponentsEquipmentsPage") ||
+            string.Equals(SelectedPivotItem?.Tag, "SafetyComponentsRecordingPage"))
+        {
+            return;
+        }
         if (_safetyComponentRecordContext.Database.GetDbConnection() is SqliteConnection editConn)
         {
             SqliteConnection.ClearPool(editConn);

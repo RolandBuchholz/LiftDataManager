@@ -50,6 +50,11 @@ public partial class SafetyComponentsEquipmentsViewModel : DataViewModelBase, IN
     public void OnNavigatedFrom()
     {
         NavigatedFromBaseActions();
+        if (string.Equals(SelectedPivotItem?.Tag, "CurrentSafetyComponentsPage") ||
+            string.Equals(SelectedPivotItem?.Tag, "SafetyComponentsRecordingPage"))
+        {
+            return;
+        }
         if (_safetyComponentRecordContext.Database.GetDbConnection() is SqliteConnection editConn)
         {
             SqliteConnection.ClearPool(editConn);
