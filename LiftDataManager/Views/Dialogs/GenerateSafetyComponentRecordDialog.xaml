@@ -28,30 +28,60 @@
     <ScrollViewer>
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" MinWidth="250" />
-                <ColumnDefinition Width="*" MinWidth="250" />
+                <ColumnDefinition Width="*" MinWidth="500" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <ComboBox
                 Grid.Row="0"
                 Grid.Column="0"
-                Margin="5,0,5,0"
+                Margin="5,0,5,5"
                 HorizontalAlignment="Stretch"
                 DisplayMemberPath="Name"
                 ItemsSource="{x:Bind ViewModel.SafetyComponentTyps, Mode=OneWay}"
                 SelectedItem="{x:Bind ViewModel.SelectedSafetyComponentTyp, Mode=TwoWay}" />
-            <!--<SpeziControls:ParameterComboBox LiftParameter="" Visibility="{x:Bind ViewModel.SafetyComponentSelectionVisibility, Mode=OneWay}" />-->
             <ComboBox
-                Grid.Row="0"
-                Grid.Column="1"
-                Margin="5,0,5,0"
+                Grid.Row="1"
+                Grid.Column="0"
+                Margin="5,0,5,5"
                 HorizontalAlignment="Stretch"
-                DisplayMemberPath="Name"
+                DisplayMemberPath="DisplayName"
                 ItemsSource="{x:Bind ViewModel.SafetyComponents, Mode=OneWay}"
                 SelectedItem="{x:Bind ViewModel.SelectedSafetyComponent, Mode=TwoWay}"
                 Visibility="{x:Bind ViewModel.SafetyComponentSelectionVisibility, Mode=OneWay}" />
+            <Grid
+                Grid.Row="2"
+                Grid.Column="0"
+                Margin="5,0,5,5"
+                Visibility="{x:Bind ViewModel.SafetyComponentGridVisibility, Mode=OneWay}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <TextBlock
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Text="Hallo" />
+                <TextBlock
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Text="Hallo" />
+                <TextBlock
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Text="Hallo" />
+                <TextBlock
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Text="Hallo" />
+            </Grid>
         </Grid>
     </ScrollViewer>
 </ContentDialog>
