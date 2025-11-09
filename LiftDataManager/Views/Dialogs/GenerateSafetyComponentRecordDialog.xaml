@@ -6,6 +6,7 @@
     xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:SpeziControls="using:LiftDataManager.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dev="using:DevWinUI"
     xmlns:local="using:LiftDataManager.Views.Dialogs"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     x:Name="GenerateSafetyComponentRecord"
@@ -33,10 +34,37 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
+            <dev:StepBar
+                Margin="5"
+                AutoSelectOnItemClick="False"
+                HeaderDisplayMode="Top"
+                Orientation="Horizontal"
+                Status="{x:Bind ViewModel.StepBarStatus, Mode=TwoWay}"
+                StepIndex="{x:Bind ViewModel.StepBarIndex, Mode=TwoWay}">
+                <dev:StepBarItem>
+                    <TextBlock>
+                        <Span>Typ</Span><LineBreak />
+                        <Span>auswählen</Span>
+                    </TextBlock>
+                </dev:StepBarItem>
+                <dev:StepBarItem>
+                    <TextBlock>
+                        <Span>Sicherheits-</Span><LineBreak />
+                        <Span>komponente</Span>
+                    </TextBlock>
+                </dev:StepBarItem>
+                <dev:StepBarItem>
+                    <TextBlock>
+                        <Span>Seriennummer/</Span><LineBreak />
+                        <Span>Chargennummer</Span>
+                    </TextBlock>
+                </dev:StepBarItem>
+            </dev:StepBar>
             <ComboBox
-                Grid.Row="0"
+                Grid.Row="1"
                 Grid.Column="0"
                 Margin="5,0,5,5"
                 HorizontalAlignment="Stretch"
@@ -44,7 +72,7 @@
                 ItemsSource="{x:Bind ViewModel.SafetyComponentTyps, Mode=OneWay}"
                 SelectedItem="{x:Bind ViewModel.SelectedSafetyComponentTyp, Mode=TwoWay}" />
             <ComboBox
-                Grid.Row="1"
+                Grid.Row="2"
                 Grid.Column="0"
                 Margin="5,0,5,5"
                 HorizontalAlignment="Stretch"
@@ -53,7 +81,7 @@
                 SelectedItem="{x:Bind ViewModel.SelectedSafetyComponent, Mode=TwoWay}"
                 Visibility="{x:Bind ViewModel.SafetyComponentSelectionVisibility, Mode=OneWay}" />
             <Grid
-                Grid.Row="2"
+                Grid.Row="3"
                 Grid.Column="0"
                 Margin="5,0,5,5"
                 Visibility="{x:Bind ViewModel.SafetyComponentGridVisibility, Mode=OneWay}">
@@ -64,23 +92,106 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <TextBlock
+                <TextBox
                     Grid.Row="0"
                     Grid.Column="0"
-                    Text="Hallo" />
-                <TextBlock
+                    Margin="0,0,2,0"
+                    Header="Produktbeschreibung"
+                    IsReadOnly="True"
+                    Text="{x:Bind ViewModel.NewObservableDBSafetyComponentRecord.Name, Mode=OneWay}" />
+                <TextBox
                     Grid.Row="0"
                     Grid.Column="1"
-                    Text="Hallo" />
-                <TextBlock
+                    Margin="2,0,0,0"
+                    Header="Identifikationsnummer"
+                    IsReadOnly="True"
+                    Text="{x:Bind ViewModel.NewObservableDBSafetyComponentRecord.IdentificationNumber, Mode=OneWay}" />
+                <TextBox
                     Grid.Row="1"
                     Grid.Column="0"
-                    Text="Hallo" />
-                <TextBlock
+                    Margin="0,0,2,0"
+                    Header="Release"
+                    IsReadOnly="True"
+                    Text="{x:Bind ViewModel.NewObservableDBSafetyComponentRecord.Release, Mode=OneWay}" />
+                <TextBox
                     Grid.Row="1"
                     Grid.Column="1"
-                    Text="Hallo" />
+                    Margin="2,0,0,0"
+                    Header="Revision"
+                    IsReadOnly="True"
+                    Text="{x:Bind ViewModel.NewObservableDBSafetyComponentRecord.Revision, Mode=OneWay}" />
+                <TextBox
+                    Grid.Row="3"
+                    Grid.Column="0"
+                    Margin="0,0,2,0"
+                    BorderBrush="LightGoldenrodYellow"
+                    BorderThickness="2"
+                    Header="Seriennummer"
+                    IsReadOnly="False"
+                    Text="{x:Bind ViewModel.NewObservableDBSafetyComponentRecord.SerialNumber, Mode=TwoWay}" />
+                <TextBox
+                    Grid.Row="3"
+                    Grid.Column="1"
+                    Margin="2,0,0,0"
+                    BorderBrush="LightGoldenrodYellow"
+                    BorderThickness="2"
+                    Header="Chargennummer"
+                    IsReadOnly="False"
+                    Text="{x:Bind ViewModel.NewObservableDBSafetyComponentRecord.BatchNumber, Mode=TwoWay}" />
+                <TextBox
+                    Grid.Row="4"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    Header="Hersteller"
+                    IsReadOnly="True"
+                    Text="{x:Bind ViewModel.NewObservableDBSafetyComponentRecord.SafetyComponentManfacturer, Mode=OneWay}" />
+                <TextBox
+                    Grid.Row="5"
+                    Grid.Column="0"
+                    Margin="0,0,2,0"
+                    Header="Importiert"
+                    IsReadOnly="True"
+                    Text="{x:Bind ViewModel.NewObservableDBSafetyComponentRecord.Imported, Mode=OneWay}" />
+                <TextBox
+                    Grid.Row="5"
+                    Grid.Column="1"
+                    Margin="2,0,0,0"
+                    Header="Erstellungsdatum"
+                    IsReadOnly="True"
+                    Text="{x:Bind ViewModel.NewObservableDBSafetyComponentRecord.CreationDate, Mode=OneWay}" />
+                <Grid
+                    Grid.Row="6"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <CheckBox
+                        Grid.Column="0"
+                        HorizontalAlignment="Left"
+                        Content="Vollständig"
+                        IsChecked="{x:Bind ViewModel.NewObservableDBSafetyComponentRecord.CompleteRecord, Mode=OneWay}"
+                        IsHitTestVisible="False" />
+                    <CheckBox
+                        Grid.Column="1"
+                        HorizontalAlignment="Center"
+                        Content="Schindler Zertifiziert"
+                        IsChecked="{x:Bind ViewModel.NewObservableDBSafetyComponentRecord.SchindlerCertified, Mode=OneWay}"
+                        IsHitTestVisible="False" />
+                    <CheckBox
+                        Grid.Column="2"
+                        HorizontalAlignment="Right"
+                        Content="Aktiviert"
+                        IsChecked="{x:Bind ViewModel.NewObservableDBSafetyComponentRecord.Active, Mode=OneWay}" />
+                </Grid>
             </Grid>
         </Grid>
     </ScrollViewer>

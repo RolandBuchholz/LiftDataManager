@@ -1,7 +1,9 @@
-﻿using LiftDataManager.Core.DataAccessLayer.Models;
+﻿using LiftDataManager.Core.DataAccessLayer;
+using LiftDataManager.Core.DataAccessLayer.Models;
 using LiftDataManager.Core.DataAccessLayer.Models.AntriebSteuerungNotruf;
 using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 using LiftDataManager.Core.DataAccessLayer.Models.Tueren;
+using LiftDataManager.Core.DataAccessLayer.SafetyComponentRecordModels;
 using System.Collections.ObjectModel;
 
 namespace LiftDataManager.ViewModels.Dialogs;
@@ -11,6 +13,7 @@ public partial class GenerateSafetyComponentRecordDialogViewModel : ObservableOb
     private readonly ParameterContext _parametercontext;
     private readonly SafetyComponentRecordContext _safetyComponentRecordContext;
     public int LiftCommissionId { get; set; }
+    public ObservableDBSafetyComponentRecord? NewObservableDBSafetyComponentRecord { get; set; }
     public List<SafetyComponentTyp> SafetyComponentTyps { get; set; }
     public ObservableCollection<SafetyComponentEntity> SafetyComponents { get; set; }
 
@@ -30,6 +33,33 @@ public partial class GenerateSafetyComponentRecordDialogViewModel : ObservableOb
     public async Task GenerateSafetyComponentRecordDialogLoadedAsync(GenerateSafetyComponentRecordDialog sender)
     {
         LiftCommissionId = sender.LiftCommissionId;
+        if(_safetyComponentRecordContext.LiftCommissions is null)
+        {
+            return;
+        }
+        var currentLiftCommission = await _safetyComponentRecordContext.LiftCommissions.FindAsync(LiftCommissionId);
+        if (currentLiftCommission is null)
+        {
+            return;
+        }
+        var newSafetyComponentRecord = new SafetyComponentRecord()
+        {
+            Name = string.Empty,
+            CreationDate = DateTime.Now,
+            IdentificationNumber = string.Empty,
+            Imported = "- - -",
+            Release = 0,
+            Revision = 0,
+            BatchNumber = string.Empty,
+            SerialNumber = string.Empty,
+            LiftCommissionId = LiftCommissionId,
+            LiftCommission = currentLiftCommission,
+            Active = true,
+            CompleteRecord = false,
+        };
+
+
+        NewObservableDBSafetyComponentRecord = new ObservableDBSafetyComponentRecord(newSafetyComponentRecord, _safetyComponentRecordContext);
         await Task.CompletedTask;
     }
 
@@ -41,9 +71,11 @@ public partial class GenerateSafetyComponentRecordDialogViewModel : ObservableOb
         if (value is null)
         {
             SafetyComponentSelectionVisibility = false;
+            StepBarIndex = 0;
             return;
         }
         SafetyComponentSelectionVisibility = value.Id != 1;
+        StepBarIndex = value.Id != 1 ? 1: 0;
 
         IEnumerable<SafetyComponentEntity> safetyComponents = value.Id switch
         {
@@ -79,14 +111,30 @@ public partial class GenerateSafetyComponentRecordDialogViewModel : ObservableOb
     [ObservableProperty]
     public partial bool SafetyComponentSelectionVisibility { get; set; }
 
-
     [ObservableProperty]
     public partial SafetyComponentEntity? SelectedSafetyComponent { get; set; }
     partial void OnSelectedSafetyComponentChanged(SafetyComponentEntity? value)
     {
-        SafetyComponentGridVisibility = value is not null;
+        if (value is null)
+        {
+            StepBarStatus = StepStatus.Info;
+            StepBarIndex = 1;
+            SafetyComponentGridVisibility = false;
+        }
+        else
+        {
+            StepBarStatus = StepStatus.Warning;
+            StepBarIndex = 2;
+            SafetyComponentGridVisibility = true;
+        }
     }
 
     [ObservableProperty]
     public partial bool SafetyComponentGridVisibility { get; set; }
+
+    [ObservableProperty]
+    public partial int StepBarIndex { get; set; }
+
+    [ObservableProperty]
+    public partial StepStatus StepBarStatus { get; set; } 
 }
