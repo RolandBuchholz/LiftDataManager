@@ -431,7 +431,7 @@ public static class PdfHelpers
             table.Cell().Row(3).Column(1).ColumnSpan(4).PaddingLeft(5).PaddingBottom(-15).Text(text =>
             {
                 text.Line("Hersteller:").FontSize(fontSizeXXS).Bold();
-                text.Line($"{safetyComponentTyp.SafetyComponentManfacturer?.Name} {safetyComponentTyp.SafetyComponentManfacturer?.ZIPCode} {safetyComponentTyp.SafetyComponentManfacturer?.City} {safetyComponentTyp.SafetyComponentManfacturer?.Country}").FontSize(fontSizeS).Italic().Bold();
+                text.Line($"{safetyComponentTyp.SafetyComponentManufacturer?.Name} {safetyComponentTyp.SafetyComponentManufacturer?.ZIPCode} {safetyComponentTyp.SafetyComponentManufacturer?.City} {safetyComponentTyp.SafetyComponentManufacturer?.Country}").FontSize(fontSizeS).Italic().Bold();
             });
             table.Cell().Row(3).Column(5).ColumnSpan(2).AlignRight().PaddingBottom(-15).PaddingRight(5).Text(text =>
             {

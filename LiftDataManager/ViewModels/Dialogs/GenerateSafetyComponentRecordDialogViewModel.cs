@@ -1,5 +1,4 @@
-﻿using LiftDataManager.Core.DataAccessLayer;
-using LiftDataManager.Core.DataAccessLayer.Models;
+﻿using LiftDataManager.Core.DataAccessLayer.Models;
 using LiftDataManager.Core.DataAccessLayer.Models.AntriebSteuerungNotruf;
 using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 using LiftDataManager.Core.DataAccessLayer.Models.Tueren;
@@ -13,7 +12,6 @@ public partial class GenerateSafetyComponentRecordDialogViewModel : ObservableOb
     private readonly ParameterContext _parametercontext;
     private readonly SafetyComponentRecordContext _safetyComponentRecordContext;
     public int LiftCommissionId { get; set; }
-    public ObservableDBSafetyComponentRecord? NewObservableDBSafetyComponentRecord { get; set; }
     public List<SafetyComponentTyp> SafetyComponentTyps { get; set; }
     public ObservableCollection<SafetyComponentEntity> SafetyComponents { get; set; }
 
@@ -33,7 +31,7 @@ public partial class GenerateSafetyComponentRecordDialogViewModel : ObservableOb
     public async Task GenerateSafetyComponentRecordDialogLoadedAsync(GenerateSafetyComponentRecordDialog sender)
     {
         LiftCommissionId = sender.LiftCommissionId;
-        if(_safetyComponentRecordContext.LiftCommissions is null)
+        if (_safetyComponentRecordContext.LiftCommissions is null)
         {
             return;
         }
@@ -52,16 +50,21 @@ public partial class GenerateSafetyComponentRecordDialogViewModel : ObservableOb
             Revision = 0,
             BatchNumber = string.Empty,
             SerialNumber = string.Empty,
+            SafetyComponentManufacturerId = 1,
             LiftCommissionId = LiftCommissionId,
             LiftCommission = currentLiftCommission,
             Active = true,
             CompleteRecord = false,
         };
-
-
-        NewObservableDBSafetyComponentRecord = new ObservableDBSafetyComponentRecord(newSafetyComponentRecord, _safetyComponentRecordContext);
+        NewObservableDBSafetyComponentRecord = new ObservableDBSafetyComponentRecord(newSafetyComponentRecord, _safetyComponentRecordContext)
+        {
+            SkipDataBaseUpdate = true
+        };
         await Task.CompletedTask;
     }
+
+    [ObservableProperty]
+    public partial ObservableDBSafetyComponentRecord? NewObservableDBSafetyComponentRecord { get; set; }
 
     [ObservableProperty]
     public partial SafetyComponentTyp? SelectedSafetyComponentTyp { get; set; }
@@ -75,7 +78,7 @@ public partial class GenerateSafetyComponentRecordDialogViewModel : ObservableOb
             return;
         }
         SafetyComponentSelectionVisibility = value.Id != 1;
-        StepBarIndex = value.Id != 1 ? 1: 0;
+        StepBarIndex = value.Id != 1 ? 1 : 0;
 
         IEnumerable<SafetyComponentEntity> safetyComponents = value.Id switch
         {
@@ -94,7 +97,7 @@ public partial class GenerateSafetyComponentRecordDialogViewModel : ObservableOb
             13 => _parametercontext.Set<HydraulicValve>().AsEnumerable(),
             14 => _parametercontext.Set<DriveSafetyBrake>().AsEnumerable(),
             15 => _parametercontext.Set<OverspeedGovernor>().AsEnumerable(),
-            16=> [],
+            16 => [],
             17 => [],
             18 => [],
             19 => [],
@@ -103,9 +106,7 @@ public partial class GenerateSafetyComponentRecordDialogViewModel : ObservableOb
             22 => _parametercontext.Set<LiftDoorTelescopicApron>().AsEnumerable(),
             _ => [],
         };
-
         SafetyComponents.AddRange(safetyComponents);
-
     }
 
     [ObservableProperty]
@@ -126,6 +127,7 @@ public partial class GenerateSafetyComponentRecordDialogViewModel : ObservableOb
             StepBarStatus = StepStatus.Warning;
             StepBarIndex = 2;
             SafetyComponentGridVisibility = true;
+            SetDefaultSafetyComponentData();
         }
     }
 
@@ -136,5 +138,35 @@ public partial class GenerateSafetyComponentRecordDialogViewModel : ObservableOb
     public partial int StepBarIndex { get; set; }
 
     [ObservableProperty]
-    public partial StepStatus StepBarStatus { get; set; } 
+    public partial StepStatus StepBarStatus { get; set; }
+
+
+    [RelayCommand]
+    public async Task PrimaryButtonClicked(GenerateSafetyComponentRecordDialog sender)
+    {
+        if (NewObservableDBSafetyComponentRecord is not null)
+        {
+            NewObservableDBSafetyComponentRecord.SkipDataBaseUpdate = false;
+            //await _safetyComponentRecordContext.AddAsync(NewObservableDBSafetyComponentRecord);
+            //await _safetyComponentRecordContext.SaveChangesAsync();
+            sender.SafetyComponentRecord = NewObservableDBSafetyComponentRecord;
+        }
+        await Task.CompletedTask;
+    }
+
+    private void SetDefaultSafetyComponentData()
+    {
+        if (SelectedSafetyComponent is not null &&
+            NewObservableDBSafetyComponentRecord is not null)
+        {
+            NewObservableDBSafetyComponentRecord.Name = SelectedSafetyComponent.SAISDescription;
+            NewObservableDBSafetyComponentRecord.IdentificationNumber = SelectedSafetyComponent.SAISIdentificationNumber;
+            NewObservableDBSafetyComponentRecord.SchindlerCertified = SelectedSafetyComponent.SchindlerCertified;
+            NewObservableDBSafetyComponentRecord.SerialNumber = string.Empty;
+            NewObservableDBSafetyComponentRecord.BatchNumber = string.Empty;
+            //TODO Add Manfacturer
+            //NewObservableDBSafetyComponentRecord.SafetyComponentManfacturerId = 1;
+            //NewObservableDBSafetyComponentRecord.SafetyComponentManfacturer = ;
+        }
+    }
 }

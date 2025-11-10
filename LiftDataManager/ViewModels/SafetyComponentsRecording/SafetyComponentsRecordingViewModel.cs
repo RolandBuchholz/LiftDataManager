@@ -34,7 +34,7 @@ public partial class SafetyComponentsRecordingViewModel : DataViewModelBase, INa
 
     private async Task GetSafetyComponentsRecordingsFromDatabaseAsync()
     {
-        var safetyComponentsRecordings = _safetyComponentRecordContext.SafetyComponentRecords?.Include(i =>i.SafetyComponentManfacturer).Include(i => i.LiftCommission);
+        var safetyComponentsRecordings = _safetyComponentRecordContext.SafetyComponentRecords?.Include(i =>i.SafetyComponentManufacturer).Include(i => i.LiftCommission);
         if (safetyComponentsRecordings is not null)
         {
             SafetyComponentsRecordings.AddRange(safetyComponentsRecordings);

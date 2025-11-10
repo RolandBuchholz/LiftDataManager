@@ -14,6 +14,6 @@ public class SafetyComponentRecord : BaseEntity
     public string? Imported { get; set; }
     public DateTime? CreationDate { get; set; }
     public bool Active { get; set; }
-    public int SafetyComponentManfacturerId { get; set; }
-    public SafetyComponentManfacturer? SafetyComponentManfacturer { get; set; }
+    public int SafetyComponentManufacturerId { get; set; }
+    public SafetyComponentManufacturer? SafetyComponentManufacturer { get; set; }
 }

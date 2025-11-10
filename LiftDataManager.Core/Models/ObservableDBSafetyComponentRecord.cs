@@ -8,6 +8,7 @@ public partial class ObservableDBSafetyComponentRecord : ObservableObject
 {
     private readonly SafetyComponentRecordContext _safetyComponentRecordContext;
     private bool _initializeData;
+    public bool SkipDataBaseUpdate { get; set; }
 
     public ObservableDBSafetyComponentRecord(SafetyComponentRecord safetyComponentRecord, SafetyComponentRecordContext safetyComponentRecordContext)
     {
@@ -28,10 +29,10 @@ public partial class ObservableDBSafetyComponentRecord : ObservableObject
         Imported = safetyComponentRecord.Imported;
         CreationDate = safetyComponentRecord.CreationDate;
         Active = safetyComponentRecord.Active;
-        SafetyComponentManfacturerId = safetyComponentRecord.SafetyComponentManfacturerId;
-        SafetyComponentManfacturer = safetyComponentRecord.SafetyComponentManfacturer;
+        SafetyComponentManufacturerId = safetyComponentRecord.SafetyComponentManufacturerId;
+        SafetyComponentManufacturer = safetyComponentRecord.SafetyComponentManufacturer;
         _initializeData = false;
-        CheckRecordisCompleted();
+        CompleteRecord = CheckRecordisCompleted();
     }
 
     public SafetyComponentRecord GetSafetyComponentDB() 
@@ -52,11 +53,11 @@ public partial class ObservableDBSafetyComponentRecord : ObservableObject
     public partial string? Name { get; set; }
     partial void OnNameChanged(string? value)
     {
-        if (_initializeData)
+        if (_initializeData || SkipDataBaseUpdate)
         {
             return;
         }
-        CheckRecordisCompleted();
+        CompleteRecord = CheckRecordisCompleted();
         UpdateSafetyComponentRecordDatabase(nameof(Name));
     }
 
@@ -71,7 +72,7 @@ public partial class ObservableDBSafetyComponentRecord : ObservableObject
     public partial bool CompleteRecord { get; set; }
     partial void OnCompleteRecordChanged(bool value)
     {
-        if (_initializeData)
+        if (_initializeData || SkipDataBaseUpdate)
         {
             return;
         }
@@ -82,7 +83,7 @@ public partial class ObservableDBSafetyComponentRecord : ObservableObject
     public partial int Release { get; set; }
     partial void OnReleaseChanged(int value)
     {
-        if (_initializeData)
+        if (_initializeData || SkipDataBaseUpdate)
         {
             return;
         }
@@ -93,7 +94,7 @@ public partial class ObservableDBSafetyComponentRecord : ObservableObject
     public partial int Revision { get; set; }
     partial void OnRevisionChanged(int value)
     {
-        if (_initializeData)
+        if (_initializeData || SkipDataBaseUpdate)
         {
             return;
         }
@@ -104,11 +105,11 @@ public partial class ObservableDBSafetyComponentRecord : ObservableObject
     public partial string? IdentificationNumber { get; set; }
     partial void OnIdentificationNumberChanged(string? value)
     {
-        if (_initializeData)
+        if (_initializeData || SkipDataBaseUpdate)
         {
             return;
         }
-        CheckRecordisCompleted();
+        CompleteRecord = CheckRecordisCompleted();
         UpdateSafetyComponentRecordDatabase(nameof(IdentificationNumber));
     }
 
@@ -116,11 +117,11 @@ public partial class ObservableDBSafetyComponentRecord : ObservableObject
     public partial string? SerialNumber { get; set; }
     partial void OnSerialNumberChanged(string? value)
     {
-        if (_initializeData)
+        if (_initializeData || SkipDataBaseUpdate)
         {
             return;
         }
-        CheckRecordisCompleted();
+        CompleteRecord = CheckRecordisCompleted();
         UpdateSafetyComponentRecordDatabase(nameof(SerialNumber));
     }
 
@@ -128,11 +129,11 @@ public partial class ObservableDBSafetyComponentRecord : ObservableObject
     public partial string? BatchNumber { get; set; }
     partial void OnBatchNumberChanged(string? value)
     {
-        if (_initializeData)
+        if (_initializeData || SkipDataBaseUpdate)
         {
             return;
         }
-        CheckRecordisCompleted();
+        CompleteRecord = CheckRecordisCompleted();
         UpdateSafetyComponentRecordDatabase(nameof(BatchNumber));
     }
 
@@ -140,7 +141,7 @@ public partial class ObservableDBSafetyComponentRecord : ObservableObject
     public partial string? Imported { get; set; }
     partial void OnImportedChanged(string? value)
     {
-        if (_initializeData)
+        if (_initializeData || SkipDataBaseUpdate)
         {
             return;
         }
@@ -151,11 +152,11 @@ public partial class ObservableDBSafetyComponentRecord : ObservableObject
     public partial DateTime? CreationDate { get; set; }
     partial void OnCreationDateChanged(DateTime? value)
     {
-        if (_initializeData)
+        if (_initializeData || SkipDataBaseUpdate)
         {
             return;
         }
-        CheckRecordisCompleted();
+        CompleteRecord = CheckRecordisCompleted();
         UpdateSafetyComponentRecordDatabase(nameof(CreationDate));
     }
 
@@ -163,7 +164,7 @@ public partial class ObservableDBSafetyComponentRecord : ObservableObject
     public partial bool Active { get; set; }
     partial void OnActiveChanged(bool value)
     {
-        if (_initializeData)
+        if (_initializeData || SkipDataBaseUpdate)
         {
             return;
         }
@@ -171,18 +172,18 @@ public partial class ObservableDBSafetyComponentRecord : ObservableObject
     }
 
     [ObservableProperty]
-    public partial int SafetyComponentManfacturerId { get; set; }
+    public partial int SafetyComponentManufacturerId { get; set; }
 
     [ObservableProperty]
-    public partial SafetyComponentManfacturer? SafetyComponentManfacturer { get; set; }
+    public partial SafetyComponentManufacturer? SafetyComponentManufacturer { get; set; }
 
-    private void CheckRecordisCompleted()
+    public bool CheckRecordisCompleted()
     {
-        CompleteRecord = !string.IsNullOrWhiteSpace(Name) &&
-                         !string.IsNullOrWhiteSpace(IdentificationNumber) &&
-                         SafetyComponentManfacturer is not null &&
-                         CreationDate is not null &&
-                         (!string.IsNullOrWhiteSpace(SerialNumber) || !string.IsNullOrWhiteSpace(BatchNumber));
+        return !string.IsNullOrWhiteSpace(Name) &&
+               !string.IsNullOrWhiteSpace(IdentificationNumber) &&
+               SafetyComponentManufacturer is not null &&
+               CreationDate is not null &&
+               (!string.IsNullOrWhiteSpace(SerialNumber) || !string.IsNullOrWhiteSpace(BatchNumber));
     }
 
     private void UpdateSafetyComponentRecordDatabase(string membername)

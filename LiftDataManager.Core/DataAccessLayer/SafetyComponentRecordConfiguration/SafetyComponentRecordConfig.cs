@@ -16,7 +16,7 @@ public class SafetyComponentRecordConfig : BaseModelBuilder<SafetyComponentRecor
         builder.Property(x => x.IdentificationNumber);
         builder.Property(x => x.SerialNumber);
         builder.Property(x => x.BatchNumber);
-        builder.Property(x => x.SafetyComponentManfacturerId);
+        builder.Property(x => x.SafetyComponentManufacturerId);
         builder.Property(x => x.Imported);
         builder.Property(x => x.CreationDate);
         builder.Property(x => x.Active);

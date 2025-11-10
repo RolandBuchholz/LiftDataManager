@@ -22,6 +22,9 @@
         <Interactivity:EventTriggerBehavior EventName="Loaded">
             <Interactivity:InvokeCommandAction Command="{x:Bind ViewModel.GenerateSafetyComponentRecordDialogLoadedCommand}" CommandParameter="{Binding ElementName=GenerateSafetyComponentRecord}" />
         </Interactivity:EventTriggerBehavior>
+        <Interactivity:EventTriggerBehavior EventName="PrimaryButtonClick">
+            <Interactivity:InvokeCommandAction Command="{x:Bind ViewModel.PrimaryButtonClickedCommand}" CommandParameter="{Binding ElementName=GenerateSafetyComponentRecord}" />
+        </Interactivity:EventTriggerBehavior>
     </Interactivity:Interaction.Behaviors>
     <ContentDialog.Resources>
         <Style BasedOn="{StaticResource DefaultContentDialogStyle}" TargetType="local:GenerateSafetyComponentRecordDialog" />
@@ -104,14 +107,14 @@
                     Margin="0,0,2,0"
                     Header="Produktbeschreibung"
                     IsReadOnly="True"
-                    Text="{x:Bind ViewModel.NewObservableDBSafetyComponentRecord.Name, Mode=OneWay}" />
+                    Text="{x:Bind ViewModel.NewObservableDBSafetyComponentRecord.Name, Mode=TwoWay}" />
                 <TextBox
                     Grid.Row="0"
                     Grid.Column="1"
                     Margin="2,0,0,0"
                     Header="Identifikationsnummer"
                     IsReadOnly="True"
-                    Text="{x:Bind ViewModel.NewObservableDBSafetyComponentRecord.IdentificationNumber, Mode=OneWay}" />
+                    Text="{x:Bind ViewModel.NewObservableDBSafetyComponentRecord.IdentificationNumber, Mode=TwoWay}" />
                 <TextBox
                     Grid.Row="1"
                     Grid.Column="0"
@@ -150,7 +153,7 @@
                     Grid.ColumnSpan="2"
                     Header="Hersteller"
                     IsReadOnly="True"
-                    Text="{x:Bind ViewModel.NewObservableDBSafetyComponentRecord.SafetyComponentManfacturer, Mode=OneWay}" />
+                    Text="{x:Bind ViewModel.NewObservableDBSafetyComponentRecord.SafetyComponentManufacturer, Mode=OneWay}" />
                 <TextBox
                     Grid.Row="5"
                     Grid.Column="0"
@@ -184,7 +187,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Center"
                         Content="Schindler Zertifiziert"
-                        IsChecked="{x:Bind ViewModel.NewObservableDBSafetyComponentRecord.SchindlerCertified, Mode=OneWay}"
+                        IsChecked="{x:Bind ViewModel.NewObservableDBSafetyComponentRecord.SchindlerCertified, Mode=TwoWay}"
                         IsHitTestVisible="False" />
                     <CheckBox
                         Grid.Column="2"

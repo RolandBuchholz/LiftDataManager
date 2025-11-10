@@ -1,7 +1,4 @@
-﻿using Cogs.Collections;
-using Microsoft.Extensions.Logging;
-
-namespace LiftDataManager.ViewModels.Dialogs;
+﻿namespace LiftDataManager.ViewModels.Dialogs;
 
 public partial class AppClosingDialogViewModel : ObservableRecipient
 {

@@ -1,6 +1,6 @@
 ﻿namespace LiftDataManager.Core.DataAccessLayer.SafetyComponentRecordModels;
 
-public class SafetyComponentManfacturer : BaseEntity
+public class SafetyComponentManufacturer : BaseEntity
 {
     public int ZIPCode { get; set; }
     public string? City { get; set; }

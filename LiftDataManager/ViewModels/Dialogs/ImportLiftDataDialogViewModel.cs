@@ -1,5 +1,4 @@
 ﻿using Humanizer;
-using LiftDataManager.Core.DataAccessLayer;
 using Microsoft.UI.Xaml.Media.Imaging;
 using System.Collections.ObjectModel;
 using Windows.ApplicationModel.DataTransfer;
@@ -549,7 +548,7 @@ public partial class ImportLiftDataDialogViewModel : ObservableObject
         }
         else if (_settingService.VaultDisabled)
         {
-            if(!string.IsNullOrWhiteSpace(ImportSpezifikationName) && ImportSpezifikationName.EndsWith(".xml"))
+            if (!string.IsNullOrWhiteSpace(ImportSpezifikationName) && ImportSpezifikationName.EndsWith(".xml"))
             {
                 importName = Path.GetFileName(ImportSpezifikationName);
                 ImportSpezifikationName = importName.Replace("-AutoDeskTransfer.xml", "");

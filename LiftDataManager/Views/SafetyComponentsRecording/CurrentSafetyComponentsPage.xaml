@@ -459,28 +459,28 @@
                         IsReadOnly="False" />
                     <tableView:TableViewTextColumn
                         Width="175"
-                        Binding="{Binding SafetyComponentManfacturer.Name, Mode=TwoWay}"
+                        Binding="{Binding SafetyComponentManufacturer.Name, Mode=TwoWay}"
                         CanFilter="False"
                         CanSort="False"
                         Header="Hersteller"
                         IsReadOnly="True" />
                     <tableView:TableViewTextColumn
                         Width="100"
-                        Binding="{Binding SafetyComponentManfacturer.ZIPCode, Mode=TwoWay}"
+                        Binding="{Binding SafetyComponentManufacturer.ZIPCode, Mode=TwoWay}"
                         CanFilter="False"
                         CanSort="False"
                         Header="Postleitzahl"
                         IsReadOnly="True" />
                     <tableView:TableViewTextColumn
                         Width="100"
-                        Binding="{Binding SafetyComponentManfacturer.City, Mode=TwoWay}"
+                        Binding="{Binding SafetyComponentManufacturer.City, Mode=TwoWay}"
                         CanFilter="False"
                         CanSort="False"
                         Header="Stadt"
                         IsReadOnly="True" />
                     <tableView:TableViewTextColumn
                         Width="50"
-                        Binding="{Binding SafetyComponentManfacturer.Country, Mode=TwoWay}"
+                        Binding="{Binding SafetyComponentManufacturer.Country, Mode=TwoWay}"
                         CanFilter="False"
                         CanSort="False"
                         Header="Land"

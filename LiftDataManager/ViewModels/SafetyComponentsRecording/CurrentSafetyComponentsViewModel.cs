@@ -127,7 +127,7 @@ public partial class CurrentSafetyComponentsViewModel : DataViewModelBase, INavi
 
         CurrentLiftCommission = _safetyComponentRecordContext.LiftCommissions?.Where(x => x.Name == SpezifikationsNumber)
                                                                       .Include(i => i.SafetyComponentRecords!)
-                                                                      .ThenInclude(t => t.SafetyComponentManfacturer)
+                                                                      .ThenInclude(t => t.SafetyComponentManufacturer)
                                                                       .FirstOrDefault();
 
         var saisNumber = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_SAISEquipment");
@@ -231,14 +231,14 @@ public partial class CurrentSafetyComponentsViewModel : DataViewModelBase, INavi
     private async Task DeleteAllSafetyComponentRecordsAsync()
     {
         var result = await _dialogService.WarningDialogAsync("Alle Sicherheitskomponeten löschen",
-        """
-            Achtung:
-            Alle Sicherheitskomponeten werden endgültig gelöscht.
+            """
+                Achtung:
+                Alle Sicherheitskomponeten werden endgültig gelöscht.
 
-            Möchten Sie den Vorgang wirklich fortsetzen?
-        """,
-        "Löschen",
-        "Abbrechen");
+                Möchten Sie den Vorgang wirklich fortsetzen?
+            """,
+            "Löschen",
+            "Abbrechen");
         if (result is not true)
         {
             return;
@@ -280,8 +280,8 @@ public partial class CurrentSafetyComponentsViewModel : DataViewModelBase, INavi
     public void OnNavigatedFrom()
     {
         NavigatedFromBaseActions();
-        if (string.Equals(SelectedPivotItem?.Tag, "SafetyComponentsEquipmentsPage") ||
-            string.Equals(SelectedPivotItem?.Tag, "SafetyComponentsRecordingPage"))
+        if (Equals(SelectedPivotItem?.Tag, "SafetyComponentsEquipmentsPage") ||
+            Equals(SelectedPivotItem?.Tag, "SafetyComponentsRecordingPage"))
         {
             return;
         }

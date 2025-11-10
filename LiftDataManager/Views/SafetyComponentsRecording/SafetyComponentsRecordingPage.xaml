@@ -84,22 +84,22 @@
                         Header="Chargennr." />
                     <tableView:TableViewTextColumn
                         Width="175"
-                        Binding="{Binding SafetyComponentManfacturer.Name}"
+                        Binding="{Binding SafetyComponentManufacturer.Name}"
                         CanFilter="False"
                         CanSort="False"
                         Header="Hersteller"
                         IsReadOnly="False" />
                     <tableView:TableViewTextColumn
                         Width="100"
-                        Binding="{Binding SafetyComponentManfacturer.ZIPCode}"
+                        Binding="{Binding SafetyComponentManufacturer.ZIPCode}"
                         Header="Postleitzahl" />
                     <tableView:TableViewTextColumn
                         Width="100"
-                        Binding="{Binding SafetyComponentManfacturer.City}"
+                        Binding="{Binding SafetyComponentManufacturer.City}"
                         Header="Stadt" />
                     <tableView:TableViewTextColumn
                         Width="50"
-                        Binding="{Binding SafetyComponentManfacturer.Country}"
+                        Binding="{Binding SafetyComponentManufacturer.Country}"
                         Header="Land" />
                 </tableView:TableView.Columns>
             </tableView:TableView>

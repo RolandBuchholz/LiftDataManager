@@ -160,6 +160,7 @@ public partial class ZALiftDialogViewModel : ObservableObject
         ZaLift.StartInfo.Arguments = startargs;
         ZaLift.Start();
     }
+
     private void OnChanged(object sender, FileSystemEventArgs e)
     {
         if (e.ChangeType != WatcherChangeTypes.Changed)
