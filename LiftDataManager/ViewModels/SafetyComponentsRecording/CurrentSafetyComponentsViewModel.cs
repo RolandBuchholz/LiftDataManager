@@ -138,8 +138,7 @@ public partial class CurrentSafetyComponentsViewModel : DataViewModelBase, INavi
                 Name = SpezifikationsNumber,
                 LiftInstallerID = 1491,
                 SAISEquipment = saisNumber,
-                Country = "DE",
-                SafetyComponentRecords = []
+                Country = "DE"
             };
             await _safetyComponentRecordContext.LiftCommissions!.AddAsync(CurrentLiftCommission);
             await _safetyComponentRecordContext.SaveChangesAsync();

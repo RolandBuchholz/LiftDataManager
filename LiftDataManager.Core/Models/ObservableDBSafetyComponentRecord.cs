@@ -7,13 +7,14 @@ namespace LiftDataManager.Core.Models;
 public partial class ObservableDBSafetyComponentRecord : ObservableObject
 {
     private readonly SafetyComponentRecordContext _safetyComponentRecordContext;
+    private SafetyComponentRecord _currentSafetyComponentRecord;
     private bool _initializeData;
     public bool SkipDataBaseUpdate { get; set; }
 
     public ObservableDBSafetyComponentRecord(SafetyComponentRecord safetyComponentRecord, SafetyComponentRecordContext safetyComponentRecordContext)
     {
         _safetyComponentRecordContext = safetyComponentRecordContext;
-        CurrentSafetyComponentRecord = safetyComponentRecord;
+        _currentSafetyComponentRecord = safetyComponentRecord;
         _initializeData = true;
         Id = safetyComponentRecord.Id;
         Name = safetyComponentRecord.Name;
@@ -35,9 +36,17 @@ public partial class ObservableDBSafetyComponentRecord : ObservableObject
         CompleteRecord = CheckRecordisCompleted();
     }
 
+    public void SetSafetyComponentManufacturerById(int manufacturerId) 
+    {
+        var manufacturer = GetSafetyComponentManufacturerById(manufacturerId);
+        SafetyComponentManufacturerId = manufacturer is null ? 1 : manufacturer.Id;
+        SafetyComponentManufacturer = manufacturer;
+    }
+
     public SafetyComponentRecord GetSafetyComponentDB() 
     {
-        return CurrentSafetyComponentRecord;
+        UpdateCurrentSafetyComponentRecord();
+        return _currentSafetyComponentRecord;
     }
 
     public int GetSafetyComponentDBId()
@@ -45,8 +54,6 @@ public partial class ObservableDBSafetyComponentRecord : ObservableObject
         return Id;
     }
 
-    public SafetyComponentRecord CurrentSafetyComponentRecord { get; set; }
-    
     public int Id { get; set; }
     
     [ObservableProperty]
@@ -173,9 +180,26 @@ public partial class ObservableDBSafetyComponentRecord : ObservableObject
 
     [ObservableProperty]
     public partial int SafetyComponentManufacturerId { get; set; }
+    partial void OnSafetyComponentManufacturerIdChanged(int value)
+    {
+        if (_initializeData || SkipDataBaseUpdate)
+        {
+            return;
+        }
+        SafetyComponentManufacturer = GetSafetyComponentManufacturerById(value);
+        UpdateSafetyComponentRecordDatabase(nameof(SafetyComponentManufacturerId));
+    }
 
     [ObservableProperty]
     public partial SafetyComponentManufacturer? SafetyComponentManufacturer { get; set; }
+    partial void OnSafetyComponentManufacturerChanged(SafetyComponentManufacturer? value)
+    {
+        if (_initializeData || SkipDataBaseUpdate)
+        {
+            return;
+        }
+        UpdateSafetyComponentRecordDatabase(nameof(SafetyComponentManufacturer));
+    }
 
     public bool CheckRecordisCompleted()
     {
@@ -191,41 +215,67 @@ public partial class ObservableDBSafetyComponentRecord : ObservableObject
         switch (membername)
         {
             case nameof(Active):
-                CurrentSafetyComponentRecord.Active = Active;
+                _currentSafetyComponentRecord.Active = Active;
                 break;
             case nameof(CompleteRecord):
-                CurrentSafetyComponentRecord.CompleteRecord = CompleteRecord;
+                _currentSafetyComponentRecord.CompleteRecord = CompleteRecord;
                 break;
             case nameof(Name):
-                CurrentSafetyComponentRecord.Name = Name is null ? string.Empty : Name;
+                _currentSafetyComponentRecord.Name = Name is null ? string.Empty : Name;
                 break;
             case nameof(Release):
-                CurrentSafetyComponentRecord.Release = Release;
+                _currentSafetyComponentRecord.Release = Release;
                 break;
             case nameof(Revision):
-                CurrentSafetyComponentRecord.Revision = Revision;
+                _currentSafetyComponentRecord.Revision = Revision;
                 break;
             case nameof(IdentificationNumber):
-                CurrentSafetyComponentRecord.IdentificationNumber = IdentificationNumber;
+                _currentSafetyComponentRecord.IdentificationNumber = IdentificationNumber;
                 break;
             case nameof(SerialNumber):
-                CurrentSafetyComponentRecord.SerialNumber = SerialNumber;
+                _currentSafetyComponentRecord.SerialNumber = SerialNumber;
                 break;
             case nameof(BatchNumber):
-                CurrentSafetyComponentRecord.BatchNumber = BatchNumber;
+                _currentSafetyComponentRecord.BatchNumber = BatchNumber;
                 break;
-            //Todo Hersteller
+            case nameof(SafetyComponentManufacturerId):
+                _currentSafetyComponentRecord.SafetyComponentManufacturerId = SafetyComponentManufacturerId;
+                break;
+            case nameof(SafetyComponentManufacturer):
+                _currentSafetyComponentRecord.SafetyComponentManufacturer = SafetyComponentManufacturer;
+                break;
             case nameof(Imported):
-                CurrentSafetyComponentRecord.Imported = Imported;
+                _currentSafetyComponentRecord.Imported = Imported;
                 break;
             case nameof(CreationDate):
-                CurrentSafetyComponentRecord.CreationDate = CreationDate;
+                _currentSafetyComponentRecord.CreationDate = CreationDate;
                 break;
             default:
                 break;
         }
+            _safetyComponentRecordContext.Update(_currentSafetyComponentRecord);
+            _safetyComponentRecordContext.SaveChanges();
+    }
 
-        _safetyComponentRecordContext.Update(CurrentSafetyComponentRecord);
-        _safetyComponentRecordContext.SaveChanges();
+    private SafetyComponentManufacturer? GetSafetyComponentManufacturerById(int value) 
+    { 
+        return _safetyComponentRecordContext.Set<SafetyComponentManufacturer>().FirstOrDefault(x => x.Id == value);
+    }
+
+    private void UpdateCurrentSafetyComponentRecord() 
+    {
+        _currentSafetyComponentRecord.Active = Active;
+        _currentSafetyComponentRecord.SchindlerCertified = SchindlerCertified;
+        _currentSafetyComponentRecord.CompleteRecord = CompleteRecord;
+        _currentSafetyComponentRecord.Name = Name is null ? string.Empty : Name;
+        _currentSafetyComponentRecord.Release = Release;
+        _currentSafetyComponentRecord.Revision = Revision;
+        _currentSafetyComponentRecord.IdentificationNumber = IdentificationNumber;
+        _currentSafetyComponentRecord.SerialNumber = SerialNumber;
+        _currentSafetyComponentRecord.BatchNumber = BatchNumber;
+        _currentSafetyComponentRecord.Imported = Imported;
+        _currentSafetyComponentRecord.CreationDate = CreationDate;
+        _currentSafetyComponentRecord.SafetyComponentManufacturerId = SafetyComponentManufacturerId != 0 ? SafetyComponentManufacturerId : 1;
+        _currentSafetyComponentRecord.SafetyComponentManufacturer = SafetyComponentManufacturer;
     }
 }

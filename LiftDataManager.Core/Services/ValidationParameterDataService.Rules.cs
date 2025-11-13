@@ -1348,7 +1348,7 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
 
         var validSystem = liftPositionSystem switch
         {
-            "Limax 33CP" => string.Equals(controler, "Kühn MSZ 9E"),
+            "Limax 33CP" => string.Equals(controler, "Kühn MSZ 9E") || string.Equals(controler, "Kühn MSZ 10"),
             "NEW-Lift S1-Box" => string.Equals(controler, "New-Lift FST-2 XT") || string.Equals(controler, "New-Lift FST-2 S"),
             "NEW-Lift S2 (FST-3)" => string.Equals(controler, "New-Lift FST-3"),
             _ => true
@@ -2182,12 +2182,11 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
         {
             return;
         }
-        var msz9eSchindlerCertified = _parameterDictionary[name].DropDownListValue?.Id == 2;
+        var lpsSchindlerCertified = _parameterDictionary[name].DropDownListValue?.Id == 2;
         var msz9e = _parameterDictionary["var_Steuerungstyp"].DropDownList.FirstOrDefault(x => x.Name == "Kühn MSZ 9E");
-        if (msz9e is not null)
-        {
-            msz9e.SchindlerCertified = msz9eSchindlerCertified;
-        }
+        msz9e?.SchindlerCertified = lpsSchindlerCertified;
+        var msz10 = _parameterDictionary["var_Steuerungstyp"].DropDownList.FirstOrDefault(x => x.Name == "Kühn MSZ 10");
+        msz10?.SchindlerCertified = lpsSchindlerCertified;
     }
 
     private void ValidateUCMDetectingAndTriggeringComponents(string name, string displayname, string? value, string? severity, string? optionalCondition = null)

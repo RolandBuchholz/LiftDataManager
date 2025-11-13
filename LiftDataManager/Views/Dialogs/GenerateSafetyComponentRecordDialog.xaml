@@ -153,7 +153,7 @@
                     Grid.ColumnSpan="2"
                     Header="Hersteller"
                     IsReadOnly="True"
-                    Text="{x:Bind ViewModel.NewObservableDBSafetyComponentRecord.SafetyComponentManufacturer, Mode=OneWay}" />
+                    Text="{x:Bind ViewModel.SAISManufacturerString, Mode=OneWay}" />
                 <TextBox
                     Grid.Row="5"
                     Grid.Column="0"

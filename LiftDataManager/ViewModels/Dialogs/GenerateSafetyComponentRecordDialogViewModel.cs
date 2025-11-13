@@ -140,6 +140,8 @@ public partial class GenerateSafetyComponentRecordDialogViewModel : ObservableOb
     [ObservableProperty]
     public partial StepStatus StepBarStatus { get; set; }
 
+    [ObservableProperty]
+    public partial string? SAISManufacturerString { get; set; }
 
     [RelayCommand]
     public async Task PrimaryButtonClicked(GenerateSafetyComponentRecordDialog sender)
@@ -147,8 +149,8 @@ public partial class GenerateSafetyComponentRecordDialogViewModel : ObservableOb
         if (NewObservableDBSafetyComponentRecord is not null)
         {
             NewObservableDBSafetyComponentRecord.SkipDataBaseUpdate = false;
-            //await _safetyComponentRecordContext.AddAsync(NewObservableDBSafetyComponentRecord);
-            //await _safetyComponentRecordContext.SaveChangesAsync();
+            await _safetyComponentRecordContext.AddAsync(NewObservableDBSafetyComponentRecord.GetSafetyComponentDB());
+            await _safetyComponentRecordContext.SaveChangesAsync();
             sender.SafetyComponentRecord = NewObservableDBSafetyComponentRecord;
         }
         await Task.CompletedTask;
@@ -164,9 +166,13 @@ public partial class GenerateSafetyComponentRecordDialogViewModel : ObservableOb
             NewObservableDBSafetyComponentRecord.SchindlerCertified = SelectedSafetyComponent.SchindlerCertified;
             NewObservableDBSafetyComponentRecord.SerialNumber = string.Empty;
             NewObservableDBSafetyComponentRecord.BatchNumber = string.Empty;
-            //TODO Add Manfacturer
-            //NewObservableDBSafetyComponentRecord.SafetyComponentManfacturerId = 1;
-            //NewObservableDBSafetyComponentRecord.SafetyComponentManfacturer = ;
+            var typeExaminationCertificate = _parametercontext.Set<TypeExaminationCertificate>().FirstOrDefault(x => x.Id == SelectedSafetyComponent.TypeExaminationCertificateId);
+            if (typeExaminationCertificate is null)
+            {
+                return;
+            }
+            NewObservableDBSafetyComponentRecord.SetSafetyComponentManufacturerById(typeExaminationCertificate.SAISManufacturerld);
+            SAISManufacturerString = $"{NewObservableDBSafetyComponentRecord.SafetyComponentManufacturer?.Name} {NewObservableDBSafetyComponentRecord.SafetyComponentManufacturer?.ZIPCode} {NewObservableDBSafetyComponentRecord.SafetyComponentManufacturer?.City}-{NewObservableDBSafetyComponentRecord.SafetyComponentManufacturer?.Country}";
         }
     }
 }
