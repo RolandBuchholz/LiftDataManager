@@ -140,9 +140,6 @@ public partial class GenerateSafetyComponentRecordDialogViewModel : ObservableOb
     [ObservableProperty]
     public partial StepStatus StepBarStatus { get; set; }
 
-    [ObservableProperty]
-    public partial string? SAISManufacturerString { get; set; }
-
     [RelayCommand]
     public async Task PrimaryButtonClicked(GenerateSafetyComponentRecordDialog sender)
     {
@@ -172,7 +169,6 @@ public partial class GenerateSafetyComponentRecordDialogViewModel : ObservableOb
                 return;
             }
             NewObservableDBSafetyComponentRecord.SetSafetyComponentManufacturerById(typeExaminationCertificate.SAISManufacturerld);
-            SAISManufacturerString = $"{NewObservableDBSafetyComponentRecord.SafetyComponentManufacturer?.Name} {NewObservableDBSafetyComponentRecord.SafetyComponentManufacturer?.ZIPCode} {NewObservableDBSafetyComponentRecord.SafetyComponentManufacturer?.City}-{NewObservableDBSafetyComponentRecord.SafetyComponentManufacturer?.Country}";
         }
     }
 }

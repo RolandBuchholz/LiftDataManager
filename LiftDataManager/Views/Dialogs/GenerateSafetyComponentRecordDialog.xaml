@@ -100,6 +100,7 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <TextBox
                     Grid.Row="0"
@@ -153,23 +154,51 @@
                     Grid.ColumnSpan="2"
                     Header="Hersteller"
                     IsReadOnly="True"
-                    Text="{x:Bind ViewModel.SAISManufacturerString, Mode=OneWay}" />
-                <TextBox
+                    Text="{x:Bind ViewModel.NewObservableDBSafetyComponentRecord.SafetyComponentManufacturer.Name, Mode=OneWay}" />
+                <Grid
                     Grid.Row="5"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*" />
+                        <ColumnDefinition Width="4*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBox
+                        Grid.Column="0"
+                        Margin="0,0,2,0"
+                        Header="Postleitzahl"
+                        IsReadOnly="True"
+                        Text="{x:Bind ViewModel.NewObservableDBSafetyComponentRecord.SafetyComponentManufacturer.ZIPCode, Mode=OneWay}" />
+                    <TextBox
+                        Grid.Column="1"
+                        Margin="2,0,2,0"
+                        Header="Stadt"
+                        IsReadOnly="True"
+                        Text="{x:Bind ViewModel.NewObservableDBSafetyComponentRecord.SafetyComponentManufacturer.City, Mode=OneWay}" />
+                    <TextBox
+                        Grid.Column="2"
+                        Margin="2,0,0,0"
+                        Header="Land"
+                        IsReadOnly="True"
+                        Text="{x:Bind ViewModel.NewObservableDBSafetyComponentRecord.SafetyComponentManufacturer.Country, Mode=OneWay}" />
+                </Grid>
+                <TextBox
+                    Grid.Row="6"
                     Grid.Column="0"
                     Margin="0,0,2,0"
                     Header="Importiert"
                     IsReadOnly="True"
                     Text="{x:Bind ViewModel.NewObservableDBSafetyComponentRecord.Imported, Mode=OneWay}" />
                 <TextBox
-                    Grid.Row="5"
+                    Grid.Row="6"
                     Grid.Column="1"
                     Margin="2,0,0,0"
                     Header="Erstellungsdatum"
                     IsReadOnly="True"
                     Text="{x:Bind ViewModel.NewObservableDBSafetyComponentRecord.CreationDate, Mode=OneWay}" />
                 <Grid
-                    Grid.Row="6"
+                    Grid.Row="7"
                     Grid.Column="0"
                     Grid.ColumnSpan="2">
                     <Grid.ColumnDefinitions>
