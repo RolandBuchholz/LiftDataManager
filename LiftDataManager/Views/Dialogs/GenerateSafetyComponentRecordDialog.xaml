@@ -7,6 +7,7 @@
     xmlns:SpeziControls="using:LiftDataManager.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dev="using:DevWinUI"
+    xmlns:helpers="using:LiftDataManager.Helpers"
     xmlns:local="using:LiftDataManager.Views.Dialogs"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     x:Name="GenerateSafetyComponentRecord"
@@ -130,24 +131,42 @@
                     Header="Revision"
                     IsReadOnly="True"
                     Text="{x:Bind ViewModel.NewObservableDBSafetyComponentRecord.Revision, Mode=OneWay}" />
+                <Border
+                    Grid.Row="3"
+                    Grid.Column="0"
+                    Height="36"
+                    Margin="-2,-2,1,-2"
+                    VerticalAlignment="Bottom"
+                    BorderBrush="IndianRed"
+                    BorderThickness="2"
+                    CornerRadius="4"
+                    IsHitTestVisible="False"
+                    Visibility="{x:Bind helpers:XamlFunctions.FalseToVisible(ViewModel.CompleteRecord), Mode=OneWay}" />
                 <TextBox
                     Grid.Row="3"
                     Grid.Column="0"
                     Margin="0,0,2,0"
-                    BorderBrush="LightGoldenrodYellow"
-                    BorderThickness="2"
                     Header="Seriennummer"
                     IsReadOnly="False"
-                    Text="{x:Bind ViewModel.NewObservableDBSafetyComponentRecord.SerialNumber, Mode=TwoWay}" />
+                    Text="{x:Bind ViewModel.SerialNumber, Mode=TwoWay}" />
+                <Border
+                    Grid.Row="3"
+                    Grid.Column="1"
+                    Height="36"
+                    Margin="1,-2,-2,-2"
+                    VerticalAlignment="Bottom"
+                    BorderBrush="IndianRed"
+                    BorderThickness="2"
+                    CornerRadius="4"
+                    IsHitTestVisible="False"
+                    Visibility="{x:Bind helpers:XamlFunctions.FalseToVisible(ViewModel.CompleteRecord), Mode=OneWay}" />
                 <TextBox
                     Grid.Row="3"
                     Grid.Column="1"
                     Margin="2,0,0,0"
-                    BorderBrush="LightGoldenrodYellow"
-                    BorderThickness="2"
                     Header="Chargennummer"
                     IsReadOnly="False"
-                    Text="{x:Bind ViewModel.NewObservableDBSafetyComponentRecord.BatchNumber, Mode=TwoWay}" />
+                    Text="{x:Bind ViewModel.BatchNumber, Mode=TwoWay}" />
                 <TextBox
                     Grid.Row="4"
                     Grid.Column="0"
@@ -210,7 +229,7 @@
                         Grid.Column="0"
                         HorizontalAlignment="Left"
                         Content="Vollständig"
-                        IsChecked="{x:Bind ViewModel.NewObservableDBSafetyComponentRecord.CompleteRecord, Mode=OneWay}"
+                        IsChecked="{x:Bind ViewModel.CompleteRecord, Mode=TwoWay}"
                         IsHitTestVisible="False" />
                     <CheckBox
                         Grid.Column="1"
@@ -222,7 +241,7 @@
                         Grid.Column="2"
                         HorizontalAlignment="Right"
                         Content="Aktiviert"
-                        IsChecked="{x:Bind ViewModel.NewObservableDBSafetyComponentRecord.Active, Mode=OneWay}" />
+                        IsChecked="{x:Bind ViewModel.NewObservableDBSafetyComponentRecord.Active, Mode=TwoWay}" />
                 </Grid>
             </Grid>
         </Grid>

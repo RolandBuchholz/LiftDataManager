@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
-
-namespace LiftDataManager.Helpers;
+﻿namespace LiftDataManager.Helpers;
 public static class XamlFunctions
 {
     public static Visibility TrueToVisible(bool value)
@@ -38,7 +36,7 @@ public static class XamlFunctions
 
     public static Visibility TrueStringToVisible(string value)
     {
-        return  string.Equals(value, "True")
+        return string.Equals(value, "True")
             ? Visibility.Visible
             : Visibility.Collapsed;
     }

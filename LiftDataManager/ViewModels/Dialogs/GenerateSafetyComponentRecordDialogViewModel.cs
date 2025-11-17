@@ -140,6 +140,36 @@ public partial class GenerateSafetyComponentRecordDialogViewModel : ObservableOb
     [ObservableProperty]
     public partial StepStatus StepBarStatus { get; set; }
 
+    [ObservableProperty]
+    public partial string? SerialNumber { get; set; }
+    partial void OnSerialNumberChanged(string? value)
+    {
+        if (NewObservableDBSafetyComponentRecord is not null)
+        {
+            NewObservableDBSafetyComponentRecord.SerialNumber = value;
+            CompleteRecord = NewObservableDBSafetyComponentRecord.CheckRecordisCompleted();
+        }
+    }
+
+    [ObservableProperty]
+    public partial string? BatchNumber { get; set; }
+    partial void OnBatchNumberChanged(string? value)
+    {
+        if (NewObservableDBSafetyComponentRecord is not null)
+        {
+            NewObservableDBSafetyComponentRecord.BatchNumber = value;
+            CompleteRecord = NewObservableDBSafetyComponentRecord.CheckRecordisCompleted();
+        }
+    }
+
+    [ObservableProperty]
+    public partial bool CompleteRecord { get; set; }
+    partial void OnCompleteRecordChanged(bool value)
+    {
+        NewObservableDBSafetyComponentRecord?.CompleteRecord = value;
+        StepBarStatus = value ? StepStatus.Success : StepStatus.Warning;
+    }
+
     [RelayCommand]
     public async Task PrimaryButtonClicked(GenerateSafetyComponentRecordDialog sender)
     {
