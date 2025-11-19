@@ -1153,7 +1153,12 @@ public partial class CalculationsModuleService : ICalculationsModule
             {
                 continue;
             }
-            liftSafetyComponents.Add(new LiftSafetyComponent(safetyType, manufacturer, model, certificateNumber, safetyComponentTyp, specialOption));
+            liftSafetyComponents.Add(new LiftSafetyComponent(safetyType, manufacturer, model, certificateNumber, safetyComponentTyp, specialOption) 
+            {
+                SchindlerCertified = safetyComponent is not null && safetyComponent.SchindlerCertified,
+                SAISDescription = safetyComponent?.SAISDescription,
+                SAISIdentificationNumber = safetyComponent?.SAISIdentificationNumber
+            });
         }
         return liftSafetyComponents;
     }
@@ -1248,17 +1253,32 @@ public partial class CalculationsModuleService : ICalculationsModule
             detectingComponent?.TypeExaminationCertificate?.ManufacturerName is not null? detectingComponent.TypeExaminationCertificate.ManufacturerName : "---",
             detectingComponent is not null? detectingComponent.DisplayName : "---",
             detectingComponent?.TypeExaminationCertificate?.CertificateNumber is not null? detectingComponent.TypeExaminationCertificate.CertificateNumber : "---",
-            detectingComponent?.TypeExaminationCertificate?.SafetyComponentTyp.Name is not null? detectingComponent.TypeExaminationCertificate.SafetyComponentTyp.Name : "---"),
+            detectingComponent?.TypeExaminationCertificate?.SafetyComponentTyp.Name is not null? detectingComponent.TypeExaminationCertificate.SafetyComponentTyp.Name : "---")
+            {
+                SchindlerCertified = detectingComponent is not null && detectingComponent.SchindlerCertified,
+                SAISDescription = detectingComponent?.SAISDescription,
+                SAISIdentificationNumber = detectingComponent?.SAISIdentificationNumber
+            },
             new("Auslösendes Element",
             triggeringComponent?.TypeExaminationCertificate?.ManufacturerName is not null? triggeringComponent.TypeExaminationCertificate.ManufacturerName : "---",
             triggeringComponent is not null? triggeringComponent.DisplayName : "---",
             triggeringComponent?.TypeExaminationCertificate?.CertificateNumber is not null? triggeringComponent.TypeExaminationCertificate.CertificateNumber : "---",
-            triggeringComponent?.TypeExaminationCertificate?.SafetyComponentTyp.Name is not null? triggeringComponent.TypeExaminationCertificate.SafetyComponentTyp.Name : "---"),
+            triggeringComponent?.TypeExaminationCertificate?.SafetyComponentTyp.Name is not null? triggeringComponent.TypeExaminationCertificate.SafetyComponentTyp.Name : "---")
+            {
+                SchindlerCertified = triggeringComponent is not null && triggeringComponent.SchindlerCertified,
+                SAISDescription = triggeringComponent?.SAISDescription,
+                SAISIdentificationNumber = triggeringComponent?.SAISIdentificationNumber
+            },
             new("Bremsendes Element",
             brakingComponent?.TypeExaminationCertificate?.ManufacturerName is not null? brakingComponent.TypeExaminationCertificate.ManufacturerName : "---",
             brakingComponent is not null? brakingComponent.DisplayName : "---",
             brakingComponent?.TypeExaminationCertificate?.CertificateNumber is not null? brakingComponent.TypeExaminationCertificate.CertificateNumber : "---",
             brakingComponent?.TypeExaminationCertificate?.SafetyComponentTyp.Name is not null? brakingComponent.TypeExaminationCertificate.SafetyComponentTyp.Name : "---")
+            {
+                SchindlerCertified = brakingComponent is not null && brakingComponent.SchindlerCertified,
+                SAISDescription = brakingComponent?.SAISDescription,
+                SAISIdentificationNumber = brakingComponent?.SAISIdentificationNumber
+            }
         ];
     }
 

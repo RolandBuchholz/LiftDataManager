@@ -8,4 +8,7 @@ public class LiftSafetyComponent(string safetyType, string manufacturer, string 
     public string CertificateNumber { get; set; } = certificateNumber;
     public string SafetyComponentTyp { get; set; } = safetyComponentTyp;
     public string SpecialOption { get; set; } = specialOption;
+    public bool SchindlerCertified { get; set; }
+    public string? SAISDescription { get; set; }
+    public string? SAISIdentificationNumber { get; set; }
 }

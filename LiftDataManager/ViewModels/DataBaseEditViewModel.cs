@@ -90,7 +90,7 @@ public partial class DataBaseEditViewModel : DataViewModelBase, INavigationAware
         DataBaseTableView?.AutoGenerateColumns = false;
         if (tableName is not null)
         {
-            var entityType = TypeFinder.FindLiftmanagerType(tableName[..^1]);
+            var entityType = TypeFinder.FindLiftmanagerDBModelType(tableName[..^1]);
 
             if (entityType is not null)
             {

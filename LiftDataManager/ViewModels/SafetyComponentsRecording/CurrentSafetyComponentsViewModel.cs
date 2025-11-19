@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
+using LiftDataManager.Core.DataAccessLayer.Models;
 using LiftDataManager.Core.DataAccessLayer.SafetyComponentRecordModels;
 using Microsoft.Data.Sqlite;
 using System.Collections.ObjectModel;
@@ -7,17 +8,21 @@ namespace LiftDataManager.ViewModels;
 
 public partial class CurrentSafetyComponentsViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>, IRecipient<RefreshModelStateMessage>
 {
+    private readonly ParameterContext _parametercontext;
     private readonly SafetyComponentRecordContext _safetyComponentRecordContext;
     private readonly IPdfService _pdfService;
+    private readonly ICalculationsModule _calculationsModuleService;
     private readonly ILogger<CurrentSafetyComponentsViewModel> _logger;
     public ObservableCollection<ObservableDBSafetyComponentRecord> ListOfSafetyComponents { get; set; } = [];
 
-    public CurrentSafetyComponentsViewModel(IParameterDataService parameterDataService, SafetyComponentRecordContext safetyComponentRecordContext, IDialogService dialogService, IInfoCenterService infoCenterService, IPdfService pdfService, ILogger<CurrentSafetyComponentsViewModel> logger,
+    public CurrentSafetyComponentsViewModel(IParameterDataService parameterDataService, ParameterContext parametercontext, SafetyComponentRecordContext safetyComponentRecordContext, IDialogService dialogService, IInfoCenterService infoCenterService, IPdfService pdfService, ICalculationsModule calculationsModuleService, ILogger<CurrentSafetyComponentsViewModel> logger,
                               ISettingService settingService, ILogger<DataViewModelBase> baseLogger) :
          base(parameterDataService, dialogService, infoCenterService, settingService, baseLogger)
     {
+        _parametercontext = parametercontext;
         _safetyComponentRecordContext = safetyComponentRecordContext;
         _pdfService = pdfService;
+        _calculationsModuleService = calculationsModuleService;
         _logger = logger;
     }
 
@@ -180,6 +185,59 @@ public partial class CurrentSafetyComponentsViewModel : DataViewModelBase, INavi
     [RelayCommand(CanExecute = nameof(CanImportSafetyComponentRecords))]
     private async Task ImportSafetyComponentRecordAsync()
     {
+        if (CurrentLiftCommission is null)
+        {
+            return;
+        }
+        var safetyComponents = _calculationsModuleService.GetLiftSafetyComponents(ParameterDictionary);
+        if (safetyComponents is null || safetyComponents.Count == 0)
+        {
+            return;
+        }
+        foreach (var component in _calculationsModuleService.GetUCMPComponents(ParameterDictionary))
+        {
+            if (component.Model == "---")
+            {
+                continue;
+            }
+            if (!safetyComponents.Any(x => x.Model == component.Model))
+            {
+                safetyComponents.Add(component);
+            }
+        }
+
+        foreach (var item in safetyComponents)
+        {
+            var newSafetyComponentRecord = new SafetyComponentRecord()
+            {
+                Name = item.SAISDescription is null ? string.Empty : item.SAISDescription,
+                CreationDate = DateTime.Now,
+                IdentificationNumber = item.SAISIdentificationNumber,
+                Imported = "- - -",
+                Release = 0,
+                Revision = 0,
+                BatchNumber = string.Empty,
+                SerialNumber = string.Empty,
+                SafetyComponentManufacturerId = 1,
+                LiftCommissionId = CurrentLiftCommission.Id,
+                LiftCommission = CurrentLiftCommission,
+                Active = true,
+                CompleteRecord = false,
+                SchindlerCertified = item.SchindlerCertified,
+            };
+
+            var observableDBSafetyComponentRecord = new ObservableDBSafetyComponentRecord(newSafetyComponentRecord, _safetyComponentRecordContext);
+
+            var typeExaminationCertificate = _parametercontext.Set<TypeExaminationCertificate>().FirstOrDefault(x => x.CertificateNumber == item.CertificateNumber);
+            if (typeExaminationCertificate is not null)
+            {
+                observableDBSafetyComponentRecord.SetSafetyComponentManufacturerById(typeExaminationCertificate.SAISManufacturerld);
+            }
+            if (observableDBSafetyComponentRecord is not null)
+            {
+                ListOfSafetyComponents.Add(observableDBSafetyComponentRecord);
+            }
+        }
         await Task.CompletedTask;
     }
 
