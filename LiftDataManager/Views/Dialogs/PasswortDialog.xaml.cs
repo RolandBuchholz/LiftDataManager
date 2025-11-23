@@ -10,6 +10,7 @@ public sealed partial class PasswortDialog : ContentDialog
     }
     public string? Condition { get; set; }
     public string? Description { get; set; }
+    public string? Passwort { get; set; }
     public PasswortDialog()
     {
         ViewModel = App.GetService<PasswortDialogViewModel>();

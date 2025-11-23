@@ -41,6 +41,9 @@ public partial class CurrentSafetyComponentsViewModel : DataViewModelBase, INavi
     }
 
     [ObservableProperty]
+    public partial bool SafetycomponentEditormode { get; set; }
+
+    [ObservableProperty]
     public partial LiftCommission? CurrentLiftCommission { get; set; }
     [ObservableProperty]
     public partial string? LiftName { get; set; }
@@ -329,6 +332,11 @@ public partial class CurrentSafetyComponentsViewModel : DataViewModelBase, INavi
     public async void OnNavigatedTo(object parameter)
     {
         NavigatedToBaseActions();
+        SafetycomponentEditormode = _settingService.SafetycomponentEditormode;
+        if (!SafetycomponentEditormode)
+        {
+            return;
+        }
         await GetCurrentSafetyComponentsFromDatabaseAsync();
         await CheckCanExecuteCommandsAsync();
         await Task.CompletedTask;
