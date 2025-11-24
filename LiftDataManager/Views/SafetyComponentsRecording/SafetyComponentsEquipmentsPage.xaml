@@ -14,10 +14,20 @@
     <Grid x:Name="ContentArea">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+            <TextBlock Foreground="{ThemeResource AccentAAFillColorTertiaryBrush}" Text="Equipmentliste schreibgeschützt. Bearbeitung über" />
+            <FontIcon
+                Margin="5,0,5,0"
+                FontFamily="{StaticResource SymbolThemeFontFamily}"
+                FontSize="16"
+                Glyph="&#xE70F;" />
+            <TextBlock Foreground="{ThemeResource AccentAAFillColorTertiaryBrush}" Text="Equipment bearbeiten" />
+        </StackPanel>
         <Pivot
-            Grid.Row="0"
+            Grid.Row="1"
             Margin="0,0,0,10"
             SelectedIndex="1"
             SelectedItem="{x:Bind ViewModel.SelectedPivotItem, Mode=TwoWay}">
@@ -39,7 +49,7 @@
                 </PivotItem>
             </Pivot.Items>
         </Pivot>
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="2">
             <tableView:TableView
                 x:Name="EquipmentsTableView"
                 Grid.Column="0"
@@ -50,42 +60,6 @@
                 ItemsSource="{x:Bind ViewModel.Equipments, Mode=OneWay}"
                 ShowExportOptions="True">
                 <tableView:TableView.Columns>
-                    <tableView:TableViewTextColumn
-                        Width="150"
-                        Binding="{Binding LiftInstallerID}"
-                        Header="Montagebetrieb" />
-                    <tableView:TableViewTextColumn
-                        Width="150"
-                        Binding="{Binding Name}"
-                        Header="Hersteller-Nr." />
-                    <tableView:TableViewTextColumn
-                        Width="150"
-                        Binding="{Binding SAISEquipment}"
-                        Header="Equipment-Nr." />
-                    <tableView:TableViewNumberColumn
-                        Width="75"
-                        Binding="{Binding SafetyComponentRecords.Count}"
-                        Header="Anzahl Sicherheitsbauteile" />
-                    <tableView:TableViewTextColumn
-                        Width="350"
-                        Binding="{Binding Street}"
-                        Header="Straße" />
-                    <tableView:TableViewTextColumn
-                        Width="75"
-                        Binding="{Binding HouseNumber}"
-                        Header="Hausnr." />
-                    <tableView:TableViewNumberColumn
-                        Width="125"
-                        Binding="{Binding ZIPCode}"
-                        Header="Postleitzahl" />
-                    <tableView:TableViewTextColumn
-                        Width="125"
-                        Binding="{Binding City}"
-                        Header="Stadt" />
-                    <tableView:TableViewTextColumn
-                        Width="75"
-                        Binding="{Binding Country}"
-                        Header="Land" />
                     <tableView:TableViewTemplateColumn
                         Width="50"
                         CanFilter="False"
@@ -115,6 +89,51 @@
                             </DataTemplate>
                         </tableView:TableViewTemplateColumn.CellTemplate>
                     </tableView:TableViewTemplateColumn>
+                    <tableView:TableViewTextColumn
+                        Width="150"
+                        Binding="{Binding LiftInstallerID}"
+                        Header="Montagebetrieb"
+                        IsReadOnly="True" />
+                    <tableView:TableViewTextColumn
+                        Width="150"
+                        Binding="{Binding Name}"
+                        Header="Hersteller-Nr."
+                        IsReadOnly="True" />
+                    <tableView:TableViewTextColumn
+                        Width="150"
+                        Binding="{Binding SAISEquipment}"
+                        Header="Equipment-Nr."
+                        IsReadOnly="True" />
+                    <tableView:TableViewNumberColumn
+                        Width="75"
+                        Binding="{Binding SafetyComponentRecords.Count}"
+                        Header="Anzahl Sicherheitsbauteile"
+                        IsReadOnly="True" />
+                    <tableView:TableViewTextColumn
+                        Width="350"
+                        Binding="{Binding Street}"
+                        Header="Straße"
+                        IsReadOnly="True" />
+                    <tableView:TableViewTextColumn
+                        Width="75"
+                        Binding="{Binding HouseNumber}"
+                        Header="Hausnr."
+                        IsReadOnly="True" />
+                    <tableView:TableViewNumberColumn
+                        Width="125"
+                        Binding="{Binding ZIPCode}"
+                        Header="Postleitzahl"
+                        IsReadOnly="True" />
+                    <tableView:TableViewTextColumn
+                        Width="125"
+                        Binding="{Binding City}"
+                        Header="Stadt"
+                        IsReadOnly="True" />
+                    <tableView:TableViewTextColumn
+                        Width="75"
+                        Binding="{Binding Country}"
+                        Header="Land"
+                        IsReadOnly="True" />
                 </tableView:TableView.Columns>
             </tableView:TableView>
         </Grid>

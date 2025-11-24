@@ -14,10 +14,20 @@
     <Grid x:Name="ContentArea">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+            <TextBlock Foreground="{ThemeResource AccentAAFillColorTertiaryBrush}" Text="Sicherheitskomponentenliste schreibgeschützt. Bearbeitung über" />
+            <FontIcon
+                Margin="5,0,5,0"
+                FontFamily="{StaticResource SymbolThemeFontFamily}"
+                FontSize="16"
+                Glyph="&#xE70F;" />
+            <TextBlock Foreground="{ThemeResource AccentAAFillColorTertiaryBrush}" Text="Sicherheitskomponente bearbeiten" />
+        </StackPanel>
         <Pivot
-            Grid.Row="0"
+            Grid.Row="1"
             Margin="0,0,0,10"
             SelectedIndex="2"
             SelectedItem="{x:Bind ViewModel.SelectedPivotItem, Mode=TwoWay}">
@@ -39,7 +49,7 @@
                 </PivotItem>
             </Pivot.Items>
         </Pivot>
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="2">
             <tableView:TableView
                 x:Name="RecordingsTableView"
                 Grid.Column="0"
@@ -50,38 +60,75 @@
                 ItemsSource="{x:Bind ViewModel.SafetyComponentsRecordings, Mode=OneWay}"
                 ShowExportOptions="True">
                 <tableView:TableView.Columns>
+                    <tableView:TableViewTemplateColumn
+                        Width="50"
+                        CanFilter="False"
+                        CanResize="False"
+                        CanSort="False">
+                        <tableView:TableViewTemplateColumn.Header>
+                            <FontIcon Glyph="&#xE70F;" ToolTipService.ToolTip="Sicherheitskomponente bearbeiten" />
+                        </tableView:TableViewTemplateColumn.Header>
+                        <tableView:TableViewTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button
+                                    Margin="0"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Click="Edit_SafetyComponent_Click"
+                                    CommandParameter="{Binding}">
+                                    <FontIcon
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                        FontSize="16"
+                                        Glyph="&#xE70F;" />
+                                    <ToolTipService.ToolTip>
+                                        <TextBlock Text="Equipment bearbeiten" />
+                                    </ToolTipService.ToolTip>
+                                </Button>
+                            </DataTemplate>
+                        </tableView:TableViewTemplateColumn.CellTemplate>
+                    </tableView:TableViewTemplateColumn>
                     <tableView:TableViewTextColumn
                         Width="125"
                         Binding="{Binding LiftCommission.Name}"
-                        Header="Auftragsnr." />
+                        Header="Auftragsnr."
+                        IsReadOnly="True" />
                     <tableView:TableViewTextColumn
                         Width="125"
                         Binding="{Binding LiftCommission.SAISEquipment}"
-                        Header="Equipmentnr." />
+                        Header="Equipmentnr."
+                        IsReadOnly="True" />
                     <tableView:TableViewTextColumn
                         Width="250"
                         Binding="{Binding Name}"
-                        Header="Produktbeschreibung" />
+                        Header="Produktbeschreibung"
+                        IsReadOnly="True" />
                     <tableView:TableViewNumberColumn
                         Width="75"
                         Binding="{Binding Release}"
-                        Header="Release" />
+                        Header="Release"
+                        IsReadOnly="True" />
                     <tableView:TableViewNumberColumn
                         Width="75"
                         Binding="{Binding Revision}"
-                        Header="Revision" />
+                        Header="Revision"
+                        IsReadOnly="True" />
                     <tableView:TableViewTextColumn
                         Width="225"
                         Binding="{Binding IdentificationNumber}"
-                        Header="Identificationr." />
+                        Header="Identificationr."
+                        IsReadOnly="True" />
                     <tableView:TableViewTextColumn
                         Width="150"
                         Binding="{Binding SerialNumber}"
-                        Header="Seriennr." />
+                        Header="Seriennr."
+                        IsReadOnly="True" />
                     <tableView:TableViewTextColumn
                         Width="150"
                         Binding="{Binding BatchNumber}"
-                        Header="Chargennr." />
+                        Header="Chargennr."
+                        IsReadOnly="True" />
                     <tableView:TableViewTextColumn
                         Width="175"
                         Binding="{Binding SafetyComponentManufacturer.Name}"
@@ -92,15 +139,18 @@
                     <tableView:TableViewTextColumn
                         Width="100"
                         Binding="{Binding SafetyComponentManufacturer.ZIPCode}"
-                        Header="Postleitzahl" />
+                        Header="Postleitzahl"
+                        IsReadOnly="True" />
                     <tableView:TableViewTextColumn
                         Width="100"
                         Binding="{Binding SafetyComponentManufacturer.City}"
-                        Header="Stadt" />
+                        Header="Stadt"
+                        IsReadOnly="True" />
                     <tableView:TableViewTextColumn
                         Width="50"
                         Binding="{Binding SafetyComponentManufacturer.Country}"
-                        Header="Land" />
+                        Header="Land"
+                        IsReadOnly="True" />
                 </tableView:TableView.Columns>
             </tableView:TableView>
         </Grid>

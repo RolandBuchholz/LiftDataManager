@@ -29,6 +29,12 @@ public partial class CurrentSafetyComponentsViewModel : DataViewModelBase, INavi
     bool _disableImportSafetyComponentRecords;
 
     [ObservableProperty]
+    public partial bool ShowLiftDetails { get; set; }
+
+    [ObservableProperty]
+    public partial string? SafetyComponentName { get; set; } = "Keine Anlagedaten gefunden";
+
+    [ObservableProperty]
     public partial PivotItem? SelectedPivotItem { get; set; }
     partial void OnSelectedPivotItemChanged(PivotItem? value)
     {
@@ -143,6 +149,8 @@ public partial class CurrentSafetyComponentsViewModel : DataViewModelBase, INavi
             return;
         }
 
+        ShowLiftDetails = CurrentLiftCommission is null;
+
         CurrentLiftCommission ??= _safetyComponentRecordContext.LiftCommissions?.Where(x => x.Name == SpezifikationsNumber)
                                                               .Include(i => i.SafetyComponentRecords!)
                                                               .ThenInclude(t => t.SafetyComponentManufacturer)
@@ -163,7 +171,8 @@ public partial class CurrentSafetyComponentsViewModel : DataViewModelBase, INavi
         }
 
         if (string.IsNullOrWhiteSpace(saisNumber) &&
-            !string.IsNullOrWhiteSpace(CurrentLiftCommission.SAISEquipment))
+            !string.IsNullOrWhiteSpace(CurrentLiftCommission.SAISEquipment) &&
+            ShowLiftDetails)
         {
             ParameterDictionary["var_SAISEquipment"].Value = CurrentLiftCommission.SAISEquipment;
         }
@@ -184,6 +193,7 @@ public partial class CurrentSafetyComponentsViewModel : DataViewModelBase, INavi
             }
         }
 
+        SafetyComponentName = $"{LiftName} - Equipment: {SAISEquipment}";
         await Task.CompletedTask;
     }
 
@@ -352,6 +362,7 @@ public partial class CurrentSafetyComponentsViewModel : DataViewModelBase, INavi
         if (parameter is LiftCommission liftCommission)
         {
             CurrentLiftCommission = liftCommission;
+            ShowLiftDetails = false;
             _disableImportSafetyComponentRecords = true;
         }
         await GetCurrentSafetyComponentsFromDatabaseAsync();

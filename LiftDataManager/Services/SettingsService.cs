@@ -252,7 +252,7 @@ public class SettingsService : ISettingService
         await SetSettingsAsync(nameof(PathExcel), @"C:\Program Files (x86)\Microsoft Office\Office16\EXCEL.EXE");
         await SetSettingsAsync(nameof(PathDataStorage), Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"\Bausatzauslegung\Auftrag\"));
         await SetSettingsAsync(nameof(PathDataBase), LiftDataParameterDBPath);
-        await SetSettingsAsync(nameof(PathDataBaseSafetyComponents), LiftDataParameterDBPath);
+        await SetSettingsAsync(nameof(PathDataBaseSafetyComponents), SafetyComponentRecordsDBPath);
         await SetSettingsAsync(nameof(LogLevel), "Information");
         await SetSettingsAsync(nameof(TonerSaveMode), true);
         await SetSettingsAsync(nameof(AutoOpenInfoCenter), true);

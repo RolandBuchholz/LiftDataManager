@@ -89,6 +89,16 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.RowSpan="3"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="2"
+                        Margin="5,0,0,0"
+                        FontSize="24"
+                        Foreground="{ThemeResource AccentTextFillColorTertiaryBrush}"
+                        Text="{x:Bind ViewModel.SafetyComponentName, Mode=OneWay}"
+                        Visibility="{x:Bind helpers:XamlFunctions.FalseToVisible(ViewModel.ShowLiftDetails), Mode=OneWay}" />
                     <SpeziControls:ParameterTextBox
                         Grid.Row="0"
                         Grid.Column="0"
@@ -96,7 +106,8 @@
                         Opacity="0.5"
                         PlaceholderText="Auftragsnummer"
                         ReadOnly="True"
-                        ShowDefaultHeader="True">
+                        ShowDefaultHeader="True"
+                        Visibility="{x:Bind ViewModel.ShowLiftDetails, Mode=OneWay}">
                         <ToolTipService.ToolTip>
                             <TextBlock>
                                 <Run
@@ -114,7 +125,8 @@
                         Opacity="0.5"
                         PlaceholderText="Fabriknummer"
                         ReadOnly="True"
-                        ShowDefaultHeader="True">
+                        ShowDefaultHeader="True"
+                        Visibility="{x:Bind ViewModel.ShowLiftDetails, Mode=OneWay}">
                         <ToolTipService.ToolTip>
                             <TextBlock>
                                 <Run
@@ -130,14 +142,16 @@
                         Grid.Column="2"
                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_SAISEquipment'], Mode=TwoWay}"
                         PlaceholderText="SAIS-Equipmentnummer"
-                        ShowDefaultHeader="True" />
+                        ShowDefaultHeader="True"
+                        Visibility="{x:Bind ViewModel.ShowLiftDetails, Mode=OneWay}" />
                     <SpeziControls:ParameterComboBox
                         Grid.Row="0"
                         Grid.Column="3"
                         Margin="0,0,5,0"
                         IsEnabled="False"
                         LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_CeNummer'], Mode=TwoWay}"
-                        ShowDefaultHeader="True">
+                        ShowDefaultHeader="True"
+                        Visibility="{x:Bind ViewModel.ShowLiftDetails, Mode=OneWay}">
                         <ToolTipService.ToolTip>
                             <TextBlock>
                                 <Run
@@ -157,7 +171,8 @@
                         Opacity="0.5"
                         PlaceholderText="Kennwort"
                         ReadOnly="True"
-                        ShowDefaultHeader="True">
+                        ShowDefaultHeader="True"
+                        Visibility="{x:Bind ViewModel.ShowLiftDetails, Mode=OneWay}">
                         <ToolTipService.ToolTip>
                             <TextBlock>
                                 <Run
@@ -179,7 +194,8 @@
                         Opacity="0.5"
                         PlaceholderText="Bauvorhaben"
                         Text="{x:Bind ViewModel.ParameterDictionary['var_Projekt'].Value, Mode=OneWay}"
-                        TextWrapping="Wrap">
+                        TextWrapping="Wrap"
+                        Visibility="{x:Bind ViewModel.ShowLiftDetails, Mode=OneWay}">
                         <ToolTipService.ToolTip>
                             <TextBlock>
                                 <Run
@@ -201,7 +217,8 @@
                         Opacity="0.5"
                         PlaceholderText="Betreiber"
                         Text="{x:Bind ViewModel.ParameterDictionary['var_Betreiber'].Value, Mode=OneWay}"
-                        TextWrapping="Wrap">
+                        TextWrapping="Wrap"
+                        Visibility="{x:Bind ViewModel.ShowLiftDetails, Mode=OneWay}">
                         <ToolTipService.ToolTip>
                             <TextBlock>
                                 <Run

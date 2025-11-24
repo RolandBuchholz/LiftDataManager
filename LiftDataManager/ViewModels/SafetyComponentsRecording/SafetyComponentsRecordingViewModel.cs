@@ -32,6 +32,21 @@ public partial class SafetyComponentsRecordingViewModel : DataViewModelBase, INa
         }
     }
 
+    [RelayCommand]
+    public async Task EditSafetyComponentAsync(object sender)
+    {
+        if (sender is SafetyComponentRecord safetyComponentRecord)
+        {
+            if (safetyComponentRecord.LiftCommission is null)
+            {
+                return;
+            }
+            LiftParameterNavigationHelper.NavigatePivotItem(typeof(CurrentSafetyComponentsPage), safetyComponentRecord.LiftCommission);
+        }
+        await Task.CompletedTask;
+    }
+
+
     private async Task GetSafetyComponentsRecordingsFromDatabaseAsync()
     {
         var safetyComponentsRecordings = _safetyComponentRecordContext.SafetyComponentRecords?.Include(i =>i.SafetyComponentManufacturer).Include(i => i.LiftCommission);
