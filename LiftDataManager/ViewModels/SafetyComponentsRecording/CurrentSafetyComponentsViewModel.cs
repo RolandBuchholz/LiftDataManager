@@ -26,6 +26,8 @@ public partial class CurrentSafetyComponentsViewModel : DataViewModelBase, INavi
         _logger = logger;
     }
 
+    bool _disableImportSafetyComponentRecords;
+
     [ObservableProperty]
     public partial PivotItem? SelectedPivotItem { get; set; }
     partial void OnSelectedPivotItemChanged(PivotItem? value)
@@ -45,6 +47,7 @@ public partial class CurrentSafetyComponentsViewModel : DataViewModelBase, INavi
 
     [ObservableProperty]
     public partial LiftCommission? CurrentLiftCommission { get; set; }
+
     [ObservableProperty]
     public partial string? LiftName { get; set; }
     partial void OnLiftNameChanged(string? value)
@@ -55,6 +58,7 @@ public partial class CurrentSafetyComponentsViewModel : DataViewModelBase, INavi
             _safetyComponentRecordContext.SaveChanges();
         }
     }
+    
     [ObservableProperty]
     public partial int LiftInstallerID { get; set; }
     partial void OnLiftInstallerIDChanged(int value)
@@ -65,6 +69,7 @@ public partial class CurrentSafetyComponentsViewModel : DataViewModelBase, INavi
             _safetyComponentRecordContext.SaveChanges();
         }
     }
+    
     [ObservableProperty]
     public partial string? SAISEquipment { get; set; }
     partial void OnSAISEquipmentChanged(string? value)
@@ -75,6 +80,7 @@ public partial class CurrentSafetyComponentsViewModel : DataViewModelBase, INavi
             _safetyComponentRecordContext.SaveChanges();
         }
     }
+    
     [ObservableProperty]
     public partial string? Street { get; set; }
     partial void OnStreetChanged(string? value)
@@ -85,6 +91,7 @@ public partial class CurrentSafetyComponentsViewModel : DataViewModelBase, INavi
             _safetyComponentRecordContext.SaveChanges();
         }
     }
+    
     [ObservableProperty]
     public partial string? HouseNumber { get; set; }
     partial void OnHouseNumberChanged(string? value)
@@ -95,6 +102,7 @@ public partial class CurrentSafetyComponentsViewModel : DataViewModelBase, INavi
             _safetyComponentRecordContext.SaveChanges();
         }
     }
+    
     [ObservableProperty]
     public partial int ZIPCode { get; set; }
     partial void OnZIPCodeChanged(int value)
@@ -105,6 +113,7 @@ public partial class CurrentSafetyComponentsViewModel : DataViewModelBase, INavi
             _safetyComponentRecordContext.SaveChanges();
         }
     }
+    
     [ObservableProperty]
     public partial string? City { get; set; }
     partial void OnCityChanged(string? value)
@@ -115,6 +124,7 @@ public partial class CurrentSafetyComponentsViewModel : DataViewModelBase, INavi
             _safetyComponentRecordContext.SaveChanges();
         }
     }
+    
     [ObservableProperty]
     public partial string? Country { get; set; }
     partial void OnCountryChanged(string? value)
@@ -128,15 +138,15 @@ public partial class CurrentSafetyComponentsViewModel : DataViewModelBase, INavi
 
     private async Task GetCurrentSafetyComponentsFromDatabaseAsync()
     {
-        if (string.IsNullOrWhiteSpace(SpezifikationsNumber))
+        if (string.IsNullOrWhiteSpace(SpezifikationsNumber) && CurrentLiftCommission is null)
         {
             return;
         }
 
-        CurrentLiftCommission = _safetyComponentRecordContext.LiftCommissions?.Where(x => x.Name == SpezifikationsNumber)
-                                                                      .Include(i => i.SafetyComponentRecords!)
-                                                                      .ThenInclude(t => t.SafetyComponentManufacturer)
-                                                                      .FirstOrDefault();
+        CurrentLiftCommission ??= _safetyComponentRecordContext.LiftCommissions?.Where(x => x.Name == SpezifikationsNumber)
+                                                              .Include(i => i.SafetyComponentRecords!)
+                                                              .ThenInclude(t => t.SafetyComponentManufacturer)
+                                                              .FirstOrDefault();
 
         var saisNumber = LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_SAISEquipment");
         if (CurrentLiftCommission is null)
@@ -241,7 +251,7 @@ public partial class CurrentSafetyComponentsViewModel : DataViewModelBase, INavi
                 ListOfSafetyComponents.Add(observableDBSafetyComponentRecord);
             }
         }
-        await Task.CompletedTask;
+        await CheckCanExecuteCommandsAsync();
     }
 
     [RelayCommand]
@@ -324,7 +334,9 @@ public partial class CurrentSafetyComponentsViewModel : DataViewModelBase, INavi
 
     private async Task CheckCanExecuteCommandsAsync()
     {
-        CanImportSafetyComponentRecords = ListOfSafetyComponents.Count == 0;
+        CanImportSafetyComponentRecords = ListOfSafetyComponents.Count == 0 && 
+                                          !string.IsNullOrWhiteSpace(SpezifikationsNumber) &&
+                                          !_disableImportSafetyComponentRecords;
         CanDeleteAllSafetyComponentRecords = ListOfSafetyComponents.Count > 0;
         await Task.CompletedTask;
     }
@@ -336,6 +348,11 @@ public partial class CurrentSafetyComponentsViewModel : DataViewModelBase, INavi
         if (!SafetycomponentEditormode)
         {
             return;
+        }
+        if (parameter is LiftCommission liftCommission)
+        {
+            CurrentLiftCommission = liftCommission;
+            _disableImportSafetyComponentRecords = true;
         }
         await GetCurrentSafetyComponentsFromDatabaseAsync();
         await CheckCanExecuteCommandsAsync();

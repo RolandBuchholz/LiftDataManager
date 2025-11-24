@@ -31,6 +31,16 @@ public partial class SafetyComponentsEquipmentsViewModel : DataViewModelBase, IN
         }
     }
 
+    [RelayCommand]
+    public async Task EditEquipmentAsync(object sender)
+    {
+        if (sender is LiftCommission liftCommission)
+        {
+            LiftParameterNavigationHelper.NavigatePivotItem(typeof(CurrentSafetyComponentsPage), liftCommission);
+        }
+        await Task.CompletedTask;
+    }
+
     private async Task GetEquipmentsFromDatabaseAsync()
     {
         var liftCommissions = _safetyComponentRecordContext.LiftCommissions?.Include(i => i.SafetyComponentRecords);

@@ -67,25 +67,54 @@
                         Binding="{Binding SafetyComponentRecords.Count}"
                         Header="Anzahl Sicherheitsbauteile" />
                     <tableView:TableViewTextColumn
-                        Width="300"
+                        Width="350"
                         Binding="{Binding Street}"
                         Header="Straße" />
                     <tableView:TableViewTextColumn
-                        Width="50"
+                        Width="75"
                         Binding="{Binding HouseNumber}"
                         Header="Hausnr." />
                     <tableView:TableViewNumberColumn
-                        Width="75"
+                        Width="125"
                         Binding="{Binding ZIPCode}"
                         Header="Postleitzahl" />
                     <tableView:TableViewTextColumn
-                        Width="100"
+                        Width="125"
                         Binding="{Binding City}"
                         Header="Stadt" />
                     <tableView:TableViewTextColumn
                         Width="75"
                         Binding="{Binding Country}"
                         Header="Land" />
+                    <tableView:TableViewTemplateColumn
+                        Width="50"
+                        CanFilter="False"
+                        CanResize="False"
+                        CanSort="False">
+                        <tableView:TableViewTemplateColumn.Header>
+                            <FontIcon Glyph="&#xE70F;" ToolTipService.ToolTip="Equipment bearbeiten" />
+                        </tableView:TableViewTemplateColumn.Header>
+                        <tableView:TableViewTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button
+                                    Margin="0"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Click="Edit_Equipment_Click"
+                                    CommandParameter="{Binding}">
+                                    <FontIcon
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                        FontSize="16"
+                                        Glyph="&#xE70F;" />
+                                    <ToolTipService.ToolTip>
+                                        <TextBlock Text="Equipment bearbeiten" />
+                                    </ToolTipService.ToolTip>
+                                </Button>
+                            </DataTemplate>
+                        </tableView:TableViewTemplateColumn.CellTemplate>
+                    </tableView:TableViewTemplateColumn>
                 </tableView:TableView.Columns>
             </tableView:TableView>
         </Grid>
