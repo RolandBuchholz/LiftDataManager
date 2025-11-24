@@ -5,8 +5,9 @@
 /// </summary>
 public class SettingsService : ISettingService
 {
-    private const string SettingsKeyFirstSetup = "AppAdminmodeFirstSetup";
+    private const string SettingsKeyFirstSetup = "AppFirstSetupRequested";
     private const string SettingsKeyAdminmode = "AppAdminmodeRequested";
+    private const string SettingsKeySafetycomponentEditormode = "AppSafetycomponentEditormodeRequested";
     private const string SettingsKeyCustomAccentColor = "AppCustomAccentColorRequested";
     private const string SettingsKeyPathCFP = "AppPathCFPRequested";
     private const string SettingsKeyPathZALift = "AppPathZALiftRequested";
@@ -35,6 +36,7 @@ public class SettingsService : ISettingService
 
     private bool FirstSetup { get; set; }
     public bool Adminmode { get; set; }
+    public bool SafetycomponentEditormode { get; set; }
     public bool CustomAccentColor { get; set; }
     public string? PathCFP { get; set; }
     public string? PathZALift { get; set; }
@@ -70,6 +72,10 @@ public class SettingsService : ISettingService
             case nameof(Adminmode):
                 Adminmode = (bool)value;
                 await SaveSettingsAsync(key, Adminmode);
+                return;
+            case nameof(SafetycomponentEditormode):
+                SafetycomponentEditormode = (bool)value;
+                await SaveSettingsAsync(key, SafetycomponentEditormode);
                 return;
             case nameof(CustomAccentColor):
                 CustomAccentColor = (bool)value;
@@ -148,6 +154,8 @@ public class SettingsService : ISettingService
 
         var storedAdminmode = await _localSettingsService.ReadSettingAsync<string>(SettingsKeyAdminmode);
         Adminmode = !string.IsNullOrWhiteSpace(storedAdminmode) && Convert.ToBoolean(storedAdminmode);
+        var storedSafetycomponentEditormode = await _localSettingsService.ReadSettingAsync<string>(SettingsKeySafetycomponentEditormode);
+        SafetycomponentEditormode = !string.IsNullOrWhiteSpace(storedSafetycomponentEditormode) && Convert.ToBoolean(storedSafetycomponentEditormode);
         var storedCustomAccentColor = await _localSettingsService.ReadSettingAsync<string>(SettingsKeyCustomAccentColor);
         CustomAccentColor = !string.IsNullOrWhiteSpace(storedCustomAccentColor) && Convert.ToBoolean(storedCustomAccentColor);
         PathCFP = await _localSettingsService.ReadSettingAsync<string>(SettingsKeyPathCFP);
@@ -182,6 +190,9 @@ public class SettingsService : ISettingService
                 return;
             case nameof(Adminmode):
                 await _localSettingsService.SaveSettingAsync(SettingsKeyAdminmode, ((bool)value).ToString());
+                return;
+            case nameof(SafetycomponentEditormode):
+                await _localSettingsService.SaveSettingAsync(SettingsKeySafetycomponentEditormode, ((bool)value).ToString());
                 return;
             case nameof(CustomAccentColor):
                 await _localSettingsService.SaveSettingAsync(SettingsKeyCustomAccentColor, ((bool)value).ToString());

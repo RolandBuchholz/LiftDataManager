@@ -69,6 +69,23 @@
                     </ToggleSwitch>
                 </controls:SettingsCard>
                 <controls:SettingsCard
+                    Description="Bearbeitung Sicherheitskomponentendatenbank freischalten"
+                    Header="Safetycomponent Editor"
+                    HeaderIcon="{wuc:BitmapIcon Source=Assets/Fluent/safetycomponentEditormode.png}">
+                    <ToggleSwitch
+                        x:Name="SafetycomponentEditormode"
+                        Margin="0,0,20,0"
+                        IsOn="{x:Bind ViewModel.SafetycomponentEditormode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        OffContent="Safetycomponent Editormode deactivated"
+                        OnContent="Safetycomponent Editormode activated">
+                        <Interactivity:Interaction.Behaviors>
+                            <Interactivity:EventTriggerBehavior EventName="Toggled">
+                                <Interactivity:InvokeCommandAction Command="{x:Bind ViewModel.PinDialogSafetycomponentEditormodeCommand}" />
+                            </Interactivity:EventTriggerBehavior>
+                        </Interactivity:Interaction.Behaviors>
+                    </ToggleSwitch>
+                </controls:SettingsCard>
+                <controls:SettingsCard
                     Description="Infocenter automatisch öffnen beim Laden eines Auftrages"
                     Header="Infocentersettings"
                     HeaderIcon="{wuc:BitmapIcon Source=Assets/Fluent/infoCenterOpen.png}">

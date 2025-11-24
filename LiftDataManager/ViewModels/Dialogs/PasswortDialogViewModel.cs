@@ -4,15 +4,22 @@ public partial class PasswortDialogViewModel : ObservableObject
 {
     public PasswortDialogViewModel()
     {
-        //TODO Get _password vom settings
-        _password = "2342";
+        _password = "0000";
     }
-    private readonly string _password;
+
+    [RelayCommand]
+    public async Task PasswortDialogLoadedAsync(PasswortDialog sender)
+    {
+        _password = !string.IsNullOrWhiteSpace(sender.Passwort) ? sender.Passwort : "0000";
+        await Task.CompletedTask;
+    }
+
+    private string _password;
 
     public int PasswordLenght => _password.Length;
 
     [ObservableProperty]
-    public partial bool CanSwitchToAdminmode { get; set; }
+    public partial bool CanSwitchToMode { get; set; }
 
     [ObservableProperty]
     public partial string? PasswortInfoText { get; set; } = "Kein PIN eingegeben";
@@ -24,11 +31,11 @@ public partial class PasswortDialogViewModel : ObservableObject
         CheckpasswortInput();
     }
     [ObservableProperty]
-    public partial bool AdminmodeWarningAccepted { get; set; }
-    partial void OnAdminmodeWarningAcceptedChanged(bool value)
+    public partial bool SwitchModeWarningAccepted { get; set; }
+    partial void OnSwitchModeWarningAcceptedChanged(bool value)
     {
-        CanSwitchToAdminmode = (AdminmodeWarningAccepted == true
-                        && PasswortInfoText == "Passwort korrekt Zugriff gewährt");
+        CanSwitchToMode = (SwitchModeWarningAccepted == true &&
+                                PasswortInfoText == "Passwort korrekt Zugriff gewährt");
     }
 
     private void CheckpasswortInput()
@@ -36,16 +43,16 @@ public partial class PasswortDialogViewModel : ObservableObject
         if (string.IsNullOrWhiteSpace(_password))
         {
             PasswortInfoText = "Kein Passwort eingegeben";
-            CanSwitchToAdminmode = false;
+            CanSwitchToMode = false;
             return;
         }
         if (!string.Equals(PasswortInput, _password))
         {
             PasswortInfoText = "Incorrectes Passwort";
-            CanSwitchToAdminmode = false;
+            CanSwitchToMode = false;
             return;
         }
         PasswortInfoText = "Passwort korrekt Zugriff gewährt";
-        CanSwitchToAdminmode = AdminmodeWarningAccepted;
+        CanSwitchToMode = SwitchModeWarningAccepted;
     }
 }

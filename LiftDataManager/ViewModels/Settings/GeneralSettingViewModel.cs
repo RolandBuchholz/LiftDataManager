@@ -87,6 +87,14 @@ public partial class GeneralSettingViewModel : ObservableRecipient, INavigationA
         }
     }
 
+    [ObservableProperty]
+    public partial bool SafetycomponentEditormode  { get; set; }
+    partial void OnSafetycomponentEditormodeChanged(bool value)
+    {
+        if (!Equals(value, _settingService.SafetycomponentEditormode))
+            _settingService.SetSettingsAsync(nameof(SafetycomponentEditormode), value);
+    }
+
     [RelayCommand]
     private async Task PinDialogAsync()
     {
@@ -98,7 +106,22 @@ public partial class GeneralSettingViewModel : ObservableRecipient, INavigationA
                               Achtung im Adminmode können nicht validierte Parameter gespeichet werden.
                               Die Parameter werden nicht auf Plausibilität geprüft.
                               """;
-            Adminmode = await _dialogService.PasswordDialogAsync(title, condition, description);
+            Adminmode = await _dialogService.PasswordDialogAsync(title, condition, description, "2342");
+        }
+    }
+
+    [RelayCommand]
+    private async Task PinDialogSafetycomponentEditormodeAsync()
+    {
+        if (!SafetycomponentEditormode)
+        {
+            var title = "Safetycomponent Editormode";
+            var condition = "Ich verfüge über die Berechtigung die Sicherheitsbauteil-Datenbank zu bearbeiten.";
+            var description = """
+                              Achtung im Safetycomponent Editormode können Sicherheitsbauteile angelegt,
+                              geändert und gelöscht werden.
+                              """;
+            SafetycomponentEditormode = await _dialogService.PasswordDialogAsync(title, condition, description, "2014");
         }
     }
 
@@ -120,6 +143,7 @@ public partial class GeneralSettingViewModel : ObservableRecipient, INavigationA
     {
         _currentSpeziProperties = Messenger.Send<SpeziPropertiesRequestMessage>();
         Adminmode = _settingService.Adminmode;
+        SafetycomponentEditormode = _settingService.SafetycomponentEditormode;
         AutoSave = _settingService.AutoSave;
         AutoSavePeriod = _settingService.AutoSavePeriod;
         TonerSaveMode = _settingService.TonerSaveMode;

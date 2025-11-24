@@ -106,8 +106,9 @@ public interface IDialogService
     /// <param name="title">title</param>
     /// <param name="condition">condition</param>
     /// <param name="description">description</param>
+    /// <param name="passwort">passwort</param>
     /// <returns>Task</returns>
-    Task<bool> PasswordDialogAsync(string? title, string? condition, string? description);
+    Task<bool> PasswordDialogAsync(string? title, string? condition, string? description, string passwort);
 
     /// <summary>
     /// Opens a modal ZiehlAbeggProcessingDialog.

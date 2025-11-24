@@ -3,6 +3,7 @@
 public interface ISettingService
 {
     public bool Adminmode { get; set; }
+    public bool SafetycomponentEditormode { get; set; }
     public bool CustomAccentColor { get; set; }
     public string? PathCFP { get; set; }
     public string? PathZALift { get; set; }

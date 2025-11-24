@@ -13,494 +13,512 @@
     xmlns:tableView="using:WinUI.TableView"
     mc:Ignorable="d">
     <Grid x:Name="ContentArea">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <Pivot
-            Grid.Row="0"
-            Margin="0,0,0,10"
-            SelectedIndex="0"
-            SelectedItem="{x:Bind ViewModel.SelectedPivotItem, Mode=TwoWay}">
-            <Pivot.Items>
-                <PivotItem Tag="CurrentSafetyComponentsPage">
-                    <PivotItem.Header>
-                        <TextBlock Style="{StaticResource NavigationViewItemHeaderTextStyle}" Text="Aktueller Auftrag" />
-                    </PivotItem.Header>
-                </PivotItem>
-                <PivotItem Tag="SafetyComponentsEquipmentsPage">
-                    <PivotItem.Header>
-                        <TextBlock Style="{StaticResource NavigationViewItemHeaderTextStyle}" Text="Equipments" />
-                    </PivotItem.Header>
-                </PivotItem>
-                <PivotItem Tag="SafetyComponentsRecordingPage">
-                    <PivotItem.Header>
-                        <TextBlock Style="{StaticResource NavigationViewItemHeaderTextStyle}" Text="Sicherheitskomponenten" />
-                    </PivotItem.Header>
-                </PivotItem>
-            </Pivot.Items>
-        </Pivot>
-        <Grid Grid.Row="1">
+        <TextBlock
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Center"
+            FontWeight="Bold"
+            Foreground="IndianRed"
+            TextWrapping="WrapWholeWords"
+            Visibility="{x:Bind helpers:XamlFunctions.FalseToVisible(ViewModel.SafetycomponentEditormode), Mode=OneWay}">
+            <Run FontSize="48" Text="Die Sicherheitsbauteildatenbank kann nur bei aktiviertem Safetycomponent Editormode bearbeitet werden!" />
+            <LineBreak />
+            <LineBreak />
+            <Underline>
+                <Run FontSize="36" Text="Info:" />
+            </Underline>
+            <LineBreak />
+            <Run FontSize="24" Text="Safetycomponent Editormode kann in den Einstellungen aktiviert werden." />
+        </TextBlock>
+        <Grid Visibility="{x:Bind helpers:XamlFunctions.TrueToVisible(ViewModel.SafetycomponentEditormode), Mode=OneWay}">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <TextBlock
+            <Pivot
                 Grid.Row="0"
-                Grid.Column="0"
-                Margin="5"
-                FontSize="24"
-                Foreground="{ThemeResource AccentTextFillColorSecondaryBrush}"
-                Text="Equipments / Sicherheitskomponenten im Shape TraceLink Format" />
-            <Grid
-                Grid.Row="1"
-                Grid.Column="0"
-                Padding="5"
-                Style="{ThemeResource GridCardPanel}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
+                Margin="0,0,0,10"
+                SelectedIndex="0"
+                SelectedItem="{x:Bind ViewModel.SelectedPivotItem, Mode=TwoWay}">
+                <Pivot.Items>
+                    <PivotItem Tag="CurrentSafetyComponentsPage">
+                        <PivotItem.Header>
+                            <TextBlock Style="{StaticResource NavigationViewItemHeaderTextStyle}" Text="Aktueller Auftrag" />
+                        </PivotItem.Header>
+                    </PivotItem>
+                    <PivotItem Tag="SafetyComponentsEquipmentsPage">
+                        <PivotItem.Header>
+                            <TextBlock Style="{StaticResource NavigationViewItemHeaderTextStyle}" Text="Equipments" />
+                        </PivotItem.Header>
+                    </PivotItem>
+                    <PivotItem Tag="SafetyComponentsRecordingPage">
+                        <PivotItem.Header>
+                            <TextBlock Style="{StaticResource NavigationViewItemHeaderTextStyle}" Text="Sicherheitskomponenten" />
+                        </PivotItem.Header>
+                    </PivotItem>
+                </Pivot.Items>
+            </Pivot>
+            <Grid Grid.Row="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <SpeziControls:ParameterTextBox
+                <TextBlock
                     Grid.Row="0"
                     Grid.Column="0"
-                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AuftragsNummer'], Mode=TwoWay}"
-                    Opacity="0.5"
-                    PlaceholderText="Auftragsnummer"
-                    ReadOnly="True"
-                    ShowDefaultHeader="True">
-                    <ToolTipService.ToolTip>
-                        <TextBlock>
-                            <Run
-                                FontSize="14"
-                                FontWeight="SemiBold"
-                                Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                                Text="Schreibgeschützer Parameter:" /><LineBreak />
-                            Auftragsnummer wird von Spezifikation übernommen</TextBlock>
-                    </ToolTipService.ToolTip>
-                </SpeziControls:ParameterTextBox>
-                <SpeziControls:ParameterTextBox
-                    Grid.Row="0"
-                    Grid.Column="1"
-                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_FabrikNummer'], Mode=TwoWay}"
-                    Opacity="0.5"
-                    PlaceholderText="Fabriknummer"
-                    ReadOnly="True"
-                    ShowDefaultHeader="True">
-                    <ToolTipService.ToolTip>
-                        <TextBlock>
-                            <Run
-                                FontSize="14"
-                                FontWeight="SemiBold"
-                                Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                                Text="Schreibgeschützer Parameter:" /><LineBreak />
-                            Fabriknummer wird von Spezifikation übernommen</TextBlock>
-                    </ToolTipService.ToolTip>
-                </SpeziControls:ParameterTextBox>
-                <SpeziControls:ParameterTextBox
-                    Grid.Row="0"
-                    Grid.Column="2"
-                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_SAISEquipment'], Mode=TwoWay}"
-                    PlaceholderText="SAIS-Equipmentnummer"
-                    ShowDefaultHeader="True" />
-                <SpeziControls:ParameterComboBox
-                    Grid.Row="0"
-                    Grid.Column="3"
-                    Margin="0,0,5,0"
-                    IsEnabled="False"
-                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_CeNummer'], Mode=TwoWay}"
-                    ShowDefaultHeader="True">
-                    <ToolTipService.ToolTip>
-                        <TextBlock>
-                            <Run
-                                FontSize="14"
-                                FontWeight="SemiBold"
-                                Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                                Text="Schreibgeschützer Parameter:" /><LineBreak />
-                            CE-Nummer wird von Spezifikation übernommen</TextBlock>
-                    </ToolTipService.ToolTip>
-                </SpeziControls:ParameterComboBox>
-                <SpeziControls:ParameterTextBox
-                    Grid.Row="1"
-                    Grid.Column="0"
-                    Grid.ColumnSpan="2"
-                    Margin="0,0,5,0"
-                    LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Kennwort'], Mode=OneWay}"
-                    Opacity="0.5"
-                    PlaceholderText="Kennwort"
-                    ReadOnly="True"
-                    ShowDefaultHeader="True">
-                    <ToolTipService.ToolTip>
-                        <TextBlock>
-                            <Run
-                                FontSize="14"
-                                FontWeight="SemiBold"
-                                Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                                Text="Schreibgeschützer Parameter:" /><LineBreak />
-                            Kennwort wird von Spezifikation übernommen</TextBlock>
-                    </ToolTipService.ToolTip>
-                </SpeziControls:ParameterTextBox>
-                <TextBox
-                    Grid.Row="2"
-                    Grid.Column="0"
-                    MinHeight="92"
-                    Margin="5,0,5,0"
-                    AcceptsReturn="True"
-                    Header="Bauvorhaben"
-                    IsReadOnly="True"
-                    Opacity="0.5"
-                    PlaceholderText="Bauvorhaben"
-                    Text="{x:Bind ViewModel.ParameterDictionary['var_Projekt'].Value, Mode=OneWay}"
-                    TextWrapping="Wrap">
-                    <ToolTipService.ToolTip>
-                        <TextBlock>
-                            <Run
-                                FontSize="14"
-                                FontWeight="SemiBold"
-                                Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                                Text="Schreibgeschützer Parameter:" /><LineBreak />
-                            Bauvorhaben wird von Spezifikation übernommen</TextBlock>
-                    </ToolTipService.ToolTip>
-                </TextBox>
-                <TextBox
-                    Grid.Row="2"
-                    Grid.Column="1"
-                    MinHeight="92"
-                    Margin="5,0,10,0"
-                    AcceptsReturn="True"
-                    Header="Betreiber"
-                    IsReadOnly="True"
-                    Opacity="0.5"
-                    PlaceholderText="Betreiber"
-                    Text="{x:Bind ViewModel.ParameterDictionary['var_Betreiber'].Value, Mode=OneWay}"
-                    TextWrapping="Wrap">
-                    <ToolTipService.ToolTip>
-                        <TextBlock>
-                            <Run
-                                FontSize="14"
-                                FontWeight="SemiBold"
-                                Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                                Text="Schreibgeschützer Parameter:" /><LineBreak />
-                            Betreiber wird von Spezifikation übernommen</TextBlock>
-                    </ToolTipService.ToolTip>
-                </TextBox>
-                <Button
-                    Grid.Row="1"
-                    Grid.Column="2"
-                    Margin="5,5,5,0"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Bottom"
-                    Command="{x:Bind ViewModel.ImportSafetyComponentRecordCommand}"
-                    Style="{ThemeResource AccentButtonStyle}">
-                    <StackPanel Orientation="Horizontal">
-                        <FontIcon Glyph="&#xE8B6;" />
-                        <TextBlock
-                            Margin="15,0,0,0"
-                            FontWeight="Bold"
-                            Text="Sicherheitskomponenten importieren" />
-                    </StackPanel>
-                </Button>
-                <Button
-                    Grid.Row="1"
-                    Grid.Column="3"
-                    Margin="5,5,5,0"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Bottom"
-                    Command="{x:Bind ViewModel.AddSafetyComponentRecordCommand}"
-                    Style="{ThemeResource AccentButtonStyle}">
-                    <StackPanel Orientation="Horizontal">
-                        <FontIcon Glyph="&#xED0E;" />
-                        <TextBlock
-                            Margin="15,0,0,0"
-                            FontWeight="Bold"
-                            Text="Sicherheitskomponente hinzufügen" />
-                    </StackPanel>
-                </Button>
-                <Button
-                    Grid.Row="2"
-                    Grid.Column="2"
                     Margin="5"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Top"
-                    Command="{x:Bind ViewModel.DeleteAllSafetyComponentRecordsCommand}"
-                    Style="{ThemeResource AccentButtonStyle}">
-                    <StackPanel Orientation="Horizontal">
-                        <FontIcon Glyph="&#xE74D;" />
-                        <TextBlock
-                            Margin="15,0,0,0"
-                            FontWeight="Bold"
-                            Text="Alle Sicherheitskomponenten löschen" />
-                    </StackPanel>
-                </Button>
-                <Button
-                    Grid.Row="2"
-                    Grid.Column="3"
-                    Margin="5"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Top"
-                    Command="{x:Bind ViewModel.CreateSafetyComponentRecordPDFCommand}"
-                    Style="{ThemeResource AccentButtonStyle}">
-                    <StackPanel Orientation="Horizontal">
-                        <FontIcon Glyph="&#xEA90;" />
-                        <TextBlock
-                            Margin="15,0,0,0"
-                            FontWeight="Bold"
-                            Text="Datenblatt erstellen" />
-                    </StackPanel>
-                </Button>
-            </Grid>
-            <TextBlock
-                Grid.Row="2"
-                Grid.Column="0"
-                Margin="5"
-                FontSize="24"
-                Foreground="{ThemeResource AccentTextFillColorSecondaryBrush}"
-                Text="Equipments im Shape TraceLink Format" />
-            <Grid
-                Grid.Row="3"
-                Grid.Column="0"
-                Padding="5"
-                Style="{ThemeResource GridCardPanel}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <TextBox
+                    FontSize="24"
+                    Foreground="{ThemeResource AccentTextFillColorSecondaryBrush}"
+                    Text="Equipments / Sicherheitskomponenten im Shape TraceLink Format" />
+                <Grid
+                    Grid.Row="1"
                     Grid.Column="0"
+                    Padding="5"
+                    Style="{ThemeResource GridCardPanel}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <SpeziControls:ParameterTextBox
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_AuftragsNummer'], Mode=TwoWay}"
+                        Opacity="0.5"
+                        PlaceholderText="Auftragsnummer"
+                        ReadOnly="True"
+                        ShowDefaultHeader="True">
+                        <ToolTipService.ToolTip>
+                            <TextBlock>
+                                <Run
+                                    FontSize="14"
+                                    FontWeight="SemiBold"
+                                    Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                    Text="Schreibgeschützer Parameter:" /><LineBreak />
+                                Auftragsnummer wird von Spezifikation übernommen</TextBlock>
+                        </ToolTipService.ToolTip>
+                    </SpeziControls:ParameterTextBox>
+                    <SpeziControls:ParameterTextBox
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_FabrikNummer'], Mode=TwoWay}"
+                        Opacity="0.5"
+                        PlaceholderText="Fabriknummer"
+                        ReadOnly="True"
+                        ShowDefaultHeader="True">
+                        <ToolTipService.ToolTip>
+                            <TextBlock>
+                                <Run
+                                    FontSize="14"
+                                    FontWeight="SemiBold"
+                                    Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                    Text="Schreibgeschützer Parameter:" /><LineBreak />
+                                Fabriknummer wird von Spezifikation übernommen</TextBlock>
+                        </ToolTipService.ToolTip>
+                    </SpeziControls:ParameterTextBox>
+                    <SpeziControls:ParameterTextBox
+                        Grid.Row="0"
+                        Grid.Column="2"
+                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_SAISEquipment'], Mode=TwoWay}"
+                        PlaceholderText="SAIS-Equipmentnummer"
+                        ShowDefaultHeader="True" />
+                    <SpeziControls:ParameterComboBox
+                        Grid.Row="0"
+                        Grid.Column="3"
+                        Margin="0,0,5,0"
+                        IsEnabled="False"
+                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_CeNummer'], Mode=TwoWay}"
+                        ShowDefaultHeader="True">
+                        <ToolTipService.ToolTip>
+                            <TextBlock>
+                                <Run
+                                    FontSize="14"
+                                    FontWeight="SemiBold"
+                                    Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                    Text="Schreibgeschützer Parameter:" /><LineBreak />
+                                CE-Nummer wird von Spezifikation übernommen</TextBlock>
+                        </ToolTipService.ToolTip>
+                    </SpeziControls:ParameterComboBox>
+                    <SpeziControls:ParameterTextBox
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="2"
+                        Margin="0,0,5,0"
+                        LiftParameter="{x:Bind ViewModel.ParameterDictionary['var_Kennwort'], Mode=OneWay}"
+                        Opacity="0.5"
+                        PlaceholderText="Kennwort"
+                        ReadOnly="True"
+                        ShowDefaultHeader="True">
+                        <ToolTipService.ToolTip>
+                            <TextBlock>
+                                <Run
+                                    FontSize="14"
+                                    FontWeight="SemiBold"
+                                    Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                    Text="Schreibgeschützer Parameter:" /><LineBreak />
+                                Kennwort wird von Spezifikation übernommen</TextBlock>
+                        </ToolTipService.ToolTip>
+                    </SpeziControls:ParameterTextBox>
+                    <TextBox
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        MinHeight="92"
+                        Margin="5,0,5,0"
+                        AcceptsReturn="True"
+                        Header="Bauvorhaben"
+                        IsReadOnly="True"
+                        Opacity="0.5"
+                        PlaceholderText="Bauvorhaben"
+                        Text="{x:Bind ViewModel.ParameterDictionary['var_Projekt'].Value, Mode=OneWay}"
+                        TextWrapping="Wrap">
+                        <ToolTipService.ToolTip>
+                            <TextBlock>
+                                <Run
+                                    FontSize="14"
+                                    FontWeight="SemiBold"
+                                    Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                    Text="Schreibgeschützer Parameter:" /><LineBreak />
+                                Bauvorhaben wird von Spezifikation übernommen</TextBlock>
+                        </ToolTipService.ToolTip>
+                    </TextBox>
+                    <TextBox
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        MinHeight="92"
+                        Margin="5,0,10,0"
+                        AcceptsReturn="True"
+                        Header="Betreiber"
+                        IsReadOnly="True"
+                        Opacity="0.5"
+                        PlaceholderText="Betreiber"
+                        Text="{x:Bind ViewModel.ParameterDictionary['var_Betreiber'].Value, Mode=OneWay}"
+                        TextWrapping="Wrap">
+                        <ToolTipService.ToolTip>
+                            <TextBlock>
+                                <Run
+                                    FontSize="14"
+                                    FontWeight="SemiBold"
+                                    Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                    Text="Schreibgeschützer Parameter:" /><LineBreak />
+                                Betreiber wird von Spezifikation übernommen</TextBlock>
+                        </ToolTipService.ToolTip>
+                    </TextBox>
+                    <Button
+                        Grid.Row="1"
+                        Grid.Column="2"
+                        Margin="5,5,5,0"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Bottom"
+                        Command="{x:Bind ViewModel.ImportSafetyComponentRecordCommand}"
+                        Style="{ThemeResource AccentButtonStyle}">
+                        <StackPanel Orientation="Horizontal">
+                            <FontIcon Glyph="&#xE8B6;" />
+                            <TextBlock
+                                Margin="15,0,0,0"
+                                FontWeight="Bold"
+                                Text="Sicherheitskomponenten importieren" />
+                        </StackPanel>
+                    </Button>
+                    <Button
+                        Grid.Row="1"
+                        Grid.Column="3"
+                        Margin="5,5,5,0"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Bottom"
+                        Command="{x:Bind ViewModel.AddSafetyComponentRecordCommand}"
+                        Style="{ThemeResource AccentButtonStyle}">
+                        <StackPanel Orientation="Horizontal">
+                            <FontIcon Glyph="&#xED0E;" />
+                            <TextBlock
+                                Margin="15,0,0,0"
+                                FontWeight="Bold"
+                                Text="Sicherheitskomponente hinzufügen" />
+                        </StackPanel>
+                    </Button>
+                    <Button
+                        Grid.Row="2"
+                        Grid.Column="2"
+                        Margin="5"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Top"
+                        Command="{x:Bind ViewModel.DeleteAllSafetyComponentRecordsCommand}"
+                        Style="{ThemeResource AccentButtonStyle}">
+                        <StackPanel Orientation="Horizontal">
+                            <FontIcon Glyph="&#xE74D;" />
+                            <TextBlock
+                                Margin="15,0,0,0"
+                                FontWeight="Bold"
+                                Text="Alle Sicherheitskomponenten löschen" />
+                        </StackPanel>
+                    </Button>
+                    <Button
+                        Grid.Row="2"
+                        Grid.Column="3"
+                        Margin="5"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Top"
+                        Command="{x:Bind ViewModel.CreateSafetyComponentRecordPDFCommand}"
+                        Style="{ThemeResource AccentButtonStyle}">
+                        <StackPanel Orientation="Horizontal">
+                            <FontIcon Glyph="&#xEA90;" />
+                            <TextBlock
+                                Margin="15,0,0,0"
+                                FontWeight="Bold"
+                                Text="Datenblatt erstellen" />
+                        </StackPanel>
+                    </Button>
+                </Grid>
+                <TextBlock
+                    Grid.Row="2"
+                    Grid.Column="0"
+                    Margin="5"
+                    FontSize="24"
+                    Foreground="{ThemeResource AccentTextFillColorSecondaryBrush}"
+                    Text="Equipments im Shape TraceLink Format" />
+                <Grid
+                    Grid.Row="3"
+                    Grid.Column="0"
+                    Padding="5"
+                    Style="{ThemeResource GridCardPanel}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBox
+                        Grid.Column="0"
+                        Margin="0,0,5,0"
+                        Header="Montagebetrieb"
+                        Text="{x:Bind ViewModel.LiftInstallerID, Mode=TwoWay}" />
+                    <TextBox
+                        Grid.Column="1"
+                        Margin="0,0,5,0"
+                        Header="Herstellernummer"
+                        Text="{x:Bind ViewModel.LiftName, Mode=TwoWay}" />
+                    <TextBox
+                        Grid.Column="2"
+                        Margin="0,0,5,0"
+                        Header="Equipmentnummer"
+                        Text="{x:Bind ViewModel.SAISEquipment, Mode=TwoWay}" />
+                    <TextBox
+                        Grid.Column="3"
+                        Margin="0,0,5,0"
+                        Header="Straße"
+                        Text="{x:Bind ViewModel.Street, Mode=TwoWay}" />
+                    <TextBox
+                        Grid.Column="4"
+                        Margin="0,0,5,0"
+                        Header="Hausnummer"
+                        Text="{x:Bind ViewModel.HouseNumber, Mode=TwoWay}" />
+                    <TextBox
+                        Grid.Column="5"
+                        Margin="0,0,5,0"
+                        Header="Postleitzahl"
+                        Text="{x:Bind ViewModel.ZIPCode, Mode=TwoWay}" />
+                    <TextBox
+                        Grid.Column="6"
+                        Margin="0,0,5,0"
+                        Header="Stadt"
+                        Text="{x:Bind ViewModel.City, Mode=TwoWay}" />
+                    <TextBox
+                        Grid.Column="7"
+                        Header="Land"
+                        Text="{x:Bind ViewModel.Country, Mode=TwoWay}" />
+                </Grid>
+                <TextBlock
+                    Grid.Row="4"
+                    Grid.Column="0"
+                    Margin="5"
+                    FontSize="24"
+                    Foreground="{ThemeResource AccentTextFillColorSecondaryBrush}"
+                    Text="Sicherheitskomponenten im Shape TraceLink Format" />
+                <tableView:TableView
+                    x:Name="CurrentSafetyComponentRecordsTableView"
+                    Grid.Row="5"
                     Margin="0,0,5,0"
-                    Header="Montagebetrieb"
-                    Text="{x:Bind ViewModel.LiftInstallerID, Mode=TwoWay}" />
-                <TextBox
-                    Grid.Column="1"
-                    Margin="0,0,5,0"
-                    Header="Herstellernummer"
-                    Text="{x:Bind ViewModel.LiftName, Mode=TwoWay}" />
-                <TextBox
-                    Grid.Column="2"
-                    Margin="0,0,5,0"
-                    Header="Equipmentnummer"
-                    Text="{x:Bind ViewModel.SAISEquipment, Mode=TwoWay}" />
-                <TextBox
-                    Grid.Column="3"
-                    Margin="0,0,5,0"
-                    Header="Straße"
-                    Text="{x:Bind ViewModel.Street, Mode=TwoWay}" />
-                <TextBox
-                    Grid.Column="4"
-                    Margin="0,0,5,0"
-                    Header="Hausnummer"
-                    Text="{x:Bind ViewModel.HouseNumber, Mode=TwoWay}" />
-                <TextBox
-                    Grid.Column="5"
-                    Margin="0,0,5,0"
-                    Header="Postleitzahl"
-                    Text="{x:Bind ViewModel.ZIPCode, Mode=TwoWay}" />
-                <TextBox
-                    Grid.Column="6"
-                    Margin="0,0,5,0"
-                    Header="Stadt"
-                    Text="{x:Bind ViewModel.City, Mode=TwoWay}" />
-                <TextBox
-                    Grid.Column="7"
-                    Header="Land"
-                    Text="{x:Bind ViewModel.Country, Mode=TwoWay}" />
-            </Grid>
-            <TextBlock
-                Grid.Row="4"
-                Grid.Column="0"
-                Margin="5"
-                FontSize="24"
-                Foreground="{ThemeResource AccentTextFillColorSecondaryBrush}"
-                Text="Sicherheitskomponenten im Shape TraceLink Format" />
-            <tableView:TableView
-                x:Name="CurrentSafetyComponentRecordsTableView"
-                Grid.Row="5"
-                Margin="0,0,5,0"
-                AlternateRowBackground="{ThemeResource SystemControlPageBackgroundListLowBrush}"
-                AutoGenerateColumns="False"
-                CornerRadius="4"
-                ItemsSource="{x:Bind ViewModel.ListOfSafetyComponents, Mode=OneWay}"
-                ShowExportOptions="True">
-                <tableView:TableView.Columns>
-                    <tableView:TableViewTemplateColumn
-                        Width="50"
-                        CanFilter="False"
-                        CanResize="False"
-                        CanSort="False">
-                        <tableView:TableViewTemplateColumn.Header>
-                            <FontIcon Glyph="&#xE74D;" ToolTipService.ToolTip="Sicherheitsbauteil löschen" />
-                        </tableView:TableViewTemplateColumn.Header>
-                        <tableView:TableViewTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Button
-                                    Margin="0"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    Click="Delete_Click"
-                                    CommandParameter="{Binding}">
-                                    <FontIcon
+                    AlternateRowBackground="{ThemeResource SystemControlPageBackgroundListLowBrush}"
+                    AutoGenerateColumns="False"
+                    CornerRadius="4"
+                    ItemsSource="{x:Bind ViewModel.ListOfSafetyComponents, Mode=OneWay}"
+                    ShowExportOptions="True">
+                    <tableView:TableView.Columns>
+                        <tableView:TableViewTemplateColumn
+                            Width="50"
+                            CanFilter="False"
+                            CanResize="False"
+                            CanSort="False">
+                            <tableView:TableViewTemplateColumn.Header>
+                                <FontIcon Glyph="&#xE74D;" ToolTipService.ToolTip="Sicherheitsbauteil löschen" />
+                            </tableView:TableViewTemplateColumn.Header>
+                            <tableView:TableViewTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button
+                                        Margin="0"
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center"
-                                        FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                        FontSize="16"
-                                        Glyph="&#xE74D;" />
-                                    <ToolTipService.ToolTip>
-                                        <TextBlock Text="Sicherheitsbauteil löschen" />
-                                    </ToolTipService.ToolTip>
-                                </Button>
-                            </DataTemplate>
-                        </tableView:TableViewTemplateColumn.CellTemplate>
-                    </tableView:TableViewTemplateColumn>
-                    <tableView:TableViewTemplateColumn
-                        Width="50"
-                        CanFilter="False"
-                        CanResize="False"
-                        CanSort="False"
-                        IsReadOnly="True">
-                        <tableView:TableViewTemplateColumn.Header>
-                            <FontIcon Glyph="&#xEC61;" ToolTipService.ToolTip="Unvollständige Eingaben" />
-                        </tableView:TableViewTemplateColumn.Header>
-                        <tableView:TableViewTemplateColumn.CellTemplate>
-                            <DataTemplate x:DataType="dbModels:ObservableDBSafetyComponentRecord">
-                                <Grid>
-                                    <FontIcon
-                                        Foreground="MediumSeaGreen"
-                                        Glyph="&#xEC61;"
-                                        Visibility="{x:Bind helpers:XamlFunctions.TrueToVisible(CompleteRecord), Mode=OneWay}" />
-                                    <FontIcon
-                                        Foreground="Goldenrod"
-                                        Glyph="&#xE7BA;"
-                                        Visibility="{x:Bind helpers:XamlFunctions.FalseToVisible(CompleteRecord), Mode=OneWay}" />
-                                </Grid>
-                            </DataTemplate>
-                        </tableView:TableViewTemplateColumn.CellTemplate>
-                    </tableView:TableViewTemplateColumn>
-                    <tableView:TableViewTemplateColumn
-                        Width="50"
-                        CanFilter="False"
-                        CanResize="False"
-                        CanSort="False"
-                        IsReadOnly="True">
-                        <tableView:TableViewTemplateColumn.Header>
-                            <FontIcon Glyph="&#xEB95;" ToolTipService.ToolTip="Sicherheitsbauteil von Schindler freigegeben" />
-                        </tableView:TableViewTemplateColumn.Header>
-                        <tableView:TableViewTemplateColumn.CellTemplate>
-                            <DataTemplate x:DataType="dbModels:ObservableDBSafetyComponentRecord">
-                                <FontIcon Foreground="{x:Bind helpers:XamlFunctions.BoolToSolidColorBrushError(SchindlerCertified), Mode=OneWay}" Glyph="&#xEB95;" />
-                            </DataTemplate>
-                        </tableView:TableViewTemplateColumn.CellTemplate>
-                    </tableView:TableViewTemplateColumn>
-                    <tableView:TableViewCheckBoxColumn
-                        Width="60"
-                        Binding="{Binding Active, Mode=TwoWay}"
-                        CanFilter="False"
-                        CanResize="False"
-                        CanSort="False"
-                        Header="Aktiv"
-                        IsReadOnly="False" />
-                    <tableView:TableViewTextColumn
-                        Width="250"
-                        Binding="{Binding Name, Mode=TwoWay}"
-                        CanFilter="False"
-                        CanSort="False"
-                        Header="Produktbeschreibung"
-                        IsReadOnly="False" />
-                    <tableView:TableViewNumberColumn
-                        Width="75"
-                        Binding="{Binding Release, Mode=TwoWay}"
-                        CanFilter="False"
-                        CanSort="False"
-                        Header="Release"
-                        IsReadOnly="False" />
-                    <tableView:TableViewNumberColumn
-                        Width="75"
-                        Binding="{Binding Revision, Mode=TwoWay}"
-                        CanFilter="False"
-                        CanSort="False"
-                        Header="Revision"
-                        IsReadOnly="False" />
-                    <tableView:TableViewTextColumn
-                        Width="250"
-                        Binding="{Binding IdentificationNumber, Mode=TwoWay}"
-                        CanFilter="False"
-                        CanSort="False"
-                        Header="Identificationr."
-                        IsReadOnly="False" />
-                    <tableView:TableViewTextColumn
-                        Width="125"
-                        Binding="{Binding SerialNumber, Mode=TwoWay}"
-                        CanFilter="False"
-                        CanSort="False"
-                        Header="Seriennr."
-                        IsReadOnly="False" />
-                    <tableView:TableViewTextColumn
-                        Width="125"
-                        Binding="{Binding BatchNumber, Mode=TwoWay}"
-                        CanFilter="False"
-                        CanSort="False"
-                        Header="Chargennr."
-                        IsReadOnly="False" />
-                    <tableView:TableViewTextColumn
-                        Width="175"
-                        Binding="{Binding SafetyComponentManufacturer.Name, Mode=TwoWay}"
-                        CanFilter="False"
-                        CanSort="False"
-                        Header="Hersteller"
-                        IsReadOnly="True" />
-                    <tableView:TableViewTextColumn
-                        Width="100"
-                        Binding="{Binding SafetyComponentManufacturer.ZIPCode, Mode=TwoWay}"
-                        CanFilter="False"
-                        CanSort="False"
-                        Header="Postleitzahl"
-                        IsReadOnly="True" />
-                    <tableView:TableViewTextColumn
-                        Width="100"
-                        Binding="{Binding SafetyComponentManufacturer.City, Mode=TwoWay}"
-                        CanFilter="False"
-                        CanSort="False"
-                        Header="Stadt"
-                        IsReadOnly="True" />
-                    <tableView:TableViewTextColumn
-                        Width="50"
-                        Binding="{Binding SafetyComponentManufacturer.Country, Mode=TwoWay}"
-                        CanFilter="False"
-                        CanSort="False"
-                        Header="Land"
-                        IsReadOnly="True" />
-                    <tableView:TableViewTextColumn
-                        Width="75"
-                        Binding="{Binding Imported, Mode=TwoWay}"
-                        CanFilter="False"
-                        CanSort="False"
-                        Header="Import"
-                        IsReadOnly="False" />
-                    <tableView:TableViewDateColumn
-                        Width="110"
-                        Binding="{Binding CreationDate, Mode=TwoWay}"
-                        CanFilter="False"
-                        CanSort="False"
-                        Header="Erstellungsdatum"
-                        IsReadOnly="False" />
-                </tableView:TableView.Columns>
-            </tableView:TableView>
+                                        Click="Delete_Click"
+                                        CommandParameter="{Binding}">
+                                        <FontIcon
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                            FontSize="16"
+                                            Glyph="&#xE74D;" />
+                                        <ToolTipService.ToolTip>
+                                            <TextBlock Text="Sicherheitsbauteil löschen" />
+                                        </ToolTipService.ToolTip>
+                                    </Button>
+                                </DataTemplate>
+                            </tableView:TableViewTemplateColumn.CellTemplate>
+                        </tableView:TableViewTemplateColumn>
+                        <tableView:TableViewTemplateColumn
+                            Width="50"
+                            CanFilter="False"
+                            CanResize="False"
+                            CanSort="False"
+                            IsReadOnly="True">
+                            <tableView:TableViewTemplateColumn.Header>
+                                <FontIcon Glyph="&#xEC61;" ToolTipService.ToolTip="Unvollständige Eingaben" />
+                            </tableView:TableViewTemplateColumn.Header>
+                            <tableView:TableViewTemplateColumn.CellTemplate>
+                                <DataTemplate x:DataType="dbModels:ObservableDBSafetyComponentRecord">
+                                    <Grid>
+                                        <FontIcon
+                                            Foreground="MediumSeaGreen"
+                                            Glyph="&#xEC61;"
+                                            Visibility="{x:Bind helpers:XamlFunctions.TrueToVisible(CompleteRecord), Mode=OneWay}" />
+                                        <FontIcon
+                                            Foreground="Goldenrod"
+                                            Glyph="&#xE7BA;"
+                                            Visibility="{x:Bind helpers:XamlFunctions.FalseToVisible(CompleteRecord), Mode=OneWay}" />
+                                    </Grid>
+                                </DataTemplate>
+                            </tableView:TableViewTemplateColumn.CellTemplate>
+                        </tableView:TableViewTemplateColumn>
+                        <tableView:TableViewTemplateColumn
+                            Width="50"
+                            CanFilter="False"
+                            CanResize="False"
+                            CanSort="False"
+                            IsReadOnly="True">
+                            <tableView:TableViewTemplateColumn.Header>
+                                <FontIcon Glyph="&#xEB95;" ToolTipService.ToolTip="Sicherheitsbauteil von Schindler freigegeben" />
+                            </tableView:TableViewTemplateColumn.Header>
+                            <tableView:TableViewTemplateColumn.CellTemplate>
+                                <DataTemplate x:DataType="dbModels:ObservableDBSafetyComponentRecord">
+                                    <FontIcon Foreground="{x:Bind helpers:XamlFunctions.BoolToSolidColorBrushError(SchindlerCertified), Mode=OneWay}" Glyph="&#xEB95;" />
+                                </DataTemplate>
+                            </tableView:TableViewTemplateColumn.CellTemplate>
+                        </tableView:TableViewTemplateColumn>
+                        <tableView:TableViewCheckBoxColumn
+                            Width="60"
+                            Binding="{Binding Active, Mode=TwoWay}"
+                            CanFilter="False"
+                            CanResize="False"
+                            CanSort="False"
+                            Header="Aktiv"
+                            IsReadOnly="False" />
+                        <tableView:TableViewTextColumn
+                            Width="250"
+                            Binding="{Binding Name, Mode=TwoWay}"
+                            CanFilter="False"
+                            CanSort="False"
+                            Header="Produktbeschreibung"
+                            IsReadOnly="False" />
+                        <tableView:TableViewNumberColumn
+                            Width="75"
+                            Binding="{Binding Release, Mode=TwoWay}"
+                            CanFilter="False"
+                            CanSort="False"
+                            Header="Release"
+                            IsReadOnly="False" />
+                        <tableView:TableViewNumberColumn
+                            Width="75"
+                            Binding="{Binding Revision, Mode=TwoWay}"
+                            CanFilter="False"
+                            CanSort="False"
+                            Header="Revision"
+                            IsReadOnly="False" />
+                        <tableView:TableViewTextColumn
+                            Width="250"
+                            Binding="{Binding IdentificationNumber, Mode=TwoWay}"
+                            CanFilter="False"
+                            CanSort="False"
+                            Header="Identificationr."
+                            IsReadOnly="False" />
+                        <tableView:TableViewTextColumn
+                            Width="125"
+                            Binding="{Binding SerialNumber, Mode=TwoWay}"
+                            CanFilter="False"
+                            CanSort="False"
+                            Header="Seriennr."
+                            IsReadOnly="False" />
+                        <tableView:TableViewTextColumn
+                            Width="125"
+                            Binding="{Binding BatchNumber, Mode=TwoWay}"
+                            CanFilter="False"
+                            CanSort="False"
+                            Header="Chargennr."
+                            IsReadOnly="False" />
+                        <tableView:TableViewTextColumn
+                            Width="175"
+                            Binding="{Binding SafetyComponentManufacturer.Name, Mode=TwoWay}"
+                            CanFilter="False"
+                            CanSort="False"
+                            Header="Hersteller"
+                            IsReadOnly="True" />
+                        <tableView:TableViewTextColumn
+                            Width="100"
+                            Binding="{Binding SafetyComponentManufacturer.ZIPCode, Mode=TwoWay}"
+                            CanFilter="False"
+                            CanSort="False"
+                            Header="Postleitzahl"
+                            IsReadOnly="True" />
+                        <tableView:TableViewTextColumn
+                            Width="100"
+                            Binding="{Binding SafetyComponentManufacturer.City, Mode=TwoWay}"
+                            CanFilter="False"
+                            CanSort="False"
+                            Header="Stadt"
+                            IsReadOnly="True" />
+                        <tableView:TableViewTextColumn
+                            Width="50"
+                            Binding="{Binding SafetyComponentManufacturer.Country, Mode=TwoWay}"
+                            CanFilter="False"
+                            CanSort="False"
+                            Header="Land"
+                            IsReadOnly="True" />
+                        <tableView:TableViewTextColumn
+                            Width="75"
+                            Binding="{Binding Imported, Mode=TwoWay}"
+                            CanFilter="False"
+                            CanSort="False"
+                            Header="Import"
+                            IsReadOnly="False" />
+                        <tableView:TableViewDateColumn
+                            Width="110"
+                            Binding="{Binding CreationDate, Mode=TwoWay}"
+                            CanFilter="False"
+                            CanSort="False"
+                            Header="Erstellungsdatum"
+                            IsReadOnly="False" />
+                    </tableView:TableView.Columns>
+                </tableView:TableView>
+            </Grid>
         </Grid>
     </Grid>
 </Page>

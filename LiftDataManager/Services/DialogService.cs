@@ -280,7 +280,7 @@ public class DialogService : IDialogService
     }
 
     /// <inheritdoc/>
-    public async Task<bool> PasswordDialogAsync(string? title, string? condition, string? description)
+    public async Task<bool> PasswordDialogAsync(string? title, string? condition, string? description, string passwort = "0000")
     {
         var dialog = new PasswortDialog()
         {
@@ -288,7 +288,8 @@ public class DialogService : IDialogService
             RequestedTheme = MainRoot.ActualTheme,
             Title = title,
             Condition = condition,
-            Description = description
+            Description = description,
+            Passwort = passwort
         };
         var result = await dialog.ShowAsyncQueueDraggable();
         if (result == ContentDialogResult.None || result == ContentDialogResult.Secondary)
