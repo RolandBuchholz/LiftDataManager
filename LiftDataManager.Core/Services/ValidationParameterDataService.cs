@@ -114,7 +114,8 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
             [new(NotEmpty, "Error", null)]);
 
         ValidationDictionary.Add("var_Antrieb",
-            [new(ValidateUCMBrakingComponents, "None", null)]);
+            [new(ValidateMotorP3, "Warning", null),
+            new(ValidateUCMBrakingComponents, "None", null)]);
 
         ValidationDictionary.Add("var_Hydraulikventil",
             [new(ValidateUCMBrakingComponents, "None", null)]);

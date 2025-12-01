@@ -31,7 +31,9 @@ public partial class ObservableDBSafetyComponentRecord : ObservableObject
         CreationDate = safetyComponentRecord.CreationDate;
         Active = safetyComponentRecord.Active;
         SafetyComponentManufacturerId = safetyComponentRecord.SafetyComponentManufacturerId;
-        SafetyComponentManufacturer = safetyComponentRecord.SafetyComponentManufacturer;
+        SafetyComponentManufacturer = safetyComponentRecord.SafetyComponentManufacturer is null && SafetyComponentManufacturerId > 0 ? 
+                                                                   GetSafetyComponentManufacturerById(SafetyComponentManufacturerId) : 
+                                                                   safetyComponentRecord.SafetyComponentManufacturer;
         _initializeData = false;
         CompleteRecord = CheckRecordisCompleted();
     }

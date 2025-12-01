@@ -4,6 +4,7 @@ using LiftDataManager.Core.DataAccessLayer.Models.AntriebSteuerungNotruf;
 using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 using LiftDataManager.Core.DataAccessLayer.Models.Kabine;
 using LiftDataManager.Core.DataAccessLayer.Models.Tueren;
+using Microsoft.Extensions.Primitives;
 using System.Collections.Immutable;
 using System.Globalization;
 using System.Linq.Expressions;
@@ -2358,5 +2359,29 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
         }
         bool hasOilBuffer = !string.IsNullOrWhiteSpace(value) && value.StartsWith("LSB");
         _parameterDictionary["var_HasOilbuffer"].AutoUpdateParameterValue(LiftParameterHelper.FirstCharToUpperAsSpan(hasOilBuffer.ToString()));
+    }
+
+    private void ValidateMotorP3(string name, string displayname, string? value, string? severity, string? optionalCondition = null)
+    {
+        bool driveIsValidate = false;
+
+        if (!string.IsNullOrWhiteSpace(value))
+        {
+            var drive = _parametercontext.Set<ZiehlAbeggDrive>().FirstOrDefault(x => x.Name.StartsWith(value));
+            driveIsValidate = drive is null || drive.SchindlerCertified;
+        }
+        else
+        {
+            driveIsValidate = true;
+        }
+
+        if (!driveIsValidate)
+        {
+            ValidationResult.Add(new ParameterStateInfo(name, displayname, $"{displayname}: {value} ist nicht auf der Schindler Greenlist, P3 Antrag erforderlich!", SetSeverity(severity)));
+        }
+        else
+        {
+            ValidationResult.Add(new ParameterStateInfo(name, displayname, true));
+        }
     }
 }

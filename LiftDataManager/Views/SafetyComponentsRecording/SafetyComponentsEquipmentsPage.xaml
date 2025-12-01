@@ -6,10 +6,18 @@
     xmlns:collections="using:CommunityToolkit.Mvvm.Collections"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dbModels="using:LiftDataManager.Core.DataAccessLayer.Models"
+    xmlns:helpers="using:LiftDataManager.Helpers"
     xmlns:linq="using:System.Linq"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:safetycomponentrecordmodels="using:LiftDataManager.Core.DataAccessLayer.SafetyComponentRecordModels"
     xmlns:tableView="using:WinUI.TableView"
+    xmlns:viewmodels="using:LiftDataManager.ViewModels"
+    d:DataContext="{d:DesignInstance Type=viewmodels:SafetyComponentsEquipmentsViewModel}"
     mc:Ignorable="d">
+
+    <Page.Resources>
+        <helpers:VisibilityInvertConverter x:Key="VisibilityInvertConverter" />
+    </Page.Resources>
 
     <Grid x:Name="ContentArea">
         <Grid.RowDefinitions>
@@ -86,6 +94,31 @@
                                         <TextBlock Text="Equipment bearbeiten" />
                                     </ToolTipService.ToolTip>
                                 </Button>
+                            </DataTemplate>
+                        </tableView:TableViewTemplateColumn.CellTemplate>
+                    </tableView:TableViewTemplateColumn>
+                    <tableView:TableViewTemplateColumn
+                        Width="50"
+                        CanFilter="False"
+                        CanResize="False"
+                        CanSort="False"
+                        IsReadOnly="True">
+                        <tableView:TableViewTemplateColumn.Header>
+                            <FontIcon Glyph="&#xEC61;" ToolTipService.ToolTip="Unvollständige Eingaben" />
+                        </tableView:TableViewTemplateColumn.Header>
+                        <tableView:TableViewTemplateColumn.CellTemplate>
+                            <DataTemplate x:DataType="safetycomponentrecordmodels:LiftCommission">
+                                <Grid>
+                                    <FontIcon
+                                        x:Name="CompleteIcon"
+                                        Foreground="MediumSeaGreen"
+                                        Glyph="&#xEC61;"
+                                        Visibility="{x:Bind viewmodels:SafetyComponentsEquipmentsViewModel.LiftCommissionIsComplete(SafetyComponentRecords), Mode=OneWay}" />
+                                    <FontIcon
+                                        Foreground="Goldenrod"
+                                        Glyph="&#xE7BA;"
+                                        Visibility="{Binding ElementName=CompleteIcon, Path=Visibility, Converter={StaticResource VisibilityInvertConverter}, Mode=OneWay}" />
+                                </Grid>
                             </DataTemplate>
                         </tableView:TableViewTemplateColumn.CellTemplate>
                     </tableView:TableViewTemplateColumn>

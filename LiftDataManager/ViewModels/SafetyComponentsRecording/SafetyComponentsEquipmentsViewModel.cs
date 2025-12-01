@@ -41,6 +41,19 @@ public partial class SafetyComponentsEquipmentsViewModel : DataViewModelBase, IN
         await Task.CompletedTask;
     }
 
+    public static Visibility LiftCommissionIsComplete(IEnumerable<SafetyComponentRecord> listOfSafetyComponentRecords) 
+    {
+        if (!listOfSafetyComponentRecords.Any())
+        {
+            return Visibility.Collapsed;
+        }
+        if (listOfSafetyComponentRecords.Any(x => !x.CompleteRecord))
+        {
+            return Visibility.Collapsed;
+        }
+        return Visibility.Visible;
+    }
+
     private async Task GetEquipmentsFromDatabaseAsync()
     {
         var liftCommissions = _safetyComponentRecordContext.LiftCommissions?.Include(i => i.SafetyComponentRecords);
@@ -60,8 +73,8 @@ public partial class SafetyComponentsEquipmentsViewModel : DataViewModelBase, IN
     public void OnNavigatedFrom()
     {
         NavigatedFromBaseActions();
-        if (string.Equals(SelectedPivotItem?.Tag, "CurrentSafetyComponentsPage") ||
-            string.Equals(SelectedPivotItem?.Tag, "SafetyComponentsRecordingPage"))
+        if (Equals(SelectedPivotItem?.Tag, "CurrentSafetyComponentsPage") ||
+            Equals(SelectedPivotItem?.Tag, "SafetyComponentsRecordingPage"))
         {
             return;
         }

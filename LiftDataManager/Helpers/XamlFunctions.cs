@@ -54,4 +54,11 @@ public static class XamlFunctions
             ? new SolidColorBrush(Colors.MediumSeaGreen)
             : new SolidColorBrush(Colors.Gold);
     }
+
+    public static Visibility InvertVisible(Visibility value)
+    {
+        return value == Visibility.Visible
+            ? Visibility.Collapsed
+            : Visibility.Visible;
+    }
 }
