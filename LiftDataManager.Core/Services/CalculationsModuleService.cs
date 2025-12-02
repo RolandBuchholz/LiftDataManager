@@ -1108,7 +1108,19 @@ public partial class CalculationsModuleService : ICalculationsModule
             var certificateNumber = string.Empty;
             var safetyComponentTyp = string.Empty;
             var specialOption = string.Empty;
-            var entityType = safetyComponentTyps.FirstOrDefault(x => x.Name.EndsWith(item.Item3));
+            var entity = item.Item3;
+
+            if (string.Equals(safetyType, "Sicherheitsschaltung"))
+            {
+                string liftPositionSystem = LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Schachtinformationssystem");
+                if (string.Equals(liftPositionSystem,"Limax 33CP"))
+                {
+                    value = liftPositionSystem;
+                    entity = "LiftPositionSystem";
+                }
+            }
+
+            var entityType = safetyComponentTyps.FirstOrDefault(x => x.Name.EndsWith(entity));
             if (entityType is null)
             {
                 continue;
