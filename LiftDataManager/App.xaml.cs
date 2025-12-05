@@ -134,6 +134,7 @@ public partial class App : Application
             services.AddTransient<CheckOutDialogViewModel>();
             services.AddTransient<ValidationDialogViewModel>();
             services.AddTransient<GenerateSafetyComponentRecordDialogViewModel>();
+            services.AddTransient<NumberInputDialogViewModel>();
 
             // SafetyComponentsRecordingViewModels
             services.AddTransient<CurrentSafetyComponentsViewModel>();

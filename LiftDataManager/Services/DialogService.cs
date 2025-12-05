@@ -1,8 +1,5 @@
 ﻿using Humanizer;
-using LiftDataManager.Core.DataAccessLayer.SafetyComponentRecordModels;
-using LiftDataManager.Core.Enums;
 using Microsoft.UI.Text;
-using RtfPipe.Tokens;
 using TextBox = DevWinUI.TextBox;
 
 namespace LiftDataManager.Services;
@@ -181,6 +178,27 @@ public class DialogService : IDialogService
         }
 
         return textresult.Text;
+    }
+
+    /// <inheritdoc/>
+    public async Task<int> NumberInputDialogAsync(string title, string message, string textBoxName, int minNumberlength, int maxNumberlength)
+    {
+        var dialog = new NumberInputDialog()
+        {
+            XamlRoot = MainRoot.XamlRoot,
+            RequestedTheme = MainRoot.ActualTheme,
+            Title = title,
+            Message = message,
+            TextBoxName = textBoxName,
+            MinLength = minNumberlength,
+            MaxLength = maxNumberlength
+        };
+        var result = await dialog.ShowAsyncQueueDraggable();
+        if (result == ContentDialogResult.None || result == ContentDialogResult.Secondary)
+        {
+            return default;
+        }
+        return dialog.InputNumber;
     }
 
     /// <inheritdoc/>

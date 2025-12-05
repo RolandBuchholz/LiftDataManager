@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentDialog
+    x:Class="LiftDataManager.Views.Dialogs.NumberInputDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:LiftDataManager.Views.Dialogs"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="using:CommunityToolkit.WinUI"
+    x:Name="NumberDialog"
+    VerticalAlignment="Stretch"
+    IsPrimaryButtonEnabled="{x:Bind ViewModel.NumberIsValid, Mode=OneWay}"
+    PrimaryButtonStyle="{StaticResource ContentDialogAccentButtonStyle}"
+    PrimaryButtonText="OK"
+    SecondaryButtonText="Abbrechen"
+    mc:Ignorable="d">
+    <ContentDialog.Resources>
+        <Style BasedOn="{StaticResource DefaultContentDialogStyle}" TargetType="local:NumberInputDialog" />
+    </ContentDialog.Resources>
+    <Interactivity:Interaction.Behaviors>
+        <Interactivity:EventTriggerBehavior EventName="Loaded">
+            <Interactivity:InvokeCommandAction Command="{x:Bind ViewModel.NumberInputDialogLoadedCommand}" CommandParameter="{Binding ElementName=NumberDialog}" />
+        </Interactivity:EventTriggerBehavior>
+        <Interactivity:EventTriggerBehavior EventName="PrimaryButtonClick">
+            <Interactivity:InvokeCommandAction Command="{x:Bind ViewModel.PrimaryButtonClickedCommand}" CommandParameter="{Binding ElementName=NumberDialog}" />
+        </Interactivity:EventTriggerBehavior>
+    </Interactivity:Interaction.Behaviors>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <StackPanel
+            Grid.Row="0"
+            Margin="0,0,0,10"
+            Orientation="Horizontal">
+            <FontIcon Glyph="&#xEF3E;" />
+            <TextBlock Margin="10,0,0,0" Text="{x:Bind ViewModel.Message, Mode=OneWay}" />
+        </StackPanel>
+        <TextBox
+            Grid.Row="1"
+            ui:TextBoxExtensions.ValidationMode="Dynamic"
+            ui:TextBoxExtensions.ValidationType="Number"
+            Header="{x:Bind ViewModel.TextBoxName, Mode=OneWay}"
+            MaxLength="{x:Bind ViewModel.MaxLength, Mode=OneWay}"
+            Text="{x:Bind ViewModel.InputNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+    </Grid>
+</ContentDialog>
+
+

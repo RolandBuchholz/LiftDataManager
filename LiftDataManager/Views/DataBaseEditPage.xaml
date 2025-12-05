@@ -128,7 +128,7 @@
                                             <FontIcon Glyph="&#xE7E6;" ToolTipService.ToolTip="IsKey: Schlüsselparameter" />
                                         </tableView:TableViewCheckBoxColumn.Header>
                                     </tableView:TableViewCheckBoxColumn>
-                                    <tableView:TableViewCheckBoxColumn Width="80" Binding="{Binding IsDefaultUserEditable, Mode=TwoWay}">
+                                    <tableView:TableViewCheckBoxColumn Width="80" Binding="{Binding DefaultUserEditable, Mode=TwoWay}">
                                         <tableView:TableViewCheckBoxColumn.Header>
                                             <FontIcon Glyph="&#xE7EF;" ToolTipService.ToolTip="IsDefaultUserEditable: durch Standartbenutzer veränderbar" />
                                         </tableView:TableViewCheckBoxColumn.Header>
