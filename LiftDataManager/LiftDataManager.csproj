@@ -16,7 +16,7 @@
     <Nullable>enable</Nullable>
     <UseWinUI>true</UseWinUI>
     <EnableMsixTooling>true</EnableMsixTooling>
-    <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
+
     <GenerateAppInstallerFile>True</GenerateAppInstallerFile>
     <AppxPackageSigningTimestampServerUrl>http://timestamp.comodoca.com</AppxPackageSigningTimestampServerUrl>
     <PackageCertificateThumbprint>0CD8FB65AE2C0CA386EBD01686E71A6D1521F529</PackageCertificateThumbprint>
@@ -55,29 +55,28 @@
 
   <ItemGroup>
     <PackageReference Include="AsyncAwaitBestPractices" Version="10.0.0" />
-    <PackageReference Include="DevWinUI" Version="9.6.0" />
-    <PackageReference Include="DevWinUI.Controls" Version="9.6.0" />
-    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3595.46" />
+    <PackageReference Include="DevWinUI" Version="9.9.2" />
+    <PackageReference Include="DevWinUI.Controls" Version="9.9.2" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3650.58" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.8.251106002" />   
     <PackageReference Include="AK.Toolkit.WinUI3.NumberBoxEx" Version="1.0.1" />
     <PackageReference Include="Cogs.Collections" Version="1.12.1" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-    <PackageReference Include="CommunityToolkit.WinUI.Animations" Version="8.2.250402" />
-    <PackageReference Include="CommunityToolkit.WinUI.Behaviors" Version="8.2.250402" />
-    <PackageReference Include="CommunityToolkit.WinUI.Collections" Version="8.2.250402" />
-    <PackageReference Include="CommunityToolkit.WinUI.Controls.HeaderedControls" Version="8.2.250402" />
-    <PackageReference Include="CommunityToolkit.WinUI.Controls.LayoutTransformControl" Version="8.2.250402" />
-    <PackageReference Include="CommunityToolkit.WinUI.Controls.MetadataControl" Version="8.2.250402" />
-    <PackageReference Include="CommunityToolkit.WinUI.Controls.Primitives" Version="8.2.250402" />
-    <PackageReference Include="CommunityToolkit.WinUI.Controls.Segmented" Version="8.2.250402" />
-    <PackageReference Include="CommunityToolkit.WinUI.Controls.SettingsControls" Version="8.2.250402" />
-    <PackageReference Include="CommunityToolkit.WinUI.Controls.Sizers" Version="8.2.250402" />
-    <PackageReference Include="CommunityToolkit.WinUI.Converters" Version="8.2.250402" />
-    <PackageReference Include="CommunityToolkit.WinUI.Extensions" Version="8.2.250402" />
-    <PackageReference Include="CommunityToolkit.WinUI.Helpers" Version="8.2.250402" />
-    <PackageReference Include="CommunityToolkit.WinUI.Media" Version="8.2.250402" />
-    <PackageReference Include="CommunityToolkit.WinUI.Triggers" Version="8.2.250402" />
-    <PackageReference Include="CommunityToolkit.WinUI.UI.Controls.DataGrid" Version="7.1.2" />
+    <PackageReference Include="CommunityToolkit.WinUI.Animations" Version="8.2.251219" />
+    <PackageReference Include="CommunityToolkit.WinUI.Behaviors" Version="8.2.251219" />
+    <PackageReference Include="CommunityToolkit.WinUI.Collections" Version="8.2.251219" />
+    <PackageReference Include="CommunityToolkit.WinUI.Controls.HeaderedControls" Version="8.2.251219" />
+    <PackageReference Include="CommunityToolkit.WinUI.Controls.LayoutTransformControl" Version="8.2.251219" />
+    <PackageReference Include="CommunityToolkit.WinUI.Controls.MetadataControl" Version="8.2.251219" />
+    <PackageReference Include="CommunityToolkit.WinUI.Controls.Primitives" Version="8.2.251219" />
+    <PackageReference Include="CommunityToolkit.WinUI.Controls.Segmented" Version="8.2.251219" />
+    <PackageReference Include="CommunityToolkit.WinUI.Controls.SettingsControls" Version="8.2.251219" />
+    <PackageReference Include="CommunityToolkit.WinUI.Controls.Sizers" Version="8.2.251219" />
+    <PackageReference Include="CommunityToolkit.WinUI.Converters" Version="8.2.251219" />
+    <PackageReference Include="CommunityToolkit.WinUI.Extensions" Version="8.2.251219" />
+    <PackageReference Include="CommunityToolkit.WinUI.Helpers" Version="8.2.251219" />
+    <PackageReference Include="CommunityToolkit.WinUI.Media" Version="8.2.251219" />
+    <PackageReference Include="CommunityToolkit.WinUI.Triggers" Version="8.2.251219" />
     <PackageReference Include="CommunityToolkit.WinUI.UI.Controls.Markdown" Version="7.1.2" />
     <PackageReference Include="HtmlAgilityPack" Version="1.12.4" />
     <PackageReference Include="Humanizer.Core" Version="3.0.1" />

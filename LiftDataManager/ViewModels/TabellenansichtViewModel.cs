@@ -5,16 +5,12 @@ namespace LiftDataManager.ViewModels;
 
 public partial class TabellenansichtViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>, IRecipient<RefreshModelStateMessage>
 {
-    public CollectionViewSource GroupedItems { get; set; }
-
+    //public ObservableRangeCollection<Parameter>? ParameterList { get; set; }
+    public List<Parameter>? ParameterList { get; set; }
     public TabellenansichtViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, 
                                     ISettingService settingService, ILogger<DataViewModelBase> baseLogger) :
          base(parameterDataService, dialogService, infoCenterService, settingService, baseLogger)
     {
-        GroupedItems = new CollectionViewSource
-        {
-            IsSourceGrouped = true
-        };
     }
 
     public override void Receive(PropertyChangedMessage<bool> message)
@@ -117,6 +113,7 @@ public partial class TabellenansichtViewModel : DataViewModelBase, INavigationAw
         if (CurrentSpeziProperties is not null)
         {
             SearchInput = CurrentSpeziProperties.SearchInput;
+            ParameterList = [.. ParameterDictionary.Values];
         }
         HasHighlightedParameters = CheckhasHighlightedParameters();
     }
