@@ -36,7 +36,6 @@ public partial class LiftHistoryViewModel : DataViewModelBase, INavigationAwareE
     {
         HistoryTableView = sender;
         HistoryTableView.FilterDescriptions.Add(new FilterDescription(string.Empty, Filter));
-        FilteredHistoryEntrysCount = HistoryTableView.Items.Count;
         await Task.CompletedTask;
     }
 
@@ -83,9 +82,6 @@ public partial class LiftHistoryViewModel : DataViewModelBase, INavigationAwareE
 
     [ObservableProperty]
     public partial bool CanShowHistoryEntrys { get; set; }
-
-    [ObservableProperty]
-    public partial int FilteredHistoryEntrysCount { get; set; }
 
     [ObservableProperty]
     public partial bool IsRevisionSelectionAktiv { get; set; } = true;
@@ -188,10 +184,9 @@ public partial class LiftHistoryViewModel : DataViewModelBase, INavigationAwareE
     }
 
     [RelayCommand]
-    public async Task RefreshFilterAsync() 
+    public async Task RefreshFilterAsync()
     {
         HistoryTableView?.RefreshFilter();
-        FilteredHistoryEntrysCount = HistoryTableView is null ? 0 : HistoryTableView.Items.Count;
         await Task.CompletedTask;
     }
 

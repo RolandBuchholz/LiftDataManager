@@ -201,8 +201,7 @@ public sealed partial class CommandBar : UserControl
         {
             GroupedFilteredParameters.Add(new ObservableGroup<string, Parameter>(group.Key, group));
         }
-        if (ViewSource is not null)
-            ViewSource.Source = GroupedFilteredParameters;
+        ViewSource?.Source = GroupedFilteredParameters;
     }
 
     private static Func<Parameter, bool> FilterView(string filter)

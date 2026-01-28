@@ -1,13 +1,13 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
-using Microsoft.Extensions.Logging;
+using WinUI.TableView;
 
 namespace LiftDataManager.ViewModels;
 
 public partial class TabellenansichtViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>, IRecipient<RefreshModelStateMessage>
 {
-    //public ObservableRangeCollection<Parameter>? ParameterList { get; set; }
     public List<Parameter>? ParameterList { get; set; }
-    public TabellenansichtViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, 
+    public TableView? ParameterTableView { get; set; }
+    public TabellenansichtViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService,
                                     ISettingService settingService, ILogger<DataViewModelBase> baseLogger) :
          base(parameterDataService, dialogService, infoCenterService, settingService, baseLogger)
     {
@@ -23,8 +23,40 @@ public partial class TabellenansichtViewModel : DataViewModelBase, INavigationAw
 
         SetInfoSidebarPanelHighlightText(message);
         SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex.ToString()));
-        HasHighlightedParameters = false;
         HasHighlightedParameters = CheckhasHighlightedParameters();
+    }
+
+    [RelayCommand]
+    public async Task ParameterViewLoadedAsync(TableView sender)
+    {
+        ParameterTableView = sender;
+        ParameterTableView.FilterDescriptions.Add(new FilterDescription(string.Empty, Filter));
+        await Task.CompletedTask;
+    }
+
+    private bool Filter(object? item)
+    {
+        if (item is null)
+        {
+            return false;
+        }
+        Parameter entry = (Parameter)item;
+
+        var matchTextSearch = string.IsNullOrWhiteSpace(SearchInput) ||
+                              entry.Name.Contains(SearchInput, StringComparison.OrdinalIgnoreCase) is true ||
+                              entry.DisplayName.Contains(SearchInput, StringComparison.OrdinalIgnoreCase) is true ||
+                              entry.Value?.Contains(SearchInput, StringComparison.OrdinalIgnoreCase) is true ||
+                              entry.Comment?.Contains(SearchInput, StringComparison.OrdinalIgnoreCase) is true;
+
+        var matchFilter = SelectedFilter?.Text switch
+        {
+            "All" => true,
+            "Highlighted" => entry.IsKey,
+            "Validation Errors" => entry.HasErrors,
+            "Unsaved" => entry.IsDirty,
+            _ => true
+        };
+        return matchFilter && matchTextSearch;
     }
 
     [ObservableProperty]
@@ -35,16 +67,28 @@ public partial class TabellenansichtViewModel : DataViewModelBase, INavigationAw
 
     [ObservableProperty]
     public partial SelectorBarItem? SelectedFilter { get; set; }
+    partial void OnSelectedFilterChanged(SelectorBarItem? value) 
+    {
+        RefreshFilterCommand.Execute(this);
+    }
 
     [ObservableProperty]
     public partial string? SearchInput { get; set; }
     partial void OnSearchInputChanged(string? value)
     {
+        RefreshFilterCommand.Execute(this);
         if (CurrentSpeziProperties != null)
         {
             CurrentSpeziProperties.SearchInput = SearchInput;
             Messenger.Send(new SpeziPropertiesChangedMessage(CurrentSpeziProperties));
         }
+    }
+
+    [RelayCommand]
+    public async Task RefreshFilterAsync()
+    {
+        ParameterTableView?.RefreshFilter();
+        await Task.CompletedTask;
     }
 
     protected async override Task SetModelStateAsync()
@@ -103,7 +147,9 @@ public partial class TabellenansichtViewModel : DataViewModelBase, INavigationAw
     private bool CheckhasHighlightedParameters()
     {
         if (ParameterDictionary is null || ParameterDictionary.Values is null)
+        {
             return false;
+        }
         return ParameterDictionary.Values.Any(x => x.IsKey);
     }
 

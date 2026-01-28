@@ -118,7 +118,7 @@
                         FontSize="16"
                         FontWeight="Bold"
                         Foreground="{ThemeResource AccentFillColorTertiaryBrush}"
-                        Text="{x:Bind ViewModel.FilteredHistoryEntrysCount, Mode=OneWay}" />
+                        Text="{Binding CollectionView.Count, ElementName=HistoryTableView}" />
                     <TextBlock
                         VerticalAlignment="Center"
                         FontSize="16"
@@ -149,7 +149,8 @@
                 AlternateRowBackground="{ThemeResource SystemControlPageBackgroundListLowBrush}"
                 AutoGenerateColumns="False"
                 CornerRadius="4"
-                ItemsSource="{x:Bind ViewModel.HistoryEntrys, Mode=OneWay}">
+                ItemsSource="{x:Bind ViewModel.HistoryEntrys, Mode=OneWay}"
+                ShowFilterItemsCount="True">
                 <Interactivity:Interaction.Behaviors>
                     <Interactivity:EventTriggerBehavior EventName="Loaded">
                         <Interactivity:InvokeCommandAction Command="{x:Bind ViewModel.HistoryTableViewLoadedCommand}" CommandParameter="{x:Bind HistoryTableView}" />
