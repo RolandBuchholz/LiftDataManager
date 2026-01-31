@@ -143,6 +143,20 @@ public partial class TabellenansichtViewModel : DataViewModelBase, INavigationAw
         }
         await Task.CompletedTask;
     }
+    public Predicate<TableViewConditionalCellStyleContext> StatusInformationalAndHighlightPredicate =>
+    static context => context.DataItem is Parameter item && item.ParameterState is ErrorLevel.Informational && item.IsKey;
+    public Predicate<TableViewConditionalCellStyleContext> StatusWarningAndHighlightPredicate =>
+    static context => context.DataItem is Parameter item && item.ParameterState is ErrorLevel.Warning && item.IsKey;
+    public Predicate<TableViewConditionalCellStyleContext> StatusErrorAndHighlightPredicate =>
+    static context => context.DataItem is Parameter item && item.ParameterState is ErrorLevel.Error && item.IsKey;
+    public Predicate<TableViewConditionalCellStyleContext> HighlightPredicate =>
+        static context => context.DataItem is Parameter item && item.IsKey;
+    public Predicate<TableViewConditionalCellStyleContext> StatusInformationalPredicate =>
+        static context => context.DataItem is Parameter item && item.ParameterState is ErrorLevel.Informational;
+    public Predicate<TableViewConditionalCellStyleContext> StatusWarningPredicate =>
+        static context => context.DataItem is Parameter item && item.ParameterState is ErrorLevel.Warning;
+    public Predicate<TableViewConditionalCellStyleContext> StatusErrorPredicate =>
+        static context => context.DataItem is Parameter item && item.ParameterState is ErrorLevel.Error;
 
     private bool CheckhasHighlightedParameters()
     {
