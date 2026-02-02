@@ -949,14 +949,14 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
             creationDate = parsedDate;
         }
 
-        var xx = improvedCarWeightCalcActivationDate.CompareTo(creationDate) < 0;
-        var yy = LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ImprovedCarWeightCalc");
-
-        if (!LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ImprovedCarWeightCalc") && improvedCarWeightCalcActivationDate.CompareTo(creationDate) < 0)
+        if (!LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ImprovedCarWeightCalc") &&
+            !LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_ForceOldCarWeightCalc") &&
+            improvedCarWeightCalcActivationDate.CompareTo(creationDate) < 0)
         {
             ParameterDictionary["var_ImprovedCarWeightCalc"].AutoUpdateParameterValue("True");
+            ParameterDictionary["var_ImprovedCarWeightCalc"].IsDirty = true;
+            CanSaveAllSpeziParameters = true;
         }
-
         await Task.CompletedTask;
     }
 

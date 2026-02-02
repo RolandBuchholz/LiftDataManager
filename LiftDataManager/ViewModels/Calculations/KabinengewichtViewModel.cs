@@ -34,6 +34,10 @@ public partial class KabinengewichtViewModel : DataViewModelBase, INavigationAwa
         {
             if (!string.Equals(message.NewValue, message.OldValue))
             {
+                if (message.NewValue == "False")
+                {
+                    ParameterDictionary["var_ForceOldCarWeightCalc"].AutoUpdateParameterValue("True");
+                }
                 CarWeightResult = _calculationsModuleService.GetCarWeightCalculation(ParameterDictionary);
             }
         }

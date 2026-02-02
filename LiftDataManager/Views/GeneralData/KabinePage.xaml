@@ -82,7 +82,7 @@
                                     Margin="10,0,0,0"
                                     VerticalAlignment="Center"
                                     FontSize="16"
-                                    Text="Fahkorb Abmessungen" />
+                                    Text="Fahrkorb Abmessungen" />
                                 <SpeziControls:ParameterComboBox
                                     Grid.Row="0"
                                     Grid.Column="1"
