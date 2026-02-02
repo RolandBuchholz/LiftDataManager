@@ -2,15 +2,23 @@
     x:Class="LiftDataManager.Views.TabellenansichtPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="using:LiftDataManager.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="using:LiftDataManager.Core.Models"
     xmlns:selectors="using:LiftDataManager.Controls.TemplateSelectors"
     xmlns:speziControls="using:LiftDataManager.Controls"
+    xmlns:tableView="using:WinUI.TableView"
     mc:Ignorable="d">
 
     <Page.Resources>
+        <SolidColorBrush
+            x:Name="HighlightBrush"
+            Opacity="0.2"
+            Color="YellowGreen" />
+        <helpers:EnumToStringConverter x:Key="EnumToStringConverter" />
         <selectors:ParameterControlTemplateSelector
             x:Key="controlTemplateSelector"
             BooleanTemplate="{StaticResource GridParameterTypBoolean}"
@@ -19,6 +27,61 @@
             DropDownList="{StaticResource GridParameterTypDropDownList}"
             NumberOnlyTemplate="{StaticResource GridParameterTypNumberOnly}"
             StringTemplate="{StaticResource GridParameterTypString}" />
+        <tableView:TableViewConditionalCellStylesCollection x:Key="StatusCellStyles">
+            <tableView:TableViewConditionalCellStyle Predicate="{x:Bind ViewModel.StatusInformationalAndHighlightPredicate}">
+                <Style TargetType="tableView:TableViewCell">
+                    <Setter Property="BorderBrush" Value="Gray" />
+                    <Setter Property="BorderThickness" Value="2" />
+                    <Setter Property="CornerRadius" Value="4" />
+                    <Setter Property="Background" Value="{StaticResource HighlightBrush}" />
+                </Style>
+            </tableView:TableViewConditionalCellStyle>
+            <tableView:TableViewConditionalCellStyle Predicate="{x:Bind ViewModel.StatusWarningAndHighlightPredicate}">
+                <Style TargetType="tableView:TableViewCell">
+                    <Setter Property="BorderBrush" Value="Orange" />
+                    <Setter Property="BorderThickness" Value="2" />
+                    <Setter Property="CornerRadius" Value="4" />
+                    <Setter Property="Background" Value="{StaticResource HighlightBrush}" />
+                </Style>
+            </tableView:TableViewConditionalCellStyle>
+            <tableView:TableViewConditionalCellStyle Predicate="{x:Bind ViewModel.StatusErrorAndHighlightPredicate}">
+                <Style TargetType="tableView:TableViewCell">
+                    <Setter Property="BorderBrush" Value="IndianRed" />
+                    <Setter Property="BorderThickness" Value="2" />
+                    <Setter Property="CornerRadius" Value="4" />
+                    <Setter Property="Background" Value="{StaticResource HighlightBrush}" />
+                </Style>
+            </tableView:TableViewConditionalCellStyle>
+            <tableView:TableViewConditionalCellStyle Predicate="{x:Bind ViewModel.HighlightPredicate}">
+                <Style TargetType="tableView:TableViewCell">
+                    <Setter Property="BorderBrush" Value="GreenYellow" />
+                    <Setter Property="BorderThickness" Value="2" />
+                    <Setter Property="CornerRadius" Value="4" />
+                    <Setter Property="Background" Value="{StaticResource HighlightBrush}" />
+                </Style>
+            </tableView:TableViewConditionalCellStyle>
+            <tableView:TableViewConditionalCellStyle Predicate="{x:Bind ViewModel.StatusInformationalPredicate}">
+                <Style TargetType="tableView:TableViewCell">
+                    <Setter Property="BorderBrush" Value="Gray" />
+                    <Setter Property="BorderThickness" Value="2" />
+                    <Setter Property="CornerRadius" Value="4" />
+                </Style>
+            </tableView:TableViewConditionalCellStyle>
+            <tableView:TableViewConditionalCellStyle Predicate="{x:Bind ViewModel.StatusWarningPredicate}">
+                <Style TargetType="tableView:TableViewCell">
+                    <Setter Property="BorderBrush" Value="Orange" />
+                    <Setter Property="BorderThickness" Value="2" />
+                    <Setter Property="CornerRadius" Value="4" />
+                </Style>
+            </tableView:TableViewConditionalCellStyle>
+            <tableView:TableViewConditionalCellStyle Predicate="{x:Bind ViewModel.StatusErrorPredicate}">
+                <Style TargetType="tableView:TableViewCell">
+                    <Setter Property="BorderBrush" Value="IndianRed" />
+                    <Setter Property="BorderThickness" Value="2" />
+                    <Setter Property="CornerRadius" Value="4" />
+                </Style>
+            </tableView:TableViewConditionalCellStyle>
+        </tableView:TableViewConditionalCellStylesCollection>
     </Page.Resources>
     <Grid x:Name="ContentAreaTabelle">
         <Grid.RowDefinitions>
@@ -31,150 +94,190 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <!--  CommandBar  -->
-            <speziControls:CommandBar
-                Grid.Row="0"
-                Grid.Column="0"
-                Margin="0,0,0,5"
-                CanShowErrorsParameters="{x:Bind ViewModel.HasErrors, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                CanShowHighlightedParameters="{x:Bind ViewModel.HasHighlightedParameters, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                CanShowUnsavedParameters="{x:Bind ViewModel.CanShowUnsavedParameters, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                ItemSource="{x:Bind ViewModel.ParameterDictionary, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                SaveAllCommand="{x:Bind ViewModel.SaveAllParameterCommand}"
-                SearchInput="{x:Bind ViewModel.SearchInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                SelectedFilter="{x:Bind ViewModel.SelectedFilter, Mode=OneWay}"
-                ViewSource="{x:Bind ViewModel.GroupedItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <Grid
+                Height="52"
+                HorizontalAlignment="Stretch"
+                Background="{ThemeResource LayerOnMicaBaseAltFillColorDefaultBrush}"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultSolidBrush}"
+                BorderThickness="1"
+                CornerRadius="4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+                <AutoSuggestBox
+                    Grid.Column="0"
+                    MinWidth="250"
+                    Margin="10,0,0,0"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Center"
+                    QueryIcon="Find"
+                    Text="{x:Bind ViewModel.SearchInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <StackPanel
+                    Grid.Column="1"
+                    Margin="5,0,5,0"
+                    Orientation="Horizontal">
+                    <TextBlock
+                        Margin="5,0,5,0"
+                        VerticalAlignment="Center"
+                        FontSize="16"
+                        FontWeight="Bold"
+                        Foreground="{ThemeResource AccentFillColorTertiaryBrush}"
+                        Text="{Binding CollectionView.Count, ElementName=ParameterView}" />
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        FontSize="16"
+                        Text="Eintäge gefunden" />
+                </StackPanel>
+                <StackPanel
+                    Grid.Column="1"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal">
+                    <SelectorBar HorizontalAlignment="Right" SelectedItem="{x:Bind ViewModel.SelectedFilter, Mode=TwoWay}">
+                        <SelectorBarItem
+                            Icon="AllApps"
+                            IsSelected="True"
+                            Text="All"
+                            ToolTipService.ToolTip="Zeigt alle Parameter an" />
+                        <SelectorBarItem
+                            Icon="Highlight"
+                            IsEnabled="{x:Bind ViewModel.HasHighlightedParameters, Mode=OneWay}"
+                            Text="Highlighted"
+                            ToolTipService.ToolTip="Zeigt alle markierte Parameter an" />
+                        <SelectorBarItem
+                            Icon="ReportHacked"
+                            IsEnabled="{x:Bind ViewModel.HasErrors, Mode=OneWay}"
+                            Text="Validation Errors"
+                            ToolTipService.ToolTip="Zeigt Parameter mit Validierungsfehleren an" />
+                        <SelectorBarItem
+                            Icon="Sync"
+                            IsEnabled="{x:Bind ViewModel.CanShowUnsavedParameters, Mode=OneWay}"
+                            Text="Unsaved"
+                            ToolTipService.ToolTip="Zeigt nicht gespeicherte Parameter an" />
+                    </SelectorBar>
+                    <Button
+                        Width="85"
+                        Height="41"
+                        Margin="5,0,5,0"
+                        Command="{x:Bind ViewModel.SaveAllParameterCommand}"
+                        Style="{StaticResource SaveButton}"
+                        ToolTipService.ToolTip="Speichert alle Parameter">
+                        <StackPanel Orientation="Horizontal">
+                            <SymbolIcon Symbol="Save" />
+                            <TextBlock Margin="5" Text="Save" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
         </Grid>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
-            <Grid Margin="0,0,5,0" CornerRadius="0,0,8,8">
-                <controls:DataGrid
-                    AlternatingRowBackground="{ThemeResource SystemControlPageBackgroundListLowBrush}"
-                    AutoGenerateColumns="False"
-                    Background="Transparent"
-                    BorderBrush="{ThemeResource CardStrokeColorDefaultSolidBrush}"
-                    BorderThickness="1"
-                    CanUserReorderColumns="True"
-                    CanUserResizeColumns="True"
-                    ColumnHeaderStyle="{StaticResource DefaultHeaderStyle}"
-                    GridLinesVisibility="All"
-                    ItemsSource="{x:Bind ViewModel.GroupedItems.View, Mode=OneWay}"
-                    LoadingRowGroup="DataGrid_LoadingRowGroup"
-                    RowGroupHeaderPropertyNameAlternative="">
-                    <controls:DataGrid.Columns>
-                        <controls:DataGridTemplateColumn
-                            Width="auto"
-                            CanUserResize="False"
-                            Header="Symbol">
-                            <controls:DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate x:DataType="models:Parameter">
-                                    <FontIcon
-                                        HorizontalAlignment="Center"
-                                        FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                                        Glyph="{x:Bind Symbol}" />
-                                </DataTemplate>
-                            </controls:DataGridTemplateColumn.CellTemplate>
-                        </controls:DataGridTemplateColumn>
-                        <controls:DataGridTemplateColumn
-                            Width="150"
-                            Header="Displayname"
-                            IsReadOnly="True">
-                            <controls:DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate x:DataType="models:Parameter">
-                                    <TextBlock
-                                        Margin="10,0,0,0"
-                                        VerticalAlignment="Center"
-                                        Text="{x:Bind DisplayName}" />
-                                </DataTemplate>
-                            </controls:DataGridTemplateColumn.CellTemplate>
-                        </controls:DataGridTemplateColumn>
-                        <controls:DataGridTemplateColumn
-                            Width="80"
-                            CanUserResize="False"
-                            Header="Typ"
-                            IsReadOnly="True">
-                            <controls:DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate x:DataType="models:Parameter">
-                                    <TextBlock
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        Text="{x:Bind TypeCode}" />
-                                </DataTemplate>
-                            </controls:DataGridTemplateColumn.CellTemplate>
-                        </controls:DataGridTemplateColumn>
-                        <controls:DataGridTemplateColumn
-                            Width="140"
-                            CanUserResize="False"
-                            Header="Kategorie"
-                            IsReadOnly="True">
-                            <controls:DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate x:DataType="models:Parameter">
-                                    <TextBlock
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        Text="{x:Bind ParameterCategory}" />
-                                </DataTemplate>
-                            </controls:DataGridTemplateColumn.CellTemplate>
-                        </controls:DataGridTemplateColumn>
-                        <controls:DataGridTemplateColumn
-                            Width="280"
-                            CanUserResize="True"
-                            Header="Parameterwert">
-                            <controls:DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate x:DataType="models:Parameter">
-                                    <ContentControl
-                                        Margin="5,2,5,2"
-                                        HorizontalContentAlignment="Stretch"
-                                        Content="{x:Bind}"
-                                        ContentTemplateSelector="{StaticResource controlTemplateSelector}" />
-                                </DataTemplate>
-                            </controls:DataGridTemplateColumn.CellTemplate>
-                        </controls:DataGridTemplateColumn>
-                        <controls:DataGridTemplateColumn
-                            Width="45"
-                            CanUserResize="False"
-                            HeaderStyle="{StaticResource SymbolHeaderKey}">
-                            <controls:DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate x:DataType="models:Parameter">
-                                    <CheckBox
-                                        Margin="12,0,0,0"
-                                        VerticalAlignment="Center"
-                                        IsChecked="{x:Bind IsKey, Mode=TwoWay}" />
-                                </DataTemplate>
-                            </controls:DataGridTemplateColumn.CellTemplate>
-                        </controls:DataGridTemplateColumn>
-                        <controls:DataGridTemplateColumn Width="200" Header="Kommentar">
-                            <controls:DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate x:DataType="models:Parameter">
-                                    <TextBox
-                                        HorizontalAlignment="Stretch"
-                                        AcceptsReturn="True"
-                                        Style="{StaticResource GridTextboxStyle}"
-                                        Text="{x:Bind Comment, Mode=TwoWay}"
-                                        TextWrapping="Wrap" />
-                                </DataTemplate>
-                            </controls:DataGridTemplateColumn.CellTemplate>
-                        </controls:DataGridTemplateColumn>
-                        <controls:DataGridTemplateColumn
-                            Width="150"
-                            CanUserResize="True"
-                            Header="interner Name"
-                            IsReadOnly="True">
-                            <controls:DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate x:DataType="models:Parameter">
-                                    <TextBlock
-                                        Margin="10,0,0,0"
-                                        VerticalAlignment="Center"
-                                        Text="{x:Bind Name}" />
-                                </DataTemplate>
-                            </controls:DataGridTemplateColumn.CellTemplate>
-                        </controls:DataGridTemplateColumn>
-                    </controls:DataGrid.Columns>
-                </controls:DataGrid>
-            </Grid>
+            <tableView:TableView
+                x:Name="ParameterView"
+                Grid.Column="0"
+                Margin="0,0,5,0"
+                AlternateRowBackground="{ThemeResource SystemControlPageBackgroundListLowBrush}"
+                AutoGenerateColumns="False"
+                CornerRadius="4"
+                ItemsSource="{x:Bind ViewModel.ParameterList, Mode=OneWay}"
+                ShowFilterItemsCount="True">
+                <Interactivity:Interaction.Behaviors>
+                    <Interactivity:EventTriggerBehavior EventName="Loaded">
+                        <Interactivity:InvokeCommandAction Command="{x:Bind ViewModel.ParameterViewLoadedCommand}" CommandParameter="{x:Bind ParameterView}" />
+                    </Interactivity:EventTriggerBehavior>
+                </Interactivity:Interaction.Behaviors>
+                <tableView:TableView.Columns>
+                    <tableView:TableViewTemplateColumn
+                        Width="40"
+                        CanFilter="False"
+                        CanResize="False"
+                        CanSort="False"
+                        IsReadOnly="True">
+                        <tableView:TableViewTemplateColumn.Header>
+                            <FontIcon Glyph="&#xECAA;" />
+                        </tableView:TableViewTemplateColumn.Header>
+                        <tableView:TableViewTemplateColumn.CellTemplate>
+                            <DataTemplate x:DataType="models:Parameter">
+                                <FontIcon
+                                    HorizontalAlignment="Center"
+                                    FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                    Glyph="{x:Bind Symbol}" />
+                            </DataTemplate>
+                        </tableView:TableViewTemplateColumn.CellTemplate>
+                    </tableView:TableViewTemplateColumn>
+                    <tableView:TableViewTextColumn
+                        Width="200"
+                        Binding="{Binding DisplayName}"
+                        CanFilter="False"
+                        CanResize="True"
+                        CanSort="False"
+                        ConditionalCellStyles="{StaticResource StatusCellStyles}"
+                        Header="Displayname"
+                        IsReadOnly="True" />
+                    <tableView:TableViewTextColumn
+                        Width="120"
+                        Binding="{Binding ParameterTyp, Converter={StaticResource EnumToStringConverter}}"
+                        Header="Typ"
+                        IsReadOnly="True" />
+                    <tableView:TableViewTextColumn
+                        Width="140"
+                        Binding="{Binding ParameterCategory, Converter={StaticResource EnumToStringConverter}}"
+                        Header="Category"
+                        IsReadOnly="True" />
+                    <tableView:TableViewTemplateColumn
+                        Width="280"
+                        CanResize="True"
+                        Header="Parameterwert">
+                        <tableView:TableViewTemplateColumn.CellTemplate>
+                            <DataTemplate x:DataType="models:Parameter">
+                                <ContentControl
+                                    Margin="5,2,5,2"
+                                    HorizontalContentAlignment="Stretch"
+                                    Content="{x:Bind}"
+                                    ContentTemplateSelector="{StaticResource controlTemplateSelector}" />
+                            </DataTemplate>
+                        </tableView:TableViewTemplateColumn.CellTemplate>
+                    </tableView:TableViewTemplateColumn>
+                    <tableView:TableViewCheckBoxColumn
+                        Width="40"
+                        Binding="{Binding IsKey, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        CanFilter="False"
+                        CanResize="False"
+                        CanSort="False">
+                        <tableView:TableViewCheckBoxColumn.Header>
+                            <FontIcon Glyph="&#xE8D7;" />
+                        </tableView:TableViewCheckBoxColumn.Header>
+                    </tableView:TableViewCheckBoxColumn>
+                    <tableView:TableViewTemplateColumn
+                        Width="200"
+                        CanFilter="False"
+                        CanResize="True"
+                        CanSort="False"
+                        Header="Kommentar">
+                        <tableView:TableViewTemplateColumn.CellTemplate>
+                            <DataTemplate x:DataType="models:Parameter">
+                                <TextBox
+                                    HorizontalAlignment="Stretch"
+                                    AcceptsReturn="True"
+                                    Style="{StaticResource GridTextboxStyle}"
+                                    Text="{x:Bind Comment, Mode=TwoWay}"
+                                    TextWrapping="Wrap" />
+                            </DataTemplate>
+                        </tableView:TableViewTemplateColumn.CellTemplate>
+                    </tableView:TableViewTemplateColumn>
+                    <tableView:TableViewTextColumn
+                        Width="150"
+                        Binding="{Binding Name}"
+                        CanFilter="False"
+                        CanSort="False"
+                        Header="interner Name"
+                        IsReadOnly="True" />
+                </tableView:TableView.Columns>
+            </tableView:TableView>
             <!--  InfoSidebarPanel  -->
             <speziControls:SidebarPanel
                 Grid.Column="1"
@@ -191,8 +294,8 @@
             ErrorsDictionary="{x:Bind ViewModel.ParameterErrorDictionary, Mode=TwoWay}"
             HasErrors="{x:Bind ViewModel.HasErrors, Mode=OneWay}"
             HideInfoErrors="{x:Bind ViewModel.HideInfoErrors, Mode=TwoWay}"
-            VaultDisabled="{x:Bind ViewModel.VaultDisabled, Mode=OneWay}"
             ParameterFound="{x:Bind ViewModel.ParameterDictionary.Count, Mode=OneWay}"
+            VaultDisabled="{x:Bind ViewModel.VaultDisabled, Mode=OneWay}"
             XmlPath="{x:Bind ViewModel.FullPathXml, Mode=OneWay}" />
     </Grid>
 </Page>

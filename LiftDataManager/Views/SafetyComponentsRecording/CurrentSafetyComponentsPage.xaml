@@ -443,7 +443,7 @@
                         </tableView:TableViewTemplateColumn>
                         <tableView:TableViewCheckBoxColumn
                             Width="60"
-                            Binding="{Binding Active, Mode=TwoWay}"
+                            Binding="{Binding Active, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             CanFilter="False"
                             CanResize="False"
                             CanSort="False"

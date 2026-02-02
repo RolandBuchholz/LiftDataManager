@@ -58,7 +58,8 @@
                 AutoGenerateColumns="False"
                 CornerRadius="4"
                 ItemsSource="{x:Bind ViewModel.SafetyComponentsRecordings, Mode=OneWay}"
-                ShowExportOptions="True">
+                ShowExportOptions="True"
+                ShowFilterItemsCount="True">
                 <tableView:TableView.Columns>
                     <tableView:TableViewTemplateColumn
                         Width="50"

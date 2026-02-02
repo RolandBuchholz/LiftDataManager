@@ -1,20 +1,16 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
-using Microsoft.Extensions.Logging;
+using WinUI.TableView;
 
 namespace LiftDataManager.ViewModels;
 
 public partial class TabellenansichtViewModel : DataViewModelBase, INavigationAwareEx, IRecipient<PropertyChangedMessage<string>>, IRecipient<PropertyChangedMessage<bool>>, IRecipient<RefreshModelStateMessage>
 {
-    public CollectionViewSource GroupedItems { get; set; }
-
-    public TabellenansichtViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService, 
+    public List<Parameter>? ParameterList { get; set; }
+    public TableView? ParameterTableView { get; set; }
+    public TabellenansichtViewModel(IParameterDataService parameterDataService, IDialogService dialogService, IInfoCenterService infoCenterService,
                                     ISettingService settingService, ILogger<DataViewModelBase> baseLogger) :
          base(parameterDataService, dialogService, infoCenterService, settingService, baseLogger)
     {
-        GroupedItems = new CollectionViewSource
-        {
-            IsSourceGrouped = true
-        };
     }
 
     public override void Receive(PropertyChangedMessage<bool> message)
@@ -27,8 +23,40 @@ public partial class TabellenansichtViewModel : DataViewModelBase, INavigationAw
 
         SetInfoSidebarPanelHighlightText(message);
         SetModelStateAsync().SafeFireAndForget(onException: ex => LogTaskException(ex.ToString()));
-        HasHighlightedParameters = false;
         HasHighlightedParameters = CheckhasHighlightedParameters();
+    }
+
+    [RelayCommand]
+    public async Task ParameterViewLoadedAsync(TableView sender)
+    {
+        ParameterTableView = sender;
+        ParameterTableView.FilterDescriptions.Add(new FilterDescription(string.Empty, Filter));
+        await Task.CompletedTask;
+    }
+
+    private bool Filter(object? item)
+    {
+        if (item is null)
+        {
+            return false;
+        }
+        Parameter entry = (Parameter)item;
+
+        var matchTextSearch = string.IsNullOrWhiteSpace(SearchInput) ||
+                              entry.Name.Contains(SearchInput, StringComparison.OrdinalIgnoreCase) is true ||
+                              entry.DisplayName.Contains(SearchInput, StringComparison.OrdinalIgnoreCase) is true ||
+                              entry.Value?.Contains(SearchInput, StringComparison.OrdinalIgnoreCase) is true ||
+                              entry.Comment?.Contains(SearchInput, StringComparison.OrdinalIgnoreCase) is true;
+
+        var matchFilter = SelectedFilter?.Text switch
+        {
+            "All" => true,
+            "Highlighted" => entry.IsKey,
+            "Validation Errors" => entry.HasErrors,
+            "Unsaved" => entry.IsDirty,
+            _ => true
+        };
+        return matchFilter && matchTextSearch;
     }
 
     [ObservableProperty]
@@ -39,16 +67,28 @@ public partial class TabellenansichtViewModel : DataViewModelBase, INavigationAw
 
     [ObservableProperty]
     public partial SelectorBarItem? SelectedFilter { get; set; }
+    partial void OnSelectedFilterChanged(SelectorBarItem? value) 
+    {
+        RefreshFilterCommand.Execute(this);
+    }
 
     [ObservableProperty]
     public partial string? SearchInput { get; set; }
     partial void OnSearchInputChanged(string? value)
     {
+        RefreshFilterCommand.Execute(this);
         if (CurrentSpeziProperties != null)
         {
             CurrentSpeziProperties.SearchInput = SearchInput;
             Messenger.Send(new SpeziPropertiesChangedMessage(CurrentSpeziProperties));
         }
+    }
+
+    [RelayCommand]
+    public async Task RefreshFilterAsync()
+    {
+        ParameterTableView?.RefreshFilter();
+        await Task.CompletedTask;
     }
 
     protected async override Task SetModelStateAsync()
@@ -103,11 +143,27 @@ public partial class TabellenansichtViewModel : DataViewModelBase, INavigationAw
         }
         await Task.CompletedTask;
     }
+    public Predicate<TableViewConditionalCellStyleContext> StatusInformationalAndHighlightPredicate =>
+    static context => context.DataItem is Parameter item && item.ParameterState is ErrorLevel.Informational && item.IsKey;
+    public Predicate<TableViewConditionalCellStyleContext> StatusWarningAndHighlightPredicate =>
+    static context => context.DataItem is Parameter item && item.ParameterState is ErrorLevel.Warning && item.IsKey;
+    public Predicate<TableViewConditionalCellStyleContext> StatusErrorAndHighlightPredicate =>
+    static context => context.DataItem is Parameter item && item.ParameterState is ErrorLevel.Error && item.IsKey;
+    public Predicate<TableViewConditionalCellStyleContext> HighlightPredicate =>
+        static context => context.DataItem is Parameter item && item.IsKey;
+    public Predicate<TableViewConditionalCellStyleContext> StatusInformationalPredicate =>
+        static context => context.DataItem is Parameter item && item.ParameterState is ErrorLevel.Informational;
+    public Predicate<TableViewConditionalCellStyleContext> StatusWarningPredicate =>
+        static context => context.DataItem is Parameter item && item.ParameterState is ErrorLevel.Warning;
+    public Predicate<TableViewConditionalCellStyleContext> StatusErrorPredicate =>
+        static context => context.DataItem is Parameter item && item.ParameterState is ErrorLevel.Error;
 
     private bool CheckhasHighlightedParameters()
     {
         if (ParameterDictionary is null || ParameterDictionary.Values is null)
+        {
             return false;
+        }
         return ParameterDictionary.Values.Any(x => x.IsKey);
     }
 
@@ -117,6 +173,7 @@ public partial class TabellenansichtViewModel : DataViewModelBase, INavigationAw
         if (CurrentSpeziProperties is not null)
         {
             SearchInput = CurrentSpeziProperties.SearchInput;
+            ParameterList = [.. ParameterDictionary.Values];
         }
         HasHighlightedParameters = CheckhasHighlightedParameters();
     }

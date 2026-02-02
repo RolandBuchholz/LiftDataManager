@@ -15,11 +15,4 @@ public sealed partial class TabellenansichtPage : Page
         DataContext = ViewModel;
         InitializeComponent();
     }
-
-    private void DataGrid_LoadingRowGroup(object sender, CommunityToolkit.WinUI.UI.Controls.DataGridRowGroupHeaderEventArgs e)
-    {
-        ICollectionViewGroup group = e.RowGroupHeader.CollectionViewGroup;
-        e.RowGroupHeader.PropertyValue = ((ObservableGroup<string, Parameter>)group.Group).Key;
-        e.RowGroupHeader.Foreground = new SolidColorBrush((Color)Application.Current.Resources["SystemAccentColor"]);
-    }
 }
