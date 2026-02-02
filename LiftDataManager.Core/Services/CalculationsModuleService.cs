@@ -972,17 +972,29 @@ public partial class CalculationsModuleService : ICalculationsModule
 
         TableRow<int, double>? nutzlast = null;
         if (table == null)
+        {
             return 0;
+        }
         if (area <= 0)
+        {
             return 0;
+        }
         if (tableName == "Tabelle6" && area > 5.0)
+        {
             return Math.Round(2500 + Math.Ceiling((area - 5.0) / 0.16) * 100, 0);
+        }
         if (tableName == "Tabelle6" && area < 0.37)
+        {
             return 0;
+        }
         if (tableName == "Tabelle7" && area > 5.04)
+        {
             return Math.Round(1600 + Math.Ceiling((area - 5.04) / 0.40) * 100, 0);
+        }
         if (tableName == "Tabelle7" && area < 1.68)
+        {
             return 0;
+        }
         if (table.Any(x => x.Value.SecondValue == area))
         {
             nutzlast = table.FirstOrDefault(x => x.Value.SecondValue == area).Value;
@@ -1003,11 +1015,17 @@ public partial class CalculationsModuleService : ICalculationsModule
     {
         TableRow<int, double>? personenAnzahl = null;
         if (Table8 == null)
+        {
             return 0;
+        }
         if (area < 0.28)
+        {
             return 0;
+        }
         if (area > 3.13)
+        {
             return Convert.ToInt32(Math.Floor(20 + (area - 3.13) / 0.115));
+        }
         if (Table8.Any(x => x.Value.SecondValue == area))
         {
             personenAnzahl = Table8.FirstOrDefault(x => x.Value.SecondValue == area).Value;
@@ -1376,25 +1394,33 @@ public partial class CalculationsModuleService : ICalculationsModule
         {
             case "A":
                 if (!entranceA)
+                {
                     return 0;
+                }
                 tuerEinbau = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_TuerEinbau");
                 tuerbezeichnung = LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Tuerbezeichnung");
                 break;
             case "B":
                 if (!entranceB)
+                {
                     return 0;
+                }
                 tuerEinbau = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_TuerEinbauB");
                 tuerbezeichnung = LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Tuerbezeichnung_B");
                 break;
             case "C":
                 if (!entranceC)
+                {
                     return 0;
+                }
                 tuerEinbau = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_TuerEinbauC");
                 tuerbezeichnung = LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Tuerbezeichnung_C");
                 break;
             case "D":
                 if (!entranceD)
+                {
                     return 0;
+                }
                 tuerEinbau = LiftParameterHelper.GetLiftParameterValue<double>(parameterDictionary, "var_TuerEinbauD");
                 tuerbezeichnung = LiftParameterHelper.GetLiftParameterValue<string>(parameterDictionary, "var_Tuerbezeichnung_D");
                 break;
@@ -1403,11 +1429,13 @@ public partial class CalculationsModuleService : ICalculationsModule
         }
 
         if (tuerEinbau <= 0)
+        {
             return 0;
-
+        }
         if (string.IsNullOrWhiteSpace(tuerbezeichnung))
+        {
             return 0;
-
+        }
         var kabinenTuer = new CarDoorDesignParameter();
 
         var liftDoorGroup = _parametercontext.Set<LiftDoorGroup>().Include(i => i.CarDoor)
@@ -1423,10 +1451,10 @@ public partial class CalculationsModuleService : ICalculationsModule
             kabinenTuer.TuerFluegelBreite = carDoor.DoorPanelWidth;
             kabinenTuer.TuerFluegelAbstand = carDoor.DoorPanelSpace;
         }
-
         if (kabinenTuer is null)
+        {
             return 0;
-
+        }
         return kabinenTuer.AnzahlTuerFluegel switch
         {
             2 => kabinenTuer.OeffnungsRichtungId == 3 ?
@@ -1908,7 +1936,7 @@ public partial class CalculationsModuleService : ICalculationsModule
 
     private double GetApronWeight(ObservableDictionary<string, Parameter> parameterDictionary, bool reinforcedApron, string doorSide)
     {
-        if (carWidth > 0 && carWidth > 0)
+        if (carWidth <= 0 || carWidth <= 0)
         {
             return 0;
         }

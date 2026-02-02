@@ -32,6 +32,65 @@ public partial class SafetyComponentsEquipmentsViewModel : DataViewModelBase, IN
     }
 
     [RelayCommand]
+    public async Task AddEquipmentAsync()
+    {
+        var equipmentnumber = await _dialogService.NumberInputDialogAsync("Equipmentdatenbank", "Equipmentnummer eingeben", "Equipmentnummer", 6, 7);
+        if (equipmentnumber == default)
+        {
+            return;
+        }
+
+        var liftCommission = _safetyComponentRecordContext.LiftCommissions?.Where(x => x.Name == equipmentnumber.ToString()).FirstOrDefault();
+        if (liftCommission != null)
+        {
+            await EditEquipmentAsync(liftCommission);
+        }
+        else
+        {
+            var newLiftCommission = new LiftCommission()
+            {
+                Name = equipmentnumber.ToString(),
+                LiftInstallerID = 1491,
+                Country = "DE"
+            };
+            await _safetyComponentRecordContext.LiftCommissions!.AddAsync(newLiftCommission);
+            await _safetyComponentRecordContext.SaveChangesAsync();
+            await EditEquipmentAsync(newLiftCommission);
+        }
+    }
+
+    [RelayCommand]
+    public async Task RemoveEquipmentAsync()
+    {
+        var equipmentnumber = await _dialogService.NumberInputDialogAsync("Equipment aus Datenbank entfernen", "Equipmentnummer eingeben", "Equipmentnummer", 6, 7);
+        if (equipmentnumber == default)
+        {
+            return;
+        }
+
+        var liftCommission = _safetyComponentRecordContext.LiftCommissions?.Where(x => x.Name == equipmentnumber.ToString()).FirstOrDefault();
+        if (liftCommission != null)
+        {
+            var result = await _dialogService.WarningDialogAsync("Equipment aus Datenbank entfernen", $"{equipmentnumber} endgültig löschen!", "Löschen", "Abbrechen");
+            if (result.Value)
+            {
+                _safetyComponentRecordContext.LiftCommissions!.Remove(liftCommission);
+                Equipments.Remove(liftCommission);
+                await _safetyComponentRecordContext.SaveChangesAsync();
+            }
+            else
+            {
+                return;
+            }
+        }
+        else
+        {
+            await _dialogService.MessageDialogAsync("Equipment aus Datenbank entfernen", $"Kein Auftrag mit der Auftragsnummer: {equipmentnumber} gefunden.", "Abbrechen");
+        }
+        await Task.CompletedTask;
+    }
+
+    [RelayCommand]
     public async Task EditEquipmentAsync(object sender)
     {
         if (sender is LiftCommission liftCommission)
@@ -41,7 +100,7 @@ public partial class SafetyComponentsEquipmentsViewModel : DataViewModelBase, IN
         await Task.CompletedTask;
     }
 
-    public static Visibility LiftCommissionIsComplete(IEnumerable<SafetyComponentRecord> listOfSafetyComponentRecords) 
+    public static Visibility LiftCommissionIsComplete(IEnumerable<SafetyComponentRecord> listOfSafetyComponentRecords)
     {
         if (!listOfSafetyComponentRecords.Any())
         {

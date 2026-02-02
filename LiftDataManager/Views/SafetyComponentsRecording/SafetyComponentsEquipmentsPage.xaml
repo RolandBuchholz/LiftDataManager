@@ -25,15 +25,57 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-            <TextBlock Foreground="{ThemeResource AccentAAFillColorTertiaryBrush}" Text="Equipmentliste schreibgeschützt. Bearbeitung über" />
-            <FontIcon
-                Margin="5,0,5,0"
-                FontFamily="{StaticResource SymbolThemeFontFamily}"
-                FontSize="16"
-                Glyph="&#xE70F;" />
-            <TextBlock Foreground="{ThemeResource AccentAAFillColorTertiaryBrush}" Text="Equipment bearbeiten" />
-        </StackPanel>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <StackPanel
+                Grid.Column="0"
+                Margin="0,0,10,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                Orientation="Horizontal">
+                <TextBlock Foreground="{ThemeResource AccentAAFillColorTertiaryBrush}" Text="Equipmentliste schreibgeschützt. Bearbeitung über" />
+                <FontIcon
+                    Margin="5,0,5,0"
+                    FontFamily="{StaticResource SymbolThemeFontFamily}"
+                    FontSize="16"
+                    Glyph="&#xE70F;" />
+                <TextBlock Foreground="{ThemeResource AccentAAFillColorTertiaryBrush}" Text="Equipment bearbeiten" />
+            </StackPanel>
+            <Button
+                Grid.Column="1"
+                Margin="5,5,5,0"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Bottom"
+                Command="{x:Bind ViewModel.AddEquipmentCommand}"
+                Style="{ThemeResource AccentButtonStyle}">
+                <StackPanel Orientation="Horizontal">
+                    <FontIcon Glyph="&#xECC8;" />
+                    <TextBlock
+                        Margin="15,0,0,0"
+                        FontWeight="Bold"
+                        Text="Equipment hinzufügen" />
+                </StackPanel>
+            </Button>
+            <Button
+                Grid.Column="2"
+                Margin="5,5,5,0"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Bottom"
+                Command="{x:Bind ViewModel.RemoveEquipmentCommand}"
+                Style="{ThemeResource AccentButtonStyle}">
+                <StackPanel Orientation="Horizontal">
+                    <FontIcon Glyph="&#xECC9;" />
+                    <TextBlock
+                        Margin="15,0,0,0"
+                        FontWeight="Bold"
+                        Text="Equipment entfernen" />
+                </StackPanel>
+            </Button>
+        </Grid>
         <Pivot
             Grid.Row="1"
             Margin="0,0,0,10"

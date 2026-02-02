@@ -622,28 +622,32 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
         if (name == "var_TypFV")
         {
             var reducedProtectionSpaces = _parametercontext.Set<ReducedProtectionSpace>().ToList();
-            IEnumerable<SelectionValue> availablEReducedProtectionSpaces;
+            IEnumerable<SelectionValue> availableReducedProtectionSpaces;
 
             if (string.IsNullOrWhiteSpace(selectedSafetyGear))
             {
-                availablEReducedProtectionSpaces = reducedProtectionSpaces.Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified, OrderSelection = x.OrderSelection });
+                availableReducedProtectionSpaces = reducedProtectionSpaces.Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified, OrderSelection = x.OrderSelection });
             }
             else if (selectedSafetyGear.Contains("BS"))
             {
-                availablEReducedProtectionSpaces = reducedProtectionSpaces.Where(x => x.Name.Contains(selectedSafetyGear) || x.Name == "keine").Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified, OrderSelection = x.OrderSelection });
+                availableReducedProtectionSpaces = reducedProtectionSpaces.Where(x => x.Name.Contains(selectedSafetyGear) || 
+                                                                           x.Name == "Schachtkopf" ||
+                                                                           x.Name == "Schachtgrube" ||
+                                                                           x.Name == "Schachtkopf und Schachtgrube" ||
+                                                                           x.Name == "keine").Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified, OrderSelection = x.OrderSelection });
             }
             else if (selectedSafetyGear.Contains("PC 13") || selectedSafetyGear.Contains("PC 24") || selectedSafetyGear.Contains("CSGB01") || selectedSafetyGear.Contains("CSGB02"))
             {
-                availablEReducedProtectionSpaces = reducedProtectionSpaces.Where(x => !x.Name.Contains("ESG")).Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified, OrderSelection = x.OrderSelection });
+                availableReducedProtectionSpaces = reducedProtectionSpaces.Where(x => !x.Name.Contains("ESG")).Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified, OrderSelection = x.OrderSelection });
             }
             else
             {
-                availablEReducedProtectionSpaces = reducedProtectionSpaces.Where(x => !x.Name.Contains("ESG") && !x.Name.Contains("Voraus")).Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified, OrderSelection = x.OrderSelection });
+                availableReducedProtectionSpaces = reducedProtectionSpaces.Where(x => !x.Name.Contains("ESG") && !x.Name.Contains("Voraus")).Select(x => new SelectionValue(x.Id, x.Name, x.DisplayName) { IsFavorite = x.IsFavorite, SchindlerCertified = x.SchindlerCertified, OrderSelection = x.OrderSelection });
             }
 
-            if (availablEReducedProtectionSpaces is not null)
+            if (availableReducedProtectionSpaces is not null)
             {
-                UpdateDropDownList("var_Ersatzmassnahmen", availablEReducedProtectionSpaces);
+                UpdateDropDownList("var_Ersatzmassnahmen", availableReducedProtectionSpaces);
             }
         }
 

@@ -87,6 +87,17 @@ public interface IDialogService
     Task<string?> InputDialogAsync(string title, string message, string textBoxName);
 
     /// <summary>
+    /// Opens a modal message NumberInputDialogAsync.
+    /// </summary>
+    /// <param name="title">The title.</param>
+    /// <param name="message">The message.</param>
+    /// <param name="textBoxName">Header.</param>
+    /// <param name="minNumberlength">minimal numberlength</param>
+    /// <param name="maxNumberlength">maximal numberlength</param>
+    /// <returns>Task</returns>
+    Task<int> NumberInputDialogAsync(string title, string message, string textBoxName, int minNumberlength, int maxNumberlength);
+
+    /// <summary>
     /// Opens a modal message dialog.
     /// </summary>
     /// <param name="downloadResult">The title.</param>
