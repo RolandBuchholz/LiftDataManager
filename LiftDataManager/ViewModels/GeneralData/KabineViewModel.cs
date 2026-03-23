@@ -103,6 +103,12 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAwareEx, IR
             CanShowGlassPanelsColor(((Parameter)message.Sender).DropDownListValue?.Id);
         }
 
+        if (message.PropertyName == "var_Bodenblech" ||
+            message.PropertyName == "var_BoPr")
+        {
+            CheckStandardReinforcedFloor();
+        }
+
         if (message.PropertyName == "var_SpiegelA" ||
             message.PropertyName == "var_SpiegelB" ||
             message.PropertyName == "var_SpiegelC" ||
@@ -257,6 +263,32 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAwareEx, IR
 
     private double _floorHeight;
 
+    private void CheckStandardReinforcedFloor() 
+    {
+        if (!(LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Bodentyp") == "verstärkt"))
+        {
+            return;
+        }
+        if (!(LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_Bodenblech") == "3"))
+        {
+            return;
+        }
+        if (!(LiftParameterHelper.GetLiftParameterValue<string>(ParameterDictionary, "var_BoPr") == "80 x 40 x 3"))
+        {
+            return;
+        }
+
+        _dialogService.MessageDialogAsync("Umstellung auf Standardboden",
+         """
+         Die Konfiguration aus Bodenblech 3 mm sowie 
+         Bodenprofil 80 × 40 × 3 entspricht einem Standardboden.
+
+         Daher erfolgt eine Umstellung auf den Standardboden.
+         """);
+
+        ParameterDictionary["var_Bodentyp"].AutoUpdateParameterValue("standard");
+    }
+
     private void SetCanEditFlooringProperties(string name, string newValue, string oldValue)
     {
         CanEditFlooringProperties = ParameterDictionary["var_Bodenbelag"].Value == "Nach Beschreibung" || ParameterDictionary["var_Bodenbelag"].Value == "bauseits lt. Beschreibung";
@@ -327,13 +359,21 @@ public partial class KabineViewModel : DataViewModelBase, INavigationAwareEx, IR
         List<string> mirrors = [];
 
         if (LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_SpiegelA"))
+        {
             mirrors.Add("A");
+        }
         if (LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_SpiegelB"))
+        {
             mirrors.Add("B");
+        }
         if (LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_SpiegelC"))
+        {
             mirrors.Add("C");
+        }
         if (LiftParameterHelper.GetLiftParameterValue<bool>(ParameterDictionary, "var_SpiegelD"))
+        {
             mirrors.Add("D");
+        }
 
         ShowMirrorDimensions2 = mirrors.Count > 1;
         ShowMirrorDimensions3 = mirrors.Count > 2;

@@ -4,7 +4,6 @@ using LiftDataManager.Core.DataAccessLayer.Models.AntriebSteuerungNotruf;
 using LiftDataManager.Core.DataAccessLayer.Models.Fahrkorb;
 using LiftDataManager.Core.DataAccessLayer.Models.Kabine;
 using LiftDataManager.Core.DataAccessLayer.Models.Tueren;
-using Microsoft.Extensions.Primitives;
 using System.Collections.Immutable;
 using System.Globalization;
 using System.Linq.Expressions;
@@ -198,8 +197,8 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
 
     private void ValidateEntrancePosition(string name, string displayname, string? value, string? severity, string? odernummerName)
     {
-        if (string.IsNullOrWhiteSpace(value) || 
-            string.Equals(value,"NV") ||
+        if (string.IsNullOrWhiteSpace(value) ||
+            string.Equals(value, "NV") ||
             value.StartsWith("ZG_A"))
         {
             ValidationResult.Add(new ParameterStateInfo(name, displayname, true));
@@ -260,7 +259,7 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
         string bodentyp = LiftParameterHelper.GetLiftParameterValue<string>(_parameterDictionary, "var_Bodentyp");
         string bodenProfil = LiftParameterHelper.GetLiftParameterValue<string>(_parameterDictionary, "var_BoPr");
         string bodenBelag = LiftParameterHelper.GetLiftParameterValue<string>(_parameterDictionary, "var_Bodenbelag");
-        double bodenBlech = string.IsNullOrWhiteSpace(_parameterDictionary["var_Bodenblech"].Value) ? -1 :LiftParameterHelper.GetLiftParameterValue<double>(_parameterDictionary, "var_Bodenblech");
+        double bodenBlech = string.IsNullOrWhiteSpace(_parameterDictionary["var_Bodenblech"].Value) ? -1 : LiftParameterHelper.GetLiftParameterValue<double>(_parameterDictionary, "var_Bodenblech");
         double bodenBelagHoehe = GetFlooringHeight(bodenBelag);
         double bodenHoehe = -1;
 
@@ -274,15 +273,21 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
             case "verstärkt":
                 if (bodenBlech < 0)
                 {
-                    SetDefaultReinforcedFloor(name);
+                    _parameterDictionary["var_Bodenblech"].AutoUpdateParameterValue("3");
+                    _parameterDictionary["var_BoPr"].AutoUpdateParameterValue("80 x 50 x 5");
                 }
                 if (string.IsNullOrWhiteSpace(bodenProfil))
                 {
-                    SetDefaultReinforcedFloor(name);
+                    _parameterDictionary["var_Bodenblech"].AutoUpdateParameterValue("3");
+                    _parameterDictionary["var_BoPr"].AutoUpdateParameterValue("80 x 50 x 5");
                 }
                 if (bodenBlech == 3 && bodenProfil == "80 x 40 x 3")
                 {
-                    SetDefaultReinforcedFloor(name);
+                    if (name == "var_Bodentyp")
+                    {
+                        _parameterDictionary["var_Bodenblech"].AutoUpdateParameterValue("3");
+                        _parameterDictionary["var_BoPr"].AutoUpdateParameterValue("80 x 50 x 5");
+                    }
                 }
                 double bodenProfilHoehe = GetFloorProfilHeight(bodenProfil);
                 bodenHoehe = bodenBlech + bodenProfilHoehe;
@@ -336,50 +341,59 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
         double GetFloorProfilHeight(string bodenProfil)
         {
             if (string.IsNullOrEmpty(bodenProfil))
+            {
                 return 0;
+            }
             var profile = _parametercontext.Set<CarFloorProfile>().FirstOrDefault(x => x.Name == bodenProfil);
             if (profile is null)
+            {
                 return 0;
+            }
             return (double)profile.Height!;
         }
 
         string GetFloorWeight(string bodenBelag)
         {
             if (string.IsNullOrEmpty(bodenBelag))
+            {
                 return "0";
+            }
             if (string.Equals(bodenBelag, "bauseits lt. Beschreibung"))
+            {
                 return LiftParameterHelper.GetLiftParameterValue<string>(_parameterDictionary, "var_Bodenbelagsgewicht");
+            }
             if (string.Equals(bodenBelag, "Nach Beschreibung"))
+            {
                 return LiftParameterHelper.GetLiftParameterValue<string>(_parameterDictionary, "var_Bodenbelagsgewicht");
+            }
             var boden = _parametercontext.Set<CarFlooring>().FirstOrDefault(x => x.Name == bodenBelag);
             if (boden is null)
+            {
                 return "0";
+            }
             return boden.WeightPerSquareMeter.ToString()!;
         }
 
         double GetFlooringHeight(string bodenBelag)
         {
             if (string.IsNullOrEmpty(bodenBelag))
+            {
                 return 0;
+            }
             if (string.Equals(bodenBelag, "bauseits lt. Beschreibung"))
+            {
                 return LiftParameterHelper.GetLiftParameterValue<double>(_parameterDictionary, "var_Bodenbelagsdicke");
+            }
             if (string.Equals(bodenBelag, "Nach Beschreibung"))
+            {
                 return LiftParameterHelper.GetLiftParameterValue<double>(_parameterDictionary, "var_Bodenbelagsdicke");
+            }
             var boden = _parametercontext.Set<CarFlooring>().FirstOrDefault(x => x.Name == bodenBelag);
             if (boden is null)
-                return 0;
-            return (double)boden.Thickness!;
-        }
-
-        void SetDefaultReinforcedFloor(string name)
-        {
-            _parameterDictionary["var_Bodenblech"].AutoUpdateParameterValue("3");
-            _parameterDictionary["var_BoPr"].AutoUpdateParameterValue("80 x 50 x 5");
-            if (name == "var_BoPr")
             {
-                _parameterDictionary["var_BoPr"].DropDownList.Add(new SelectionValue(-1, "Refresh", "Refresh"));
-                _parameterDictionary["var_BoPr"].DropDownList.Remove(new SelectionValue(-1, "Refresh", "Refresh"));
+                return 0;
             }
+            return (double)boden.Thickness!;
         }
     }
 
@@ -630,7 +644,7 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
             }
             else if (selectedSafetyGear.Contains("BS"))
             {
-                availableReducedProtectionSpaces = reducedProtectionSpaces.Where(x => x.Name.Contains(selectedSafetyGear) || 
+                availableReducedProtectionSpaces = reducedProtectionSpaces.Where(x => x.Name.Contains(selectedSafetyGear) ||
                                                                            x.Name == "Schachtkopf" ||
                                                                            x.Name == "Schachtgrube" ||
                                                                            x.Name == "Schachtkopf und Schachtgrube" ||
@@ -683,7 +697,7 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
 
     private void ValidateCwtSafetyGear(string name, string displayname, string? value, string? severity, string? optional = null)
     {
-        if (!LiftParameterHelper.GetLiftParameterValue<bool>(_parameterDictionary, "var_HasCwtSafetyGear")) 
+        if (!LiftParameterHelper.GetLiftParameterValue<bool>(_parameterDictionary, "var_HasCwtSafetyGear"))
         {
             if (!string.IsNullOrWhiteSpace(LiftParameterHelper.GetLiftParameterValue<string>(_parameterDictionary, "var_TypFV_GGW")))
             {
@@ -774,7 +788,7 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
             }
 
             var cwtLoad = LiftParameterHelper.GetLiftParameterValue<int>(_parameterDictionary, "var_Gegengewichtsmasse");
- 
+
             if (cwtSafetygearResult.MinLoad > cwtLoad)
             {
                 ValidationResult.Add(new ParameterStateInfo(name, displayname, $"Ausgewählte Gegengewichtsfangvorrichtung nicht zulässig Minimalgewicht {cwtSafetygearResult.MinLoad} kg | Gegengewichtsmasse: {cwtLoad} kg unterschritten.", SetSeverity(severity)));
@@ -1281,7 +1295,7 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
         {
             var shaftDoor = _parametercontext.Set<ShaftDoor>().Include(i => i.LiftDoorOpeningDirection)
                                                               .FirstOrDefault(x => x.Name == value);
-            if (shaftDoor is not null )
+            if (shaftDoor is not null)
             {
                 _parameterDictionary[doorPanelCount].AutoUpdateParameterValue(Convert.ToString(shaftDoor.DoorPanelCount));
 
@@ -1289,7 +1303,7 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
                 {
                     return;
                 }
-                if (string.IsNullOrWhiteSpace(_parameterDictionary[doorOpeningDirection].Value) || 
+                if (string.IsNullOrWhiteSpace(_parameterDictionary[doorOpeningDirection].Value) ||
                    !_parameterDictionary[doorOpeningDirection].Value!.StartsWith(shaftDoor.LiftDoorOpeningDirection.Name))
                 {
                     _parameterDictionary[doorOpeningDirection].AutoUpdateParameterValue(shaftDoor.LiftDoorOpeningDirection.Name);
@@ -1353,7 +1367,7 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
 
         var validSystem = liftPositionSystem switch
         {
-            "Limax 33CP" => string.Equals(controler, "Kühn MSZ 9E") || string.Equals(controler, "Kühn MSZ 10"),
+            "Limax 33CP" => string.Equals(controler, "Kühn MSZ 9E") || string.Equals(controler, "Kühn MSZ 10") || string.Equals(controler, "KW David 613") || string.Equals(controler, "KW David 525"),
             "NEW-Lift S1-Box" => string.Equals(controler, "New-Lift FST-2 XT") || string.Equals(controler, "New-Lift FST-2 S"),
             "NEW-Lift S2 (FST-3)" => string.Equals(controler, "New-Lift FST-3"),
             _ => true
@@ -2343,16 +2357,16 @@ public partial class ValidationParameterDataService : IValidationParameterDataSe
         {
             dependentParameter = [optionalCondition];
         }
-            
+
         if (string.IsNullOrWhiteSpace(bufferTyp) || _calculationsModuleService.ValidateBufferRange(bufferTyp, liftspeed, bufferLoad))
         {
             ValidationResult.Add(new ParameterStateInfo(name, displayname, true) { DependentParameter = dependentParameter });
         }
         else
         {
-            ValidationResult.Add(new ParameterStateInfo(name, displayname, $"{displayname}: {bufferCount}x {bufferTyp} nicht zulässig! (Last: {bufferLoad} kg/Puffer Betriebsgeschwindigkeit: {liftspeed} m/s)", SetSeverity(severity)) 
+            ValidationResult.Add(new ParameterStateInfo(name, displayname, $"{displayname}: {bufferCount}x {bufferTyp} nicht zulässig! (Last: {bufferLoad} kg/Puffer Betriebsgeschwindigkeit: {liftspeed} m/s)", SetSeverity(severity))
             { DependentParameter = dependentParameter });
-        }      
+        }
     }
 
     private void ValidateHasOilbuffer(string name, string displayname, string? value, string? severity, string? optionalCondition = null)
