@@ -103,27 +103,10 @@ public class EinreichunterlagenDocument : PdfBaseDocument
 
                 layers.Layer().Row(row =>
                 {
-                    row.ConstantItem(115).PaddingTop(10).PaddingLeft(50).Image(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Images", "BE_Logo.png"));
-                    row.AutoItem().PaddingTop(5).PaddingLeft(5, Unit.Millimetre).Column(column =>
+                    row.ConstantItem(280).PaddingTop(10).PaddingLeft(30).Column(column =>
                     {
-                        column
-                            .Item().PaddingBottom(-5).Text("BERCHTENBREITER GmbH")
-                            .FontSize(fontSizeXXL).SemiBold().Italic().FontColor(baseHeaderColor);
-                        column
-                            .Item().Text("MASCHINENBAU - AUFZUGTECHNIK")
-                            .FontSize(fontSizeStandard).SemiBold().Italic().FontColor(onSecondaryColor);
-                        column
-                            .Item().Text("Mähderweg 1a  86637 Rieblingen")
-                            .FontSize(fontSizeS).FontColor(onSecondaryVariantColor);
-                        column
-                            .Item().Text("Telefon 08272 / 9867-0  Telefax 9867-30")
-                            .FontSize(fontSizeS).FontColor(onSecondaryVariantColor);
-                        column
-                            .Item().Text("E-Mail: info@berchtenbreiter-gmbh.de")
-                            .FontSize(fontSizeS).FontColor(onSecondaryVariantColor);
-                        column
-                            .Item().PaddingTop(3).Text(Title)
-                            .Bold().FontSize(fontSizeXXL).FontColor(onSecondaryColor);
+                        column.Item().Image(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Images", "BEALogoPosH.png"));
+                        column.Item().PaddingLeft(30).PaddingTop(10).Text(Title).Bold().FontSize(fontSizeXXL).FontColor(onSecondaryColor);
                     });
                     row.RelativeItem().PaddingLeft(165).Column(column =>
                     {

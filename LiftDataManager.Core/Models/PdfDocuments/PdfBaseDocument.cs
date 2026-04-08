@@ -231,47 +231,32 @@ public class PdfBaseDocument : IDocument
 
                 layers.Layer().Row(row =>
                 {
-                    row.ConstantItem(65).PaddingTop(10).PaddingLeft(10).Image(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Images", "BE_Logo.png"));
-                    row.AutoItem().PaddingTop(8).PaddingLeft(10).Column(column =>
+                    row.ConstantItem(280).PaddingTop(10).PaddingLeft(30).Column(column =>
                     {
-                        column.Item().PaddingBottom(-5).Text("BERCHTENBREITER GmbH")
-                              .FontSize(fontSizeXXL).SemiBold().Italic().FontColor(baseHeaderColor);
-                        column.Item().Text("MASCHINENBAU - AUFZUGTECHNIK")
-                              .FontSize(fontSizeStandard).SemiBold().Italic().FontColor(onSecondaryColor);
-                        column.Item().Text("Mähderweg 1a  86637 Rieblingen")
-                              .FontSize(fontSizeS).FontColor(onSecondaryVariantColor);
-                        column.Item().Text("Telefon 08272 / 9867-0  Telefax 9867-30")
-                              .FontSize(fontSizeS).FontColor(onSecondaryVariantColor);
-                        column.Item().Text("E-Mail: info@berchtenbreiter-gmbh.de")
-                              .FontSize(fontSizeS).FontColor(onSecondaryVariantColor);
-                        column.Item().PaddingTop(3).PaddingLeft(-50).Row(row =>
-                        {
-                            row.AutoItem().Text(Title).Bold().FontSize(fontSizeXXL).FontColor(onSecondaryColor);
-                            row.AutoItem().PaddingLeft(5).AlignBottom().Text($"LDM-Version: {_LDMVersion}").Bold().FontSize(fontSizeXXS).FontColor(onSecondaryColor);
-                        });
+                        column.Item().Image(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Images", "BEALogoPosH.png"));
+                        column.Item().PaddingLeft(20).PaddingTop(7).Text(Title).Bold().FontSize(fontSizeXXL).FontColor(onSecondaryColor);
+                        column.Item().AlignRight().PaddingRight(25).AlignBottom().Text($"LDM-Version: {_LDMVersion}").Bold().FontSize(fontSizeXXS).FontColor(onSecondaryColor);
                     });
                     row.RelativeItem().PaddingLeft(5, Unit.Millimetre).Column(column =>
                     {
                         column.Item().ContentFromRightToLeft().Width(60).AlignCenter().Text(Index).Bold().FontSize(fontSizeBig).FontColor(onPrimaryColor);
-
                         column.Item().ContentFromRightToLeft().PaddingTop(7).PaddingRight(5).Text(GetMetadata().ModifiedDate.ToString("dddd, dd MMMM yyyy")).FontSize(fontSizeStandard).FontColor(onSecondaryColor);
-
                         column.Item().PaddingTop(7).Row(row =>
-                                                    {
-                                                    row.AutoItem().PaddingLeft(50).Column(column =>
-                                                    {
-                                                        column.Item().Text("Auftragsnummer:").FontSize(fontSizeXXS).FontColor(onPrimaryColor);
-                                                        column.Item().Text(AuftragsNummer).FontSize(fontSizeXL).FontColor(onPrimaryColor);
-                                                    });
-                                                    row.AutoItem().PaddingVertical(2).PaddingHorizontal(10).LineVertical(1).LineColor(onPrimaryColor);
-                                                    row.AutoItem().PaddingLeft(10).Column(column =>
-                                                    {
-                                                        column.Item().Text("Fabriknummer:").FontSize(fontSizeXXS).FontColor(onPrimaryColor);
-                                                        column.Item().Text(FabrikNummer).FontSize(fontSizeXL).FontColor(onPrimaryColor);
-                                                    });
-                                                    });
-                        column.Item().PaddingLeft(20).PaddingTop(-2).Text("Kennwort:").FontSize(fontSizeXXS);
-                        column.Item().PaddingLeft(20).Text(Kennwort).FontSize(fontSizeL);
+                        {
+                            row.AutoItem().PaddingLeft(55).Column(column =>
+                            {
+                                column.Item().Text("Auftragsnummer:").FontSize(fontSizeXXS).FontColor(onPrimaryColor);
+                                column.Item().Text(AuftragsNummer).FontSize(fontSizeXL).FontColor(onPrimaryColor);
+                            });
+                            row.AutoItem().PaddingVertical(2).PaddingHorizontal(10).LineVertical(1).LineColor(onPrimaryColor);
+                            row.AutoItem().PaddingLeft(10).Column(column =>
+                            {
+                                column.Item().Text("Fabriknummer:").FontSize(fontSizeXXS).FontColor(onPrimaryColor);
+                                column.Item().Text(FabrikNummer).FontSize(fontSizeXL).FontColor(onPrimaryColor);
+                            });
+                        });
+                        column.Item().PaddingLeft(10).PaddingTop(-2).Text("Kennwort:").FontSize(fontSizeXXS);
+                        column.Item().PaddingLeft(10).Text(Kennwort).FontSize(fontSizeL);
                     });
                 });
             });
@@ -315,13 +300,15 @@ public class PdfBaseDocument : IDocument
 
                 layers.Layer().Row(row =>
                 {
-                    row.
-                        ConstantItem(290).PaddingTop(32).PaddingLeft(15).Text(Title)
-                        .Bold().FontSize(18).FontColor(onSecondaryColor);
+                    row.ConstantItem(280).PaddingTop(25).PaddingLeft(30).Column(column =>
+                    {
+                        column.Item().PaddingLeft(20).Text(Title).Bold().FontSize(fontSizeXXL).FontColor(onSecondaryColor);
+                        column.Item().AlignRight().PaddingRight(25).AlignBottom().Text($"LDM-Version: {_LDMVersion}").Bold().FontSize(fontSizeXXS).FontColor(onSecondaryColor);
+                    });
                     row.RelativeItem().Column(column =>
                     {
                         column
-                            .Item().PaddingLeft(42).Row(row =>
+                            .Item().PaddingLeft(72).Row(row =>
                             {
                                 row.AutoItem().Column(column =>
                                 {
@@ -335,11 +322,8 @@ public class PdfBaseDocument : IDocument
                                     column.Item().Text(FabrikNummer).FontSize(fontSizeXL).FontColor(onPrimaryColor);
                                 });
                             });
-
-                        column
-                            .Item().PaddingLeft(12).PaddingTop(-2).Text("Kennwort:").FontSize(fontSizeXXS);
-                        column
-                            .Item().PaddingLeft(12).Text(Kennwort).FontSize(fontSizeL);
+                        column.Item().PaddingLeft(22).PaddingTop(-2).Text("Kennwort:").FontSize(fontSizeXXS);
+                        column.Item().PaddingLeft(22).Text(Kennwort).FontSize(fontSizeL);
                     });
                 });
             });
