@@ -8,8 +8,13 @@ namespace LiftDataManager.Core.Enums;
 public sealed class SpezifikationTyp : SmartEnum<SpezifikationTyp, ushort>
 {
     //    /// <summary>
+    //    /// SpezifikationTyp equipment with german humanized Displayname
+    //    /// </summary>
+    public static readonly SpezifikationTyp Equipment = new("Equipment", 0);
+    //    /// <summary>
     //    /// SpezifikationTyp order with german humanized Displayname
     //    /// </summary>
+
     public static readonly SpezifikationTyp Order = new("Auftrag", 1);
 
     //    /// <summary>

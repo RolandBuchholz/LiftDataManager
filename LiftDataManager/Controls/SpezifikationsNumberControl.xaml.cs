@@ -43,7 +43,7 @@ public sealed partial class SpezifikationsNumberControl : UserControl
         var speziNameArray = SpezifikationName.Split("-");
         switch (SpezifikationTyp)
         {
-            case var s when s.Equals(SpezifikationTyp.Order):
+            case var s when s.Equals(SpezifikationTyp.Order) || s.Equals(SpezifikationTyp.Equipment):
                 NumberBoxText = SpezifikationName;
                 break;
             case var s when s.Equals(SpezifikationTyp.Offer):
@@ -99,7 +99,7 @@ public sealed partial class SpezifikationsNumberControl : UserControl
     }
 
     public static readonly DependencyProperty SpezifikationTypProperty =
-        DependencyProperty.Register(nameof(SpezifikationTyp), typeof(SpezifikationTyp), typeof(SpezifikationsNumberControl), new PropertyMetadata(SpezifikationTyp.Order));
+        DependencyProperty.Register(nameof(SpezifikationTyp), typeof(SpezifikationTyp), typeof(SpezifikationsNumberControl), new PropertyMetadata(SpezifikationTyp.Equipment));
 
     public bool IsVaultDisabled
     {
@@ -202,6 +202,15 @@ public sealed partial class SpezifikationsNumberControl : UserControl
         tbx_CustomNumberbox.Visibility = Visibility.Collapsed;
         switch (value)
         {
+            case var s when s.Equals(SpezifikationTyp.Equipment):
+                tbx_Numberbox.Visibility = Visibility.Visible;
+                tbx_Numberbox.MaxLength = 8;
+                tbx_Numberbox.MinWidth = 125;
+                tbx_Numberbox.PlaceholderText = "Equipment";
+                cmb_Year.Visibility = Visibility.Collapsed;
+                cmb_Month.Visibility = Visibility.Collapsed;
+                btn_Request.Visibility = Visibility.Collapsed;
+                break;
             case var s when s.Equals(SpezifikationTyp.Order):
                 tbx_Numberbox.Visibility = Visibility.Visible;
                 tbx_Numberbox.MaxLength = 7;
@@ -258,7 +267,7 @@ public sealed partial class SpezifikationsNumberControl : UserControl
 
         SpezifikationName = SpezifikationTyp switch
         {
-            var s when s.Equals(SpezifikationTyp.Order) => $"{NumberBoxText}",
+            var s when s.Equals(SpezifikationTyp.Order) || s.Equals(SpezifikationTyp.Equipment) => $"{NumberBoxText}",
             var s when s.Equals(SpezifikationTyp.Offer) => $"{SelectedYear}-{SelectedMonth}-{numberBoxTextAsInt:0000}",
             var s when s.Equals(SpezifikationTyp.Planning) => $"VP-{SelectedYear}-{numberBoxTextAsInt:0000}",
             _ => string.Empty,
@@ -276,6 +285,7 @@ public sealed partial class SpezifikationsNumberControl : UserControl
             return true;
         }
         return (value.Length >= 6 && SpezifikationTyp.Equals(SpezifikationTyp.Order)) ||
+               (value.Length == 8 && SpezifikationTyp.Equals(SpezifikationTyp.Equipment)) ||
                (value.Length == 10 && SpezifikationTyp.Equals(SpezifikationTyp.Offer)) ||
                (value.Length == 10 && SpezifikationTyp.Equals(SpezifikationTyp.Planning)) ||
                (!string.IsNullOrWhiteSpace(value) && SpezifikationTyp.Equals(SpezifikationTyp.Request)) ||
