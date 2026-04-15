@@ -816,7 +816,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
             FullPathXml = CurrentSpeziProperties.FullPathXml;
             SpezifikationName = Path.GetFileNameWithoutExtension(FullPathXml).Replace("-AutoDeskTransfer", "");
         }
-        CurrentSpezifikationTyp = (CurrentSpeziProperties.CurrentSpezifikationTyp is not null) ? CurrentSpeziProperties.CurrentSpezifikationTyp : SpezifikationTyp.Order;
+        CurrentSpezifikationTyp = (CurrentSpeziProperties.CurrentSpezifikationTyp is not null) ? CurrentSpeziProperties.CurrentSpezifikationTyp : SpezifikationTyp.Equipment;
         if (ParameterDictionary.Values.Count == 0)
         {
             var success = InitializeParametereAsync();
@@ -905,7 +905,7 @@ public partial class HomeViewModel : DataViewModelBase, INavigationAwareEx, IRec
     {
         InfoCenterEntrys.Clear();
         AuftragsbezogeneXml = false;
-        CurrentSpezifikationTyp = SpezifikationTyp.Order;
+        CurrentSpezifikationTyp = SpezifikationTyp.Equipment;
         SpezifikationName = string.Empty;
         CanValidateAllParameter = false;
         CanLoadSpeziData = false;
