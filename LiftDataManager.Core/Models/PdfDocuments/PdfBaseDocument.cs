@@ -365,7 +365,7 @@ public class PdfBaseDocument : IDocument
             {
                 row.AutoItem().PaddingTop(20).PaddingLeft(5, Unit.Millimetre).Text(text =>
                 {
-                    text.Span("www.berchtenbreiter-gmbh.de").FontColor(onPrimaryColor);
+                    text.Span("www.berchtenbreiter-aufzug.de").FontColor(onPrimaryColor);
                 });
                 row.RelativeItem().AlignRight().PaddingTop(5).PaddingRight(4, Unit.Millimetre).Text(text =>
                 {

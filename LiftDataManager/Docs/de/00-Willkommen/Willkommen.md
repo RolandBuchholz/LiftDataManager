@@ -21,7 +21,7 @@
 
 ### Externe Verknüpfungen
 
-[Berchtenbreiter GmbH](https://www.berchtenbreiter-gmbh.de/de/index.html)  
+[Berchtenbreiter Aufzugtechnik](https://www.berchtenbreiter-aufzug.de/de/index.html)  
 [Windows App Sdk](https://learn.microsoft.com/de-de/windows/apps/windows-app-sdk/)  
 [WinUI 3](https://learn.microsoft.com/de-de/windows/apps/winui/winui3/)
 

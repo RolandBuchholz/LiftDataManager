@@ -65,7 +65,7 @@
                                     Margin="10,20,0,0"
                                     VerticalAlignment="Center">
                                     <TextBlock FontSize="16" Text="Kabinentableau" />
-                                    <HyperlinkButton NavigateUri="https://www.berchtenbreiter-gmbh.de/de/bedienelemente.html">
+                                    <HyperlinkButton NavigateUri="https://www.berchtenbreiter-aufzug.de/de/bedienelemente.html">
                                         <Image
                                             Width="30"
                                             Height="30"
@@ -74,7 +74,7 @@
                                             Source="/Images/Homepage.ico" />
                                         <ToolTipService.ToolTip>
                                             <ToolTip>
-                                                https://www.berchtenbreiter-gmbh.de/de/bedienelemente.html
+                                                https://www.berchtenbreiter-aufzug.de/de/bedienelemente.html
                                             </ToolTip>
                                         </ToolTipService.ToolTip>
                                     </HyperlinkButton>

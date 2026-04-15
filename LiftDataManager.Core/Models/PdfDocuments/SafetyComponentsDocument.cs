@@ -135,7 +135,7 @@ public class SafetyComponentsDocument : PdfBaseDocument
             {
                 row.AutoItem().PaddingTop(20).PaddingLeft(15, Unit.Millimetre).Text(text =>
                 {
-                    text.Span("www.berchtenbreiter-gmbh.de").FontColor(onSecondaryColor);
+                    text.Span("www.berchtenbreiter-aufzug.de").FontColor(onSecondaryColor);
                 });
                 row.RelativeItem().AlignRight().PaddingTop(5).PaddingRight(4, Unit.Millimetre).Text(text =>
                 {

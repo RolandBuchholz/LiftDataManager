@@ -740,7 +740,7 @@
                                     Margin="10,20,0,0"
                                     VerticalAlignment="Center">
                                     <TextBlock FontSize="16" Text="Fahrkorb Seitenwände" />
-                                    <HyperlinkButton NavigateUri="https://www.berchtenbreiter-gmbh.de/de/oberflaechen.html">
+                                    <HyperlinkButton NavigateUri="https://www.berchtenbreiter-aufzug.de/de/oberflaechen.html">
                                         <Image
                                             Width="30"
                                             Height="30"
@@ -749,7 +749,7 @@
                                             Source="/Images/Homepage.ico" />
                                         <ToolTipService.ToolTip>
                                             <ToolTip>
-                                                https://www.berchtenbreiter-gmbh.de/de/oberflaechen.html
+                                                https://www.berchtenbreiter-aufzug.de/de/oberflaechen.html
                                             </ToolTip>
                                         </ToolTipService.ToolTip>
                                     </HyperlinkButton>
@@ -970,7 +970,7 @@
                                     Margin="10,20,0,0"
                                     VerticalAlignment="Center">
                                     <TextBlock FontSize="16" Text="Fahrkorb Boden" />
-                                    <HyperlinkButton NavigateUri="https://www.berchtenbreiter-gmbh.de/de/kabinenboeden.html">
+                                    <HyperlinkButton NavigateUri="https://www.www.berchtenbreiter-aufzug.de/de/kabinenboeden.html">
                                         <Image
                                             Width="30"
                                             Height="30"
@@ -979,7 +979,7 @@
                                             Source="/Images/Homepage.ico" />
                                         <ToolTipService.ToolTip>
                                             <ToolTip>
-                                                https://www.berchtenbreiter-gmbh.de/de/kabinenboeden.html
+                                                https://www.berchtenbreiter-aufzug.de/de/kabinenboeden.html
                                             </ToolTip>
                                         </ToolTipService.ToolTip>
                                     </HyperlinkButton>
@@ -1164,7 +1164,7 @@
                                     Margin="10,20,0,0"
                                     VerticalAlignment="Center">
                                     <TextBlock FontSize="16" Text="Beleuchtung" />
-                                    <HyperlinkButton NavigateUri="https://www.berchtenbreiter-gmbh.de/de/lichtgestaltung.html">
+                                    <HyperlinkButton NavigateUri="https://www.berchtenbreiter-aufzug.de/de/lichtgestaltung.html">
                                         <Image
                                             Width="30"
                                             Height="30"
@@ -1173,7 +1173,7 @@
                                             Source="/Images/Homepage.ico" />
                                         <ToolTipService.ToolTip>
                                             <ToolTip>
-                                                https://www.berchtenbreiter-gmbh.de/de/lichtgestaltung.html
+                                                https://www.berchtenbreiter-aufzug.de/de/lichtgestaltung.html
                                             </ToolTip>
                                         </ToolTipService.ToolTip>
                                     </HyperlinkButton>
