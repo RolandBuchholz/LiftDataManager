@@ -176,19 +176,31 @@ public partial class ImportLiftDataDialogViewModel : ObservableObject
 
     [ObservableProperty]
     public partial SpezifikationTyp? ImportSpezifikationTyp { get; set; } = SpezifikationTyp.Order;
-    partial void OnImportSpezifikationTypChanged(SpezifikationTyp? value)
+    partial void OnImportSpezifikationTypChanged(SpezifikationTyp? oldValue, SpezifikationTyp? newValue)
     {
-        ImportSpezifikationName = string.Empty;
+        if ((newValue != SpezifikationTyp.Order || oldValue != SpezifikationTyp.Equipment) &&
+            (newValue != SpezifikationTyp.Equipment || oldValue != SpezifikationTyp.Order))
+        {
+            ImportSpezifikationName = string.Empty;
+        }
 
-        if (value is null)
+        if (newValue is null)
         {
             return;
         }
 
-        value
+        newValue
             .When(SpezifikationTyp.Order).Then(() =>
             {
-                DataImportDescription = $"Daten aus einer vorhandenen {value}sspezifikation importieren.";
+                DataImportDescription = $"Daten aus einer vorhandenen {newValue}sspezifikation importieren.";
+                DataImportDescriptionImage = defaultImage;
+                DragAndDropDescription = string.Empty;
+                ShowDragAndDropPanel = false;
+                ShowImportOptions = true;
+            })
+            .When(SpezifikationTyp.Equipment).Then(() =>
+            {
+                DataImportDescription = $"Daten aus einer vorhandenen {newValue} importieren.";
                 DataImportDescriptionImage = defaultImage;
                 DragAndDropDescription = string.Empty;
                 ShowDragAndDropPanel = false;
@@ -196,7 +208,7 @@ public partial class ImportLiftDataDialogViewModel : ObservableObject
             })
             .When(SpezifikationTyp.Offer).Then(() =>
             {
-                DataImportDescription = $"Daten aus einer vorhandenen {value}sspezifikation importieren.";
+                DataImportDescription = $"Daten aus einer vorhandenen {newValue}sspezifikation importieren.";
                 DataImportDescriptionImage = defaultImage;
                 DragAndDropDescription = string.Empty;
                 ShowDragAndDropPanel = false;
@@ -204,7 +216,7 @@ public partial class ImportLiftDataDialogViewModel : ObservableObject
             })
             .When(SpezifikationTyp.Planning).Then(() =>
             {
-                DataImportDescription = $"Daten aus einer vorhandenen {value}sspezifikation importieren.";
+                DataImportDescription = $"Daten aus einer vorhandenen {newValue}sspezifikation importieren.";
                 DataImportDescriptionImage = defaultImage;
                 DragAndDropDescription = string.Empty;
                 ShowDragAndDropPanel = false;
@@ -234,7 +246,7 @@ public partial class ImportLiftDataDialogViewModel : ObservableObject
                 ShowDragAndDropPanel = false;
                 ShowImportOptions = true;
             });
-        _logger.LogInformation(60132, "ImportSpezifikationTyp changed {Typ}", value);
+        _logger.LogInformation(60132, "ImportSpezifikationTyp changed {Typ}", newValue);
     }
 
     [ObservableProperty]

@@ -7,6 +7,7 @@ public sealed partial class SpezifikationsNumberControl : UserControl
 {
     [GeneratedRegex(@"^[a-zA-Z0-9ƒ÷‹‰ˆ¸ﬂ _()-]*$")]
     private static partial Regex CustomFileNameRegex();
+    private bool _autoChangeSpezifikationTyp;
     public Regex CustomFileName { get; set; } = CustomFileNameRegex();
     public List<SpezifikationTyp>? SpezifikationTyps { get; set; }
     public int[] Years { get; set; } = [.. Enumerable.Range(10, 20)];
@@ -99,7 +100,7 @@ public sealed partial class SpezifikationsNumberControl : UserControl
     }
 
     public static readonly DependencyProperty SpezifikationTypProperty =
-        DependencyProperty.Register(nameof(SpezifikationTyp), typeof(SpezifikationTyp), typeof(SpezifikationsNumberControl), new PropertyMetadata(SpezifikationTyp.Equipment));
+        DependencyProperty.Register(nameof(SpezifikationTyp), typeof(SpezifikationTyp), typeof(SpezifikationsNumberControl), new PropertyMetadata(SpezifikationTyp.Order));
 
     public bool IsVaultDisabled
     {
@@ -116,6 +117,7 @@ public sealed partial class SpezifikationsNumberControl : UserControl
         set
         {
             SetValue(NumberBoxTextProperty, value);
+            SetAutoSpezifikationTyp(value);
             SetSpezifikationName();
         }
     }
@@ -197,25 +199,21 @@ public sealed partial class SpezifikationsNumberControl : UserControl
             tbx_CustomNumberbox.Visibility = Visibility.Visible;
             return;
         }
-        NumberBoxText = null;
+
+        if (!_autoChangeSpezifikationTyp)
+        {
+            NumberBoxText = null;
+        }
+
         cmb_SpezifikationTyp.Visibility = Visibility.Visible;
         tbx_CustomNumberbox.Visibility = Visibility.Collapsed;
         switch (value)
         {
-            case var s when s.Equals(SpezifikationTyp.Equipment):
+            case var s when s.Equals(SpezifikationTyp.Equipment) || s.Equals(SpezifikationTyp.Order):
                 tbx_Numberbox.Visibility = Visibility.Visible;
                 tbx_Numberbox.MaxLength = 8;
                 tbx_Numberbox.MinWidth = 125;
-                tbx_Numberbox.PlaceholderText = "Equipment";
-                cmb_Year.Visibility = Visibility.Collapsed;
-                cmb_Month.Visibility = Visibility.Collapsed;
-                btn_Request.Visibility = Visibility.Collapsed;
-                break;
-            case var s when s.Equals(SpezifikationTyp.Order):
-                tbx_Numberbox.Visibility = Visibility.Visible;
-                tbx_Numberbox.MaxLength = 7;
-                tbx_Numberbox.MinWidth = 125;
-                tbx_Numberbox.PlaceholderText = "Auftragsnummer";
+                tbx_Numberbox.PlaceholderText = "Auftrag/Equipment";
                 cmb_Year.Visibility = Visibility.Collapsed;
                 cmb_Month.Visibility = Visibility.Collapsed;
                 btn_Request.Visibility = Visibility.Collapsed;
@@ -272,6 +270,42 @@ public sealed partial class SpezifikationsNumberControl : UserControl
             var s when s.Equals(SpezifikationTyp.Planning) => $"VP-{SelectedYear}-{numberBoxTextAsInt:0000}",
             _ => string.Empty,
         };
+    }
+
+
+    private void SetAutoSpezifikationTyp(string? value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        { 
+            return;
+        }
+
+        if (value.Length <= 6) 
+        { 
+            return; 
+        }
+
+        if (SpezifikationTyp is null || 
+            SpezifikationTyp == SpezifikationTyp.Offer || 
+            SpezifikationTyp == SpezifikationTyp.Planning ||
+            SpezifikationTyp == SpezifikationTyp.Request ||
+            SpezifikationTyp == SpezifikationTyp.MailRequest)
+        { 
+            return; 
+        }
+
+        if (SpezifikationTyp == SpezifikationTyp.Order && value.Length == 8)
+        {
+            _autoChangeSpezifikationTyp = true;
+            SpezifikationTyp = SpezifikationTyp.Equipment;
+            _autoChangeSpezifikationTyp = false;
+        }
+        else if (SpezifikationTyp == SpezifikationTyp.Equipment)
+        {
+            _autoChangeSpezifikationTyp = true;
+            SpezifikationTyp = SpezifikationTyp.Order;
+            _autoChangeSpezifikationTyp = false;
+        }
     }
 
     private bool CheckSpezifikationNameIsValid(string value)

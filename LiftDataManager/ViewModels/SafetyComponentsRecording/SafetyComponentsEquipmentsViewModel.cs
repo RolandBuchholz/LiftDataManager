@@ -50,7 +50,7 @@ public partial class SafetyComponentsEquipmentsViewModel : DataViewModelBase, IN
             var newLiftCommission = new LiftCommission()
             {
                 Name = equipmentnumber.ToString(),
-                LiftInstallerID = 1491,
+                LiftInstallerID = 1492,
                 Country = "DE"
             };
             await _safetyComponentRecordContext.LiftCommissions!.AddAsync(newLiftCommission);

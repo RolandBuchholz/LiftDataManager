@@ -181,10 +181,22 @@ public class VaultDataService : IVaultDataService
         _logger.LogInformation(60139, "Workspacesearch started");
         string? path;
 
-        if (spezifikationTyp is not null &&
-            spezifikationTyp.Equals(SpezifikationTyp.Order))
+        if (spezifikationTyp is null)
+        {
+            return [];
+        }
+
+        if (spezifikationTyp.Equals(SpezifikationTyp.Order))
         {
             path = @"C:\Work\AUFTRÄGE NEU\Konstruktion";
+            if (!Directory.Exists(path))
+            {
+                return [];
+            }
+        }
+        else if (spezifikationTyp.Equals(SpezifikationTyp.Equipment))
+        {
+            path = @"C:\Work\AUFTRÄGE NEU\Equipments";
             if (!Directory.Exists(path))
             {
                 return [];
